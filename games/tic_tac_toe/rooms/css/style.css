@@ -1,0 +1,33 @@
+.page_wrapper {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.create_new_game {
+    background-color:#333;
+    border-radius:4px;
+    display:inline-block;
+    color:#fff;
+    font-family:'arial';
+    font-size:18px;
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0 auto;
+}
+
+/* MOBILE */
+@media only screen and (max-width: 480px) {
+    .create_new_game {
+        width: 90%;
+    }
+}
+
+/* TABLET */
+@media only screen and (max-width: 728px) and (min-width: 480px) {
+
+}

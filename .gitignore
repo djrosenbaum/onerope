@@ -1,0 +1,8 @@
+#IGNORE GRAPHIC ASSETS
+*.ai
+*.psd
+*.3dm
+
+#IGNORE THE FOLLOWING FILES
+.DS_STORE
+dwsync.xml
