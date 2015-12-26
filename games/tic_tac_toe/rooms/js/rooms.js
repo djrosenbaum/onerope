@@ -101,6 +101,3 @@ onerope.rooms = {
         });
     }
 };
-
-
-onerope.rooms.get_rooms();

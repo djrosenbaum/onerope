@@ -2,11 +2,18 @@
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    padding-top: 10px;
     text-align: center;
 }
 
-.create_new_game {
+.game_name {
+    font-size: 21px;
+    background-color: #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.button {
+    cursor: pointer;
     background-color:#333;
     border-radius:4px;
     display:inline-block;
@@ -20,41 +27,38 @@
     margin: 0 auto;
 }
 
-/* ==== OVERLAY ==== */
-
-.overlay {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(255,255,255,0.8);
-    position: fixed;
-    top: 0;
-    left: 0;
+.button:hover {
+    background-color:#111;
 }
 
-.overlay input {
-    width: 90%;
-    max-width: 600px;
-    border: 2px solid #333;
-    border-radius: 3px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    position: absolute;
+input.room_name {
+    width: 100%;
+    border: 1px solid #ccc;
     height: 50px;
-    left: 0;
-    right: 0;
     padding-left: 15px;
     box-sizing: border-box;
+    margin-bottom: 5px;
+    font-size: 18px;
 }
 
 /* MOBILE */
 @media only screen and (max-width: 480px) {
-    .create_new_game {
+    .create_new_room {
+        width: 90%;
+    }
+
+    input.room_name {
         width: 90%;
     }
 }
 
 /* TABLET */
 @media only screen and (max-width: 728px) and (min-width: 480px) {
+    .create_new_room {
+        width: 90%;
+    }
 
+    input.room_name {
+        width: 90%;
+    }
 }
