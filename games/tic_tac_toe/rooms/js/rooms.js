@@ -73,7 +73,9 @@ onerope.rooms = {
         $('.rooms').empty();
 
         _.each(onerope.rooms.list, function(element, index, list) {
-            $('.rooms').append('<div class="room" data-room_id=' + element.key + '>' + element.room_name + '</div>');
+            console.log('element: ', element);
+            console.log('element id: ', element.room_id);
+            $('.rooms').append('<div class="room" data-room_id=' + element.room_id + '>' + element.room_name + '</div>');
         });
     },
 
@@ -97,7 +99,13 @@ onerope.rooms = {
         $('.rooms').empty();
 
         _.each(onerope.rooms.list, function(element, index, list) {
-            $('.rooms').append('<div class="room" data-room_id=' + element.key + '>' + element.room_name + '</div>');
+            $('.rooms').append('<div class="room" data-room_id=' + element.room_id + '>' + element.room_name + '</div>');
         });
+    },
+
+    enter_room : function(room_id) {
+        console.log('entering room');
+        $('.page_wrapper').addClass('game_in_session');
+        $('body').append('<iframe class="game_room" src="../"></iframe>');
     }
 };
