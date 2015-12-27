@@ -25,10 +25,7 @@ onerope.rooms = {
     create_room : function(room_name) {
         var room_data = {
             time_created: Firebase.ServerValue.TIMESTAMP,
-            room_name: room_name,
-            players : {
-                player: onerope.player.user_id
-            }
+            room_name: room_name
         };
 
         var room_ref = onerope_ref.child('rooms');
@@ -36,10 +33,13 @@ onerope.rooms = {
         var post_ref = room_ref.push(room_data);
 
         // Set Room ID
-        onerope.player.room_id = post_ref.key();
+        var room_id = post_ref.key();
 
         // Remove Room when player disconnects
-        room_ref.child(onerope.player.room_id).onDisconnect().remove();
+        room_ref.child(room_id).onDisconnect().remove();
+
+        //after creating the room, enter the room
+        onerope.rooms.enter_room(room_id);
     },
 
     get_rooms : function() {
@@ -104,8 +104,20 @@ onerope.rooms = {
     },
 
     enter_room : function(room_id) {
+
         console.log('entering room');
+
+        var player_data = {
+            player: onerope.player.user_id
+        };
+
+        onerope_ref.child('rooms').child(room_id).child('players').update(player_data);
+
         $('.page_wrapper').addClass('game_in_session');
         $('body').append('<iframe class="game_room" src="../"></iframe>');
     }
 };
+
+
+
+
