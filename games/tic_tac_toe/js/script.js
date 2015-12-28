@@ -1,4 +1,4 @@
-$( ".tile._" ).on( "touchstart click", function() {
+$( ".tile._" ).on( "click", function() {
     $(this).removeClass('_').addClass('o');
 });
 

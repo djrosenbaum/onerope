@@ -37,7 +37,7 @@ onerope.rooms = {
         var room_id = post_ref.key();
 
         // Remove Room when player disconnects
-        room_ref.child(room_id).onDisconnect().remove();
+        // room_ref.child(room_id).onDisconnect().remove();
 
         //after creating the room, enter the room
         onerope.rooms.enter_room(room_id);
@@ -114,7 +114,13 @@ onerope.rooms = {
 
         //Add Room to Member object
         var member_ref = onerope_ref.child('members');
-        member_ref.child(room_id).push(player_data);
+        var post_ref = member_ref.child(room_id).push(player_data);
+
+        // Set Player ID
+        onerope.player.user_id = post_ref.key();
+
+        // Remove Player from members when player disconnects
+        member_ref.child(room_id).child(onerope.player.user_id).onDisconnect().remove();
 
         $('.page_wrapper').addClass('game_in_session');
         $('body').append('<iframe class="game_room" src="../"></iframe>');
