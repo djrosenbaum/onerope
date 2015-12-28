@@ -42,6 +42,5 @@ $('.rooms').on('click', '.room', function() {
 });
 
 $( document ).ready(function() {
-    onerope.rooms.add_player();
     onerope.rooms.get_rooms();
 });

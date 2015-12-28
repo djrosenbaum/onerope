@@ -5,6 +5,7 @@ onerope.rooms = {
 
     list : [],
 
+/*
     add_player : function() {
         var player_data = {
             time_connected: Firebase.ServerValue.TIMESTAMP,
@@ -21,10 +22,10 @@ onerope.rooms = {
         // Remove User when player disconnects
         player_ref.child(onerope.player.user_id).onDisconnect().remove();
     },
+*/
 
     create_room : function(room_name) {
         var room_data = {
-            time_created: Firebase.ServerValue.TIMESTAMP,
             room_name: room_name
         };
 
@@ -43,17 +44,18 @@ onerope.rooms = {
     },
 
     get_rooms : function() {
-
         var rooms = onerope_ref.child('rooms');
 
         // Retrieve new posts as they are added to our database
         rooms.on("child_added", function(snapshot, prevChildKey) {
+            console.log('room added');
             onerope.rooms.add_room(snapshot);
         });
 
         // Get the data on a post that has been removed
         rooms.on("child_removed", function(snapshot) {
             onerope.rooms.remove_room(snapshot);
+            console.log('room removed');
         });
     },
 
@@ -104,20 +106,17 @@ onerope.rooms = {
     },
 
     enter_room : function(room_id) {
-
         console.log('entering room');
 
         var player_data = {
-            player: onerope.player.user_id
+            player_name: 'guest'
         };
 
-        onerope_ref.child('rooms').child(room_id).child('players').update(player_data);
+        //Add Room to Member object
+        var member_ref = onerope_ref.child('members');
+        member_ref.child(room_id).push(player_data);
 
         $('.page_wrapper').addClass('game_in_session');
         $('body').append('<iframe class="game_room" src="../"></iframe>');
     }
 };
-
-
-
-
