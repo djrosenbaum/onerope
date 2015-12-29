@@ -1,57 +1,117 @@
-.game_title {
+.page_wrapper {
+    color: #333;
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    margin: 0 auto;
     text-align: center;
-    font-size: 24px;
+    position: relative;
+}
+
+.game_name {
+    font-size: 21px;
+    background-color: #ccc;
+    color: #000;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.button {
+    cursor: pointer;
+    background-color:#333;
+    border-radius:4px;
+    display:inline-block;
+    color:#fff;
+    font-family:'arial';
+    font-size:18px;
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0 auto;
+}
+
+.button:hover {
+    background-color:#111;
+}
+
+.tables {
+    padding-top: 10px;
+}
+
+.table {
+    background-color: #e1e1e1;
+    box-sizing: border-box;
+    border-top: 1px solid #fff;
+    border-right: 1px solid #fff;
+    border-bottom: 2px solid #ccc;
+    border-left: 2px solid #ccc;
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px;
+    font-size: 21px;
+    margin-right: auto;
+    margin-bottom: 10px;
+    margin-left: auto;
+    text-align: left;
+    width: 100%;
+}
+
+.table[data-availability="full"] {
+    opacity: 0.4;
+}
+
+.table[data-availability="not_full"] {
+    opacity: 1;
+}
+
+.table .table_name {
+    float: left;
+}
+
+.table .table_player_status {
+    float: right;
+}
+
+.game_room {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    border: none;
+}
+
+.game_in_session {
+    overflow: hidden;
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
     font-weight: bold;
 }
 
-.game_wrapper {
-    text-align: center;
-}
-
-.game_board {
-    display: inline-block;
-}
-
-.tile {
-    cursor: pointer;
-    float: left;
-    background-size: contain;
-    background-repeat: no-repeat;
-    max-width: 150px;
-    max-height: 150px;
-    margin: 4px;
-}
-
-.tile._:hover {
-    opacity: 0.8;
-}
-
-.row .tile:first-of-type {
-    clear: both;
-}
-
-.tile._ {
-    background-image: url('../images/tile.svg');
-}
-
-.tile.x {
-    background-image: url('../images/tile_x.svg');
-}
-
-.tile.o {
-    background-image: url('../images/tile_o.svg');
+.loading .dots {
+    color: #777;
 }
 
 /* MOBILE */
 @media only screen and (max-width: 480px) {
-    .tile {
-        width: 90px;
-        height: 90px;
-        margin: 2px;
+
+    .table {
+        width: 90%;
     }
 }
 
 /* TABLET */
 @media only screen and (max-width: 728px) and (min-width: 480px) {
 
+    .table {
+        width: 90%;
+    }
 }
