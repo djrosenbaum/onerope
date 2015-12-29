@@ -1,29 +1,55 @@
 console.log('connected to firebase');
 var onerope_ref = new Firebase("https://onerope.firebaseio.com/" + onerope.game);
+var table_ref = onerope_ref.child('tables');
 
 onerope.tables = {
 
-    list : [],
+    max_players : 2,
 
     get_table_info : function() {
         console.log('get table info');
-        var members = onerope_ref.child('members');
 
-        members.once("value", function(snapshot) {
-            //any members currently at a table
-            console.log( snapshot.val() );
+        table_ref.on("child_added", function(snapshot, prevChildKey) {
+            console.log('adding table: ', snapshot.key());
+            onerope.tables.check_table( snapshot );
         });
+
+        table_ref.on('child_changed', function(snapshot) {
+            console.log('table changed');
+            onerope.tables.update_table( snapshot );
+        });
+    },
+
+    check_table : function( snapshot ) {
+        console.log('checking table');
+
+        var table = snapshot.val();
+        var table_name = snapshot.key();
+
+        //console.log('player 1: ', table.player1);
+        //console.log('player 2: ', table.player2);
+
+        if ( table.player1 && table.player2 ) {
+            console.log( table_name + ' is full' );
+        }
+        else if ( table.player1 || table.player2 ) {
+            console.log( table_name + 'is available');
+        }
+        else {
+            console.log( table_name + 'is empty');
+        }
     },
 
     join_table : function(table_id) {
         console.log('joining table');
+        console.log('table id: ', table_id);
 
         var player_data = {
             player_name: 'guest'
         };
 
-        //Add Room to Member object
-        var member_ref = onerope_ref.child('members');
+        //Add Player to Table
+        var table_ref = onerope_ref.child('tables');
         var post_ref = member_ref.child(table_id).push(player_data);
 
         // Set Player ID
@@ -32,8 +58,10 @@ onerope.tables = {
         // Remove Player from members when player disconnects
         member_ref.child(table_id).child(onerope.player.user_id).onDisconnect().remove();
 
+/*
         $('.page_wrapper').addClass('game_in_session');
         $('body').append('<iframe class="game_room" src="../"></iframe>');
+*/
     }
 
 /*
