@@ -4,7 +4,10 @@ var table_ref = onerope_ref.child('tables');
 
 onerope.tables = {
 
+    table : null,
+    player : null,
     max_players : 2,
+    loading_animation : null,
 
     get_table_info : function() {
         // console.log('get table info');
@@ -82,15 +85,15 @@ onerope.tables = {
     },
 
     join_table : function(table_id) {
-        console.log('joining table');
-        console.log('table id: ', table_id);
+        // console.log('joining table');
+        // console.log('table id: ', table_id);
 
         var player_number;
 
         var player_ref = table_ref.child(table_id).child('players');
         player_ref.once("value", function(data) {
             var players = data.val();
-            console.log('players at table: ', players);
+            // console.log('players at table: ', players);
 
             _.some(players, function(value, key, list) {
                 if ( !value ) {
@@ -100,13 +103,16 @@ onerope.tables = {
             });
         });
 
-        console.log('player number: ', player_number);
+        // console.log('player number: ', player_number);
 
         //show an alert if the room is full
         if ( !player_number ) {
             alert('room full');
             return;
         }
+
+        onerope.tables.table = table_id;
+        onerope.tables.player = player_number;
 
         var player_data = {};
         player_data[player_number] = 'guest';
@@ -120,10 +126,7 @@ onerope.tables = {
         // Remove Player from members when player disconnects
         player_ref.child(player_number).onDisconnect().set(false);
 
-/*
-        $('.page_wrapper').addClass('game_in_session');
-        $('body').append('<iframe class="game_room" src="../"></iframe>');
-*/
+        onerope.tables.load_game();
     },
 
     loading_table: function() {
@@ -132,14 +135,13 @@ onerope.tables = {
 
         $('.loading').fadeIn('slow');
 
-        var loader;
         var current_frame = 1;
         var total_frames = 10;
         var grow = true;
         var dots;
 
         function animate_loader() {
-            loader = setTimeout(function() {
+            onerope.tables.loading_animation = setTimeout(function() {
                 if ( current_frame === 1 ) {
                     $('.loading .dots').append('.');
                     current_frame++;
@@ -168,8 +170,18 @@ onerope.tables = {
 
     },
 
+    stop_loading_animation: function() {
+        clearTimeout(onerope.tables.loading_animation);
+        $('.loading').hide();
+    },
+
     set_total_players : function( $table, total_players ) {
         $table.find('.table_player_status').html( total_players + '/' + onerope.tables.max_players);
+    },
+
+    load_game: function() {
+        console.log('loading game');
+        $('body').append('<iframe class="game_room" src="game/"></iframe>');
     }
 
 };

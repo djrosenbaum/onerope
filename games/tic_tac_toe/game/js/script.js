@@ -1,3 +1,12 @@
+var table = window.parent.onerope.tables.table;
+var player = window.parent.onerope.tables.player;
+
+console.log('game loaded');
+
+console.log('you are player: ', player);
+
+console.log('you are sitting at table: ', table);
+
 $( ".tile._" ).on( "click", function() {
     $(this).removeClass('_').addClass('o');
 });
@@ -51,4 +60,11 @@ function init() {
     set_game_dimensions();
 }
 
-init();
+$(document).ready(function() {
+
+    //stop the joining table animation
+    window.parent.onerope.tables.stop_loading_animation();
+
+    init();
+
+});
