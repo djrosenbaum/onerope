@@ -55,18 +55,27 @@ onerope.tables = {
         });
         // console.log(table_name + ' has ' + total_players + ' players');
 
+        var $table = $('.table[data-table-id=' + table_name + ']');
+
+        var player_data = {
+            player1 : players.player1,
+            player2 : players.player1
+        };
+
+        $table.data('players', player_data);
+
         //conditional to determine the availability of the table
         if ( total_players === onerope.tables.max_players ) {
             //table is full
-            $('.table[data-table-id=' + table_name + ']').attr('data-availability','full');
+            $table.attr('data-availability','full');
         }
         else if ( total_players === 0 ) {
             //table is empty
-            $('.table[data-table-id=' + table_name + ']').attr('data-availability','not_full');
+            $table.attr('data-availability','not_full');
         }
         else if ( total_players < onerope.tables.max_players ) {
             //table is not empty and not full
-            $('.table[data-table-id=' + table_name + ']').attr('data-availability','not_full');
+            $table.attr('data-availability','not_full');
         }
     },
 /*
@@ -79,19 +88,34 @@ onerope.tables = {
         console.log('joining table');
         console.log('table id: ', table_id);
 
-        var player_data = {
-            player_name: 'guest'
-        };
+        var player_number;
+
+        var player_ref = table_ref.child(table_id).child('players');
+        player_ref.once("value", function(data) {
+            var players = data.val();
+            console.log('players at table: ', players);
+
+            _.some(players, function(value, key, list) {
+                if ( !value ) {
+                    player_number = key;
+                    return true;
+                }
+            });
+        });
+
+        console.log('player number: ', player_number);
+
+        var player_data = {};
+        player_data[player_number] = 'guest';
 
         //Add Player to Table
-        var table_ref = onerope_ref.child('tables');
-        var post_ref = member_ref.child(table_id).push(player_data);
+        player_ref.update(player_data);
 
         // Set Player ID
-        onerope.player.user_id = post_ref.key();
+        //onerope.player.user_id = post_ref.key();
 
         // Remove Player from members when player disconnects
-        member_ref.child(table_id).child(onerope.player.user_id).onDisconnect().remove();
+        player_ref.child(player_number).onDisconnect().set(false);
 
 /*
         $('.page_wrapper').addClass('game_in_session');
