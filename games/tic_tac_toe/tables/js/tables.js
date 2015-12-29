@@ -11,28 +11,40 @@ onerope.tables = {
 
         table_ref.on("child_added", function(snapshot, prevChildKey) {
             console.log('adding table: ', snapshot.key());
-            onerope.tables.check_table( snapshot );
+            onerope.tables.check_availability( snapshot );
         });
-
+/*
         table_ref.on('child_changed', function(snapshot) {
             console.log('table changed');
             onerope.tables.update_table( snapshot );
         });
+*/
     },
 
-    check_table : function( snapshot ) {
+    check_availability : function( snapshot ) {
         console.log('checking table');
 
         var table = snapshot.val();
         var table_name = snapshot.key();
+        var players = table.players;
 
-        //console.log('player 1: ', table.player1);
-        //console.log('player 2: ', table.player2);
+        //console.log('player 1: ', players.player1);
+        //console.log('player 2: ', players.player2);
 
-        if ( table.player1 && table.player2 ) {
+        var total_players = 0;
+
+        _.each(players, function(value, key, list) {
+            if ( value ) {
+                total_players += 1;
+            }
+        });
+
+        console.log(table_name + 'has' + ' ' + total_players + ' players');
+
+        if ( players.player1 && players.player2 ) {
             console.log( table_name + ' is full' );
         }
-        else if ( table.player1 || table.player2 ) {
+        else if ( players.player1 || players.player2 ) {
             console.log( table_name + 'is available');
         }
         else {

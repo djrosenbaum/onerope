@@ -21,8 +21,10 @@ for (var i = 1; i<11; i++ ) {
     var table_name = 'table' + table_number;
 
     table_data[table_name] = {
-        player1: false,
-        player2: false
+        players : {
+            player1: false,
+            player2: false
+        }
     };
 }
 
