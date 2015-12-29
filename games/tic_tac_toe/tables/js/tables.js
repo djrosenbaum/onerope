@@ -7,32 +7,30 @@ onerope.tables = {
     max_players : 2,
 
     get_table_info : function() {
-        console.log('get table info');
+        // console.log('get table info');
 
         //loop through each table in the room
         table_ref.on("child_added", function(snapshot, prevChildKey) {
-            console.log(' ');
+            // console.log(' ');
 
-            console.log('adding table: ', snapshot.key());
+            // console.log('adding table: ', snapshot.key());
             //adding table: table01
 
             onerope.tables.check_availability( snapshot );
             //answers number of players at the table
 
-            console.log(' ');
+            // console.log(' ');
         });
 
-/*
         table_ref.on('child_changed', function(snapshot) {
-            console.log('table changed');
-            onerope.tables.update_table( snapshot );
+            // console.log('table changed');
+            onerope.tables.check_availability( snapshot );
         });
-*/
 
     },
 
     check_availability : function( snapshot ) {
-        console.log('checking table');
+        // console.log('checking table');
 
         //js object of one specific table
         var table = snapshot.val();
@@ -55,7 +53,7 @@ onerope.tables = {
                 total_players += 1;
             }
         });
-        console.log(table_name + ' has ' + total_players + ' players');
+        // console.log(table_name + ' has ' + total_players + ' players');
 
         //conditional to determine the availability of the table
         if ( total_players === onerope.tables.max_players ) {
@@ -71,7 +69,12 @@ onerope.tables = {
             $('.table[data-table-id=' + table_name + ']').attr('data-availability','not_full');
         }
     },
-
+/*
+    update_table : function( snapshot ) {
+        console.log('updating tables');
+        console.log(snapshot.val());
+    },
+*/
     join_table : function(table_id) {
         console.log('joining table');
         console.log('table id: ', table_id);
