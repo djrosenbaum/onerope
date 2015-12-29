@@ -8,6 +8,8 @@ $('.tables').on('click', '.table', function() {
     var table_id = $(this).attr('data-table-id');
     //console.log('table id: ', table_id);
 
+    onerope.tables.loading_table();
+
     onerope.tables.join_table(table_id);
 });
 

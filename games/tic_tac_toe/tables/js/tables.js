@@ -77,13 +77,10 @@ onerope.tables = {
             //table is not empty and not full
             $table.attr('data-availability','not_full');
         }
+
+        onerope.tables.set_total_players( $table, total_players );
     },
-/*
-    update_table : function( snapshot ) {
-        console.log('updating tables');
-        console.log(snapshot.val());
-    },
-*/
+
     join_table : function(table_id) {
         console.log('joining table');
         console.log('table id: ', table_id);
@@ -105,6 +102,12 @@ onerope.tables = {
 
         console.log('player number: ', player_number);
 
+        //show an alert if the room is full
+        if ( !player_number ) {
+            alert('room full');
+            return;
+        }
+
         var player_data = {};
         player_data[player_number] = 'guest';
 
@@ -121,94 +124,52 @@ onerope.tables = {
         $('.page_wrapper').addClass('game_in_session');
         $('body').append('<iframe class="game_room" src="../"></iframe>');
 */
+    },
+
+    loading_table: function() {
+        //hide tables container to prevent clicking multiple rooms
+        $('.tables').fadeOut('fast');
+
+        $('.loading').fadeIn('slow');
+
+        var loader;
+        var current_frame = 1;
+        var total_frames = 10;
+        var grow = true;
+        var dots;
+
+        function animate_loader() {
+            loader = setTimeout(function() {
+                if ( current_frame === 1 ) {
+                    $('.loading .dots').append('.');
+                    current_frame++;
+                    grow = true;
+                }
+                else if ( current_frame < total_frames && grow  ) {
+                    $('.loading .dots').append('.');
+                    current_frame++;
+                }
+                else if ( current_frame < total_frames && !grow ) {
+                    dots = $('.loading .dots').text();
+                    $('.loading .dots').text( dots.slice(0,-1) );
+                    current_frame--;
+                }
+                else {
+                    dots = $('.loading .dots').text();
+                    $('.loading .dots').text( dots.slice(0,-1) );
+                    current_frame--;
+                    grow = false;
+                }
+                animate_loader();
+            }, 100);
+        }
+
+        animate_loader();
+
+    },
+
+    set_total_players : function( $table, total_players ) {
+        $table.find('.table_player_status').html( total_players + '/' + onerope.tables.max_players);
     }
 
-/*
-    add_player : function() {
-        var player_data = {
-            time_connected: Firebase.ServerValue.TIMESTAMP,
-        };
-
-        var player_ref = onerope_ref.child('players');
-
-        // Generate a reference to new player and add some data using push()
-        var post_ref = player_ref.push(player_data);
-
-        // Set Player ID
-        onerope.player.user_id = post_ref.key();
-
-        // Remove User when player disconnects
-        player_ref.child(onerope.player.user_id).onDisconnect().remove();
-    },
-*/
-
-/*
-    create_room : function(room_name) {
-        var room_data = {
-            room_name: room_name
-        };
-
-        var room_ref = onerope_ref.child('rooms');
-
-        var post_ref = room_ref.push(room_data);
-
-        // Set Room ID
-        var room_id = post_ref.key();
-
-        // Remove Room when player disconnects
-        // room_ref.child(room_id).onDisconnect().remove();
-
-        //after creating the room, enter the room
-        onerope.rooms.enter_room(room_id);
-    },
-*/
-
-/*
-    add_room : function(snapshot) {
-        console.log('add room to list of rooms');
-        //console.log('key: ', snapshot.key());
-        console.log('snapshot: ', snapshot.val());
-
-        var room_list = snapshot.val();
-        onerope.rooms.list.push({
-            room_id: snapshot.key(),
-            room_name: room_list.room_name
-        });
-
-        onerope.rooms.list = _.sortBy(onerope.rooms.list, 'room_name');
-
-        $('.rooms').empty();
-
-        _.each(onerope.rooms.list, function(element, index, list) {
-            console.log('element: ', element);
-            console.log('element id: ', element.room_id);
-            $('.rooms').append('<div class="room" data-room_id=' + element.room_id + '>' + element.room_name + '</div>');
-        });
-    },
-*/
-/*
-    remove_room : function(snapshot) {
-        console.log('remove room from list of rooms');
-        console.log('key: ', snapshot.key());
-        console.log('snapshot: ', snapshot.val());
-
-        onerope.rooms.list = _.filter(onerope.rooms.list, function(room) {
-            console.log('room id: ', room.room_id);
-            if ( room.room_id === snapshot.key() ) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        });
-
-        onerope.rooms.list = _.sortBy(onerope.rooms.list, 'room_name');
-
-        $('.rooms').empty();
-
-        _.each(onerope.rooms.list, function(element, index, list) {
-            $('.rooms').append('<div class="room" data-room_id=' + element.room_id + '>' + element.room_name + '</div>');
-        });
-    },
-*/
 };
