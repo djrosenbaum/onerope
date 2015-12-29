@@ -9,46 +9,66 @@ onerope.tables = {
     get_table_info : function() {
         console.log('get table info');
 
+        //loop through each table in the room
         table_ref.on("child_added", function(snapshot, prevChildKey) {
+            console.log(' ');
+
             console.log('adding table: ', snapshot.key());
+            //adding table: table01
+
             onerope.tables.check_availability( snapshot );
+            //answers number of players at the table
+
+            console.log(' ');
         });
+
 /*
         table_ref.on('child_changed', function(snapshot) {
             console.log('table changed');
             onerope.tables.update_table( snapshot );
         });
 */
+
     },
 
     check_availability : function( snapshot ) {
         console.log('checking table');
 
+        //js object of one specific table
         var table = snapshot.val();
+
+        //string name of table
         var table_name = snapshot.key();
+
+        //object containing players at the table
         var players = table.players;
+
+        //total number of players at the table
+        var total_players = 0;
 
         //console.log('player 1: ', players.player1);
         //console.log('player 2: ', players.player2);
 
-        var total_players = 0;
-
+        //loop through each player at the table, incrementing total players
         _.each(players, function(value, key, list) {
             if ( value ) {
                 total_players += 1;
             }
         });
+        console.log(table_name + ' has ' + total_players + ' players');
 
-        console.log(table_name + 'has' + ' ' + total_players + ' players');
-
-        if ( players.player1 && players.player2 ) {
-            console.log( table_name + ' is full' );
+        //conditional to determine the availability of the table
+        if ( total_players === onerope.tables.max_players ) {
+            //table is full
+            $('.table[data-table-id=' + table_name + ']').attr('data-availability','full');
         }
-        else if ( players.player1 || players.player2 ) {
-            console.log( table_name + 'is available');
+        else if ( total_players === 0 ) {
+            //table is empty
+            $('.table[data-table-id=' + table_name + ']').attr('data-availability','not_full');
         }
-        else {
-            console.log( table_name + 'is empty');
+        else if ( total_players < onerope.tables.max_players ) {
+            //table is not empty and not full
+            $('.table[data-table-id=' + table_name + ']').attr('data-availability','not_full');
         }
     },
 

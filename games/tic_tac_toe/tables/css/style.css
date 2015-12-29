@@ -53,6 +53,14 @@
     text-align: left;
 }
 
+.table[data-availability="full"] {
+    background-color: #f93;
+}
+
+.table[data-availability="not_full"] {
+    background-color: #c33;
+}
+
 .game_room {
     position: absolute;
     top: 0;
