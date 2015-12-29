@@ -45,20 +45,30 @@
     border-bottom: 2px solid #ccc;
     border-left: 2px solid #ccc;
     cursor: pointer;
+    display: inline-block;
     padding: 10px;
     font-size: 21px;
     margin-right: auto;
     margin-bottom: 10px;
     margin-left: auto;
     text-align: left;
+    width: 100%;
 }
 
 .table[data-availability="full"] {
-    background-color: #f93;
+    opacity: 0.4;
 }
 
 .table[data-availability="not_full"] {
-    background-color: #c33;
+    opacity: 1;
+}
+
+.table .table_name {
+    float: left;
+}
+
+.table .table_player_status {
+    float: right;
 }
 
 .game_room {
