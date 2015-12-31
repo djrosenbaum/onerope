@@ -1,14 +1,36 @@
 var table = window.parent.onerope.tables.table;
 var player = window.parent.onerope.tables.player;
+var game_ref = window.parent.onerope_ref.child('games').child(table);
+var game_data = {};
+var player_name = 'guest';
 
 console.log('game loaded');
-
 console.log('you are player: ', player);
-
 console.log('you are sitting at table: ', table);
 
+if ( player === 'player1' ) {
+
+    game_data[table] = {
+        status : 'waiting',
+        players : {
+            player1: player_name,
+            player2: false
+        },
+        messages : {}
+    };
+
+    game_ref.set( { status:'waiting' } );
+}
+
+function player_type() {
+    if ( player === 'player1' ) {
+        return 'x';
+    }
+        return 'o';
+}
+
 $( ".tile._" ).on( "click", function() {
-    $(this).removeClass('_').addClass('o');
+    $(this).removeClass('_').addClass( player_type() );
 });
 
 $( window ).on('resize orientationchange', function() {
