@@ -1,7 +1,6 @@
 var table = window.parent.onerope.tables.table;
 var player = window.parent.onerope.tables.player;
 var game_ref = window.parent.onerope_ref.child('games').child(table);
-var game_data = {};
 var player_name = 'guest';
 
 console.log('game loaded');
@@ -10,17 +9,81 @@ console.log('you are sitting at table: ', table);
 
 if ( player === 'player1' ) {
 
-    game_data[table] = {
+    game_ref.set({
         status : 'waiting',
         players : {
             player1: player_name,
             player2: false
         },
         messages : {}
-    };
-
-    game_ref.set( { status:'waiting' } );
+    });
 }
+else if ( player === 'player2' ) {
+    game_ref.child('players').update({player2: player_name});
+}
+
+var game = {
+
+    started : false,
+    max_players : 2,
+
+    game_listeners : function() {
+        //initial
+        game_ref.once('value', function(snapshot) {
+            console.log('gameroom once snapshot: ', snapshot.val());
+            game.check_player_status(snapshot);
+        });
+
+        game_ref.on('child_changed', function(snapshot) {
+            console.log('gameroom changed snapshot: ', snapshot.val());
+            if ( !game.started ) {
+                game.check_player_status(snapshot);
+            }
+        });
+
+    },
+
+    check_player_status : function(snapshot) {
+        if ( game.started ) {
+            return;
+        }
+
+        console.log('checking player status');
+        var game_room = snapshot.val();
+
+        //object containing players at the table
+        var players = game_room.players;
+
+        //total number of players at the table
+        var total_players = 0;
+
+        //console.log('player 1: ', players.player1);
+        //console.log('player 2: ', players.player2);
+
+        //loop through each player at the table, incrementing total players
+        _.each(players, function(value, key, list) {
+            if ( value ) {
+                total_players += 1;
+            }
+        });
+        console.log('total players: ', total_players);
+
+        if ( total_players === game.max_players ) {
+            game.start_the_game(snapshot);
+        }
+    },
+
+    start_the_game : function(snapshot) {
+        $('.game_status').text('player1 vs. player2');
+
+        game.started = true;
+
+        game.countdown_screen();
+
+        console.log('starting the game');
+    }
+
+};
 
 function player_type() {
     if ( player === 'player1' ) {
@@ -80,6 +143,8 @@ function set_game_position( window_height ) {
 
 function init() {
     set_game_dimensions();
+
+    game.game_listeners();
 }
 
 $(document).ready(function() {
