@@ -16,9 +16,7 @@ if ( player === 'player1' ) {
             }
         },
         game : {
-            board : {
-                grid : '3x3'
-            }
+            name : 'tictactoe'
         }
     });
 }
@@ -31,26 +29,24 @@ var onerope_game = {
     started : false,
     max_players : 2,
     turn : false,
+    total_players : 0,
 
     game_listeners : function() {
-        //initial
+        // ==== PLAYERS ==== //
         game_ref.child('players').once('value', function(snapshot) {
             console.log('checking player status');
-            onerope_game.check_player_status(snapshot);
+            onerope_game.initial_player_status(snapshot);
         });
 
-        game_ref.on('child_changed', function(snapshot) {
-            console.log('gameroom changed snapshot: ', snapshot.val());
+        game_ref.child('players').on('child_changed', function(snapshot) {
+            //console.log('gameroom changed snapshot: ', snapshot.val());
+            onerope_game.changed_player_status(snapshot);
+        });
 
-            if (  snapshot.key() === 'players' ) {
-                onerope_game.check_player_status(snapshot);
-            }/*
-            else if ( snapshot.key() === 'status' ) {
-                onerope_game.check_status(snapshot);
-            }*/
-            else if ( onerope_game.started && snapshot.key() === 'game' ) {
-                onerope_game.update_game(snapshot);
-            }
+        // ==== GAME ==== //
+        game_ref.child('game').child('board').on('child_added', function(snapshot) {
+            //console.log('gameroom changed snapshot: ', snapshot.val());
+            onerope_game.update(snapshot);
         });
 
     },
@@ -68,12 +64,7 @@ var onerope_game = {
         }
     },
 
-    check_player_status : function(snapshot) {
-
-        if ( onerope_game.started ) {
-            //console.log('game already started player status changed');
-            return;
-        }
+    initial_player_status : function(snapshot) {
 
         //console.log('checking player status');
 
@@ -90,12 +81,26 @@ var onerope_game = {
         _.each(players, function(value, key, list) {
             console.log('each player value: ', value);
             if ( value.status === 'ready' ) {
-                total_players += 1;
+                onerope_game.total_players += 1;
             }
         });
-        console.log('total players: ', total_players);
+        console.log('total players: ', onerope_game.total_players);
 
-        if ( total_players === onerope_game.max_players ) {
+        if ( !onerope_game.started && onerope_game.total_players === onerope_game.max_players ) {
+            console.log('room is full');
+            onerope_game.start_the_game();
+        }
+    },
+
+    changed_player_status : function(snapshot) {
+        var player = snapshot.val();
+
+        if ( player.status === 'ready' ) {
+            onerope_game.total_players += 1;
+        }
+        console.log('total players: ', onerope_game.total_players);
+
+        if ( !onerope_game.started && onerope_game.total_players === onerope_game.max_players ) {
             console.log('room is full');
             onerope_game.start_the_game();
         }
@@ -113,7 +118,7 @@ var onerope_game = {
 
     countdown_screen : function() {
         $('.overlay').show();
-        var seconds = 1;
+        var seconds = 10;
         var timer;
         var countdown_text = $('.overlay .countdown_timer');
 

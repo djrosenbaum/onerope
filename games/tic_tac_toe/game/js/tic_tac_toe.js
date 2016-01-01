@@ -12,7 +12,7 @@ function generate_new_board(total_rows, total_columns) {
     return grid;
 }
 
-function player_type() {
+function player_type( player ) {
     if ( player === 'player1' ) {
         return 'x';
     }
@@ -23,12 +23,11 @@ function player_type() {
 
 $( ".tile._" ).on( "click", function() {
 
-    console.log('clicked a tile');
-    console.log('player turn: ', onerope_game.turn);
-
     if ( onerope_game.turn !== player ) {
         return;
     }
+
+    onerope_game.turn = false;
 
     var row = $(this).parent().index();
     var column = $(this).index();
@@ -40,10 +39,10 @@ $( ".tile._" ).on( "click", function() {
     game_ref.child('game').child('board').push(
         {
             player: player,
-            select:grid_coordinate
+            grid_coordinate:grid_coordinate
         }
     );
-    $(this).removeClass('_').addClass( player_type() );
+    //$(this).removeClass('_').addClass( player_type() );
 });
 
 $( window ).on('resize orientationchange', function() {
@@ -109,16 +108,33 @@ $(document).ready(function() {
 
 });
 
-onerope_game.update_game = function( snapshot ) {
+onerope_game.update = function( snapshot ) {
     console.log('player selected a tile', snapshot.val());
     console.log('key: ', snapshot.key());
     console.log('snapshot: ', snapshot.val());
 
-    var turn = onerope_game.turn;
-    if ( turn === 'player1' ) {
+    var update = snapshot.val();
+    var player_turn = update.player;
+    var grid_coordinate = update.grid_coordinate.split(',');
+
+    console.log('player turn: ', player_turn);
+    console.log('grid coordinate: ', grid_coordinate);
+
+    var row_coordinate = parseInt(grid_coordinate[0], 10);
+    var column_coordinate = parseInt(grid_coordinate[1], 10);
+
+    var row = $('.row:nth-child(' + (row_coordinate + 1) + ')');
+    var tile = row.find( $('.tile:nth-child(' + (column_coordinate + 1) + ')') );
+
+    console.log('tile: ', tile);
+    console.log('player type: ', player_type( player_turn ));
+
+    tile.removeClass('_').addClass( player_type( player_turn ) );
+
+    if ( player_turn === 'player1' ) {
         onerope_game.turn = 'player2';
     }
-    else if ( turn === 'player2' ) {
+    else if ( player_turn === 'player2' ) {
         onerope_game.turn = 'player1';
     }
 };
