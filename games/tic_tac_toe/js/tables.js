@@ -13,7 +13,7 @@ onerope.tables = {
         // console.log('get table info');
 
         //loop through each table in the room
-        table_ref.on("child_added", function(snapshot, prevChildKey) {
+        table_ref.on('child_added', function(snapshot, prevChildKey) {
             // console.log(' ');
 
             // console.log('adding table: ', snapshot.key());
