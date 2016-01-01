@@ -29,7 +29,9 @@ for (var i = 1; i<11; i++ ) {
     };
 
     game_data[table_name] = {
-        status : 'waiting',
+        game : {
+            board : false
+        },
         players : {
             player1: false,
             player2: false

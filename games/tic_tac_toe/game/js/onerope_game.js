@@ -10,17 +10,16 @@ console.log('you are sitting at table: ', table);
 if ( player === 'player1' ) {
 
     game_ref.set({
-        status : 'waiting',
         players : {
             player1: {
-                name: player_name,
-                status : 'ready'
-            },
-            player2: {
-                status : 'waiting'
+                name: player_name
             }
         },
-        game_board : {}
+        game : {
+            board : {
+                grid : '3x3'
+            }
+        }
     });
 }
 else if ( player === 'player2' ) {
@@ -43,12 +42,12 @@ var onerope_game = {
         game_ref.on('child_changed', function(snapshot) {
             console.log('gameroom changed snapshot: ', snapshot.val());
 
-            if ( !onerope_game.started && snapshot.key() === 'players' ) {
+            if (  snapshot.key() === 'players' ) {
                 onerope_game.check_player_status(snapshot);
-            }
-            else if ( !onerope_game.started && snapshot.key() === 'status' ) {
+            }/*
+            else if ( snapshot.key() === 'status' ) {
                 onerope_game.check_status(snapshot);
-            }
+            }*/
             else if ( onerope_game.started && snapshot.key() === 'game' ) {
                 onerope_game.update_game(snapshot);
             }
@@ -71,6 +70,11 @@ var onerope_game = {
 
     check_player_status : function(snapshot) {
 
+        if ( onerope_game.started ) {
+            //console.log('game already started player status changed');
+            return;
+        }
+
         //console.log('checking player status');
 
         //object containing players at the table
@@ -79,15 +83,13 @@ var onerope_game = {
 
         var total_players = 0;
 
-        //total number of players at the table
-
         //console.log('player 1: ', players.player1);
         //console.log('player 2: ', players.player2);
 
         //loop through each player at the table, incrementing total players
         _.each(players, function(value, key, list) {
             console.log('each player value: ', value);
-            if ( value ) {
+            if ( value.status === 'ready' ) {
                 total_players += 1;
             }
         });
@@ -95,10 +97,11 @@ var onerope_game = {
 
         if ( total_players === onerope_game.max_players ) {
             console.log('room is full');
+            onerope_game.start_the_game();
         }
     },
 
-    start_the_game : function(snapshot) {
+    start_the_game : function() {
         $('.game_status').text('player1 vs. player2');
 
         onerope_game.started = true;

@@ -22,6 +22,10 @@ function player_type() {
 }
 
 $( ".tile._" ).on( "click", function() {
+
+    console.log('clicked a tile');
+    console.log('player turn: ', onerope_game.turn);
+
     if ( onerope_game.turn !== player ) {
         return;
     }
@@ -39,7 +43,7 @@ $( ".tile._" ).on( "click", function() {
             select:grid_coordinate
         }
     );
-    //$(this).removeClass('_').addClass( player_type() );
+    $(this).removeClass('_').addClass( player_type() );
 });
 
 $( window ).on('resize orientationchange', function() {
@@ -91,6 +95,9 @@ function init() {
     set_game_dimensions();
 
     onerope_game.game_listeners();
+
+    //after listeners are added, player is ready
+    game_ref.child('players').child(player).update({status: 'ready'});
 }
 
 $(document).ready(function() {
@@ -103,5 +110,15 @@ $(document).ready(function() {
 });
 
 onerope_game.update_game = function( snapshot ) {
-    console.log('game board changed', snapshot.val());
+    console.log('player selected a tile', snapshot.val());
+    console.log('key: ', snapshot.key());
+    console.log('snapshot: ', snapshot.val());
+
+    var turn = onerope_game.turn;
+    if ( turn === 'player1' ) {
+        onerope_game.turn = 'player2';
+    }
+    else if ( turn === 'player2' ) {
+        onerope_game.turn = 'player1';
+    }
 };
