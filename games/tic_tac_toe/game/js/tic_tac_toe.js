@@ -26,6 +26,8 @@ $( ".tile._" ).on( "click", function() {
         return;
     }
 
+    console.log('index: ', $(this).index() );
+
     $(this).removeClass('_').addClass( player_type() );
 });
 
@@ -77,7 +79,7 @@ function set_game_position( window_height ) {
 function init() {
     set_game_dimensions();
 
-    game.game_listeners();
+    onerope_game.game_listeners();
 }
 
 $(document).ready(function() {
