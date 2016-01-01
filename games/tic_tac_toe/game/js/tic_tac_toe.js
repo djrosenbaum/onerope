@@ -26,9 +26,20 @@ $( ".tile._" ).on( "click", function() {
         return;
     }
 
-    console.log('index: ', $(this).index() );
+    var row = $(this).parent().index();
+    var column = $(this).index();
+    // console.log('row: ', row );
+    // console.log('column: ', column );
 
-    $(this).removeClass('_').addClass( player_type() );
+    var grid_coordinate = row + ',' + column;
+
+    game_ref.child('game').child('board').push(
+        {
+            player: player,
+            select:grid_coordinate
+        }
+    );
+    //$(this).removeClass('_').addClass( player_type() );
 });
 
 $( window ).on('resize orientationchange', function() {
@@ -90,3 +101,7 @@ $(document).ready(function() {
     init();
 
 });
+
+onerope_game.update_game = function( snapshot ) {
+    console.log('game board changed', snapshot.val());
+};

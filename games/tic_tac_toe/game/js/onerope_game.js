@@ -12,14 +12,19 @@ if ( player === 'player1' ) {
     game_ref.set({
         status : 'waiting',
         players : {
-            player1: player_name,
-            player2: false
+            player1: {
+                name: player_name,
+                status : 'ready'
+            },
+            player2: {
+                status : 'waiting'
+            }
         },
-        messages : {}
+        game_board : {}
     });
 }
 else if ( player === 'player2' ) {
-    game_ref.child('players').update({player2: player_name});
+    game_ref.child('players').child('player2').update({name: player_name});
 }
 
 var onerope_game = {
@@ -30,14 +35,9 @@ var onerope_game = {
 
     game_listeners : function() {
         //initial
-        game_ref.on('child_added', function(snapshot) {
-
-            console.log('gameroom added snapshot: ', snapshot.val());
-
-            if ( !onerope_game.started && snapshot.key() === 'players' ) {
-                onerope_game.check_player_status(snapshot);
-            }
-
+        game_ref.child('players').once('value', function(snapshot) {
+            console.log('checking player status');
+            onerope_game.check_player_status(snapshot);
         });
 
         game_ref.on('child_changed', function(snapshot) {
@@ -46,17 +46,32 @@ var onerope_game = {
             if ( !onerope_game.started && snapshot.key() === 'players' ) {
                 onerope_game.check_player_status(snapshot);
             }
-            else if ( !onerope_game.started && snapshot.val() === 'ready' ) {
-                onerope_game.start_the_game(snapshot);
+            else if ( !onerope_game.started && snapshot.key() === 'status' ) {
+                onerope_game.check_status(snapshot);
             }
-
+            else if ( onerope_game.started && snapshot.key() === 'game' ) {
+                onerope_game.update_game(snapshot);
+            }
         });
 
     },
 
+    check_status : function(snapshot) {
+        console.log('checking status');
+
+        var status = snapshot.val();
+
+        if ( status === 'waiting' ) {
+            return;
+        }
+        else if ( status === 'ready' ) {
+            onerope_game.start_the_game(snapshot);
+        }
+    },
+
     check_player_status : function(snapshot) {
 
-        console.log('checking player status');
+        //console.log('checking player status');
 
         //object containing players at the table
         var players = snapshot.val();
@@ -79,7 +94,7 @@ var onerope_game = {
         console.log('total players: ', total_players);
 
         if ( total_players === onerope_game.max_players ) {
-            game_ref.update({status: 'ready'});
+            console.log('room is full');
         }
     },
 
@@ -95,7 +110,7 @@ var onerope_game = {
 
     countdown_screen : function() {
         $('.overlay').show();
-        var seconds = 10;
+        var seconds = 1;
         var timer;
         var countdown_text = $('.overlay .countdown_timer');
 
