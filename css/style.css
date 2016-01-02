@@ -11,10 +11,7 @@ body {
     margin-left: 5%;
     background-image: url(../images/paper_fibers.png);
     background-repeat: repeat;
-}
-
-.branding {
-    min-height: 100vh;
+    padding-bottom: 30px;
 }
 
 .onerope_branding img {

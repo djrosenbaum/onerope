@@ -1,9 +1,11 @@
-console.log('connected to firebase');
 var onerope_ref = new Firebase("https://onerope.firebaseio.com/" + onerope.game);
 var table_ref = onerope_ref.child('tables');
 
-onerope.tables = {
+var onerope = {
+    game: 'tictactoe'
+};
 
+onerope.tables = {
     table : null,
     player : null,
     max_players : 2,
@@ -182,6 +184,31 @@ onerope.tables = {
     load_game: function() {
         console.log('loading game');
         $('body').append('<iframe class="game_room" src="game/"></iframe>');
+    },
+
+    add_listeners: function() {
+        // ==== JOIN TABLE ==== //
+        $('.tables').on('click', '.table', function() {
+            if ( $(this).data('availability') === 'full' ) {
+                //console.log('room is full');
+                return;
+            }
+
+            var table_id = $(this).attr('data-table-id');
+            //console.log('table id: ', table_id);
+
+            onerope.tables.loading_table();
+
+            onerope.tables.join_table(table_id);
+        });
     }
 
 };
+
+
+
+$( document ).ready(function() {
+    onerope.tables.get_table_info();
+
+    onerope.tables.add_listeners();
+});

@@ -48,7 +48,6 @@ var onerope_game = {
             //console.log('gameroom changed snapshot: ', snapshot.val());
             onerope_game.update(snapshot);
         });
-
     },
 
     check_status : function(snapshot) {
