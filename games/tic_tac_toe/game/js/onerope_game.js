@@ -118,7 +118,7 @@ var onerope_game = {
 
     countdown_screen : function() {
         $('.overlay').show();
-        var seconds = 10;
+        var seconds = 1;
         var timer;
         var countdown_text = $('.overlay .countdown_timer');
 
