@@ -205,8 +205,6 @@ onerope.tables = {
 
 };
 
-
-
 $( document ).ready(function() {
     onerope.tables.get_table_info();
 

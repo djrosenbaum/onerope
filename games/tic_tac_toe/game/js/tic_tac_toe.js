@@ -1,5 +1,6 @@
 // Variables
 var board_state = generate_new_board(3,3);
+var new_game_board;
 
 function generate_new_board(total_rows, total_columns) {
     var grid = [];
@@ -210,11 +211,18 @@ function we_have_a_winner(coordinate_array, player_turn) {
 
     onerope_game.status_message(player_turn + ' has won the game');
 
-    //set player status as waiting
-    game_ref.child('players').child(player).update({status: 'waiting'});
-
     //remove the game board
-    game_ref.child('game').child('board').remove();
+    game_ref.remove( function(error) {
+        if (error) {
+            console.log('Synchronization failed');
+        }
+        else {
+            console.log('Synchronization succeeded');
+        }
+    });
+
+    //remove the players
+    onerope_game.total_players = 0;
 }
 
 onerope_game.update = function( snapshot ) {
@@ -258,6 +266,11 @@ function reset_the_game() {
 
     board_state = generate_new_board(3,3);
 
+    $('.game_board').html(new_game_board);
+
+    onerope_game.init();
+
+    game_ref.child('players').child(player).update({status: 'ready'});
 
 }
 
@@ -265,6 +278,8 @@ function init() {
     set_game_dimensions();
 
     onerope_game.game_listeners();
+
+    new_game_board = $('.game_board').html();
 
     //after listeners are added, player is ready
     game_ref.child('players').child(player).update({status: 'ready'});
@@ -274,6 +289,8 @@ $(document).ready(function() {
 
     //stop the joining table animation
     window.parent.onerope.tables.stop_loading_animation();
+
+    onerope_game.init();
 
     init();
 

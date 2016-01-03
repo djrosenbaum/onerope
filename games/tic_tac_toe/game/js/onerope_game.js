@@ -7,29 +7,18 @@ console.log('game loaded');
 console.log('you are player: ', player);
 console.log('you are sitting at table: ', table);
 
-if ( player === 'player1' ) {
-
-    game_ref.set({
-        players : {
-            player1: {
-                name: player_name
-            }
-        },
-        game : {
-            name : 'tictactoe'
-        }
-    });
-}
-else if ( player === 'player2' ) {
-    game_ref.child('players').child('player2').update({name: player_name});
-}
-
 var onerope_game = {
 
-    started : false,
-    max_players : 2,
-    turn : false,
     total_players : 0,
+
+    init : function() {
+
+        onerope_game.started = false;
+        onerope_game.max_players = 2;
+        onerope_game.turn = false;
+
+        game_ref.child('players').child(player).update({name: player_name});
+    },
 
     game_listeners : function() {
         // ==== PLAYERS ==== //
