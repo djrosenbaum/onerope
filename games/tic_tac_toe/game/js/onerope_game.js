@@ -106,7 +106,7 @@ var onerope_game = {
     },
 
     start_the_game : function() {
-        $('.game_status').text('player1 vs. player2');
+        onerope_game.status_message('player1 vs. player2');
 
         onerope_game.started = true;
 
@@ -143,6 +143,10 @@ var onerope_game = {
         $('.overlay').fadeOut('fast');
 
         onerope_game.turn = 'player1';
+    },
+
+    status_message : function(message) {
+        $('.game_status').text(message);
     }
 
 };

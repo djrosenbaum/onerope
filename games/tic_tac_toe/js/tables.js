@@ -1,9 +1,9 @@
-var onerope_ref = new Firebase("https://onerope.firebaseio.com/" + onerope.game);
-var table_ref = onerope_ref.child('tables');
-
 var onerope = {
     game: 'tictactoe'
 };
+
+var onerope_ref = new Firebase("https://onerope.firebaseio.com/" + onerope.game);
+var table_ref = onerope_ref.child('tables');
 
 onerope.tables = {
     table : null,

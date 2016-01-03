@@ -46,6 +46,11 @@ $( '.game_board' ).on( 'click', '.tile._', function() {
     //$(this).removeClass('_').addClass( player_type() );
 });
 
+$('.play_again').on('click', function() {
+    console.log('reset the game');
+    reset_the_game();
+});
+
 $( window ).on('resize orientationchange', function() {
     set_game_dimensions();
 });
@@ -66,8 +71,6 @@ function set_game_dimensions() {
 
     tile_size = get_tile_size(total_span);
     set_tile_size(tile_size);
-
-    set_game_position( window_height );
 }
 
 function get_tile_size( total_span ) {
@@ -78,15 +81,6 @@ function set_tile_size( tile_size ) {
     $('.tile').css({
         width: tile_size + 'px',
         height: tile_size + 'px'
-    });
-}
-
-function set_game_position( window_height ) {
-    var game_board_height = $('.game_board').height();
-    var vertical_top_position = (window_height - game_board_height) / 2;
-
-    $('.game_board').css({
-        marginTop: vertical_top_position + 'px'
     });
 }
 
@@ -214,25 +208,14 @@ function we_have_a_winner(coordinate_array, player_turn) {
 
     });
 
+    onerope_game.status_message(player_turn + ' has won the game');
+
+    //set player status as waiting
+    game_ref.child('players').child(player).update({status: 'waiting'});
+
+    //remove the game board
+    game_ref.child('game').child('board').remove();
 }
-
-function init() {
-    set_game_dimensions();
-
-    onerope_game.game_listeners();
-
-    //after listeners are added, player is ready
-    game_ref.child('players').child(player).update({status: 'ready'});
-}
-
-$(document).ready(function() {
-
-    //stop the joining table animation
-    window.parent.onerope.tables.stop_loading_animation();
-
-    init();
-
-});
 
 onerope_game.update = function( snapshot ) {
     // console.log('player selected a tile', snapshot.val());
@@ -270,3 +253,28 @@ onerope_game.update = function( snapshot ) {
         onerope_game.turn = 'player1';
     }
 };
+
+function reset_the_game() {
+
+    board_state = generate_new_board(3,3);
+
+
+}
+
+function init() {
+    set_game_dimensions();
+
+    onerope_game.game_listeners();
+
+    //after listeners are added, player is ready
+    game_ref.child('players').child(player).update({status: 'ready'});
+}
+
+$(document).ready(function() {
+
+    //stop the joining table animation
+    window.parent.onerope.tables.stop_loading_animation();
+
+    init();
+
+});
