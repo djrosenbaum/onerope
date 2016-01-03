@@ -2,6 +2,7 @@ body {
     background-color: #000;
     font-family: arial;
     width: 100%;
+    text-shadow: 0 1px 0 #f3f3f3;
 }
 
 .page_wrapper {
@@ -36,15 +37,15 @@ body {
 }
 
 .games .game:first-of-type {
-    padding-top: 50px;
+    margin-top: 50px;
 }
 
 .games .game {
     float: left;
     clear: both;
     min-height: 100vh;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .games .game .name {
@@ -73,6 +74,16 @@ body {
 
 .games .game .description {
     line-height: 20px;
+}
+
+.games .game .play_now {
+    text-align: center;
+    background-color: #333;
+    text-shadow: none;
+    color: #fff;
+    padding: 8px;
+    border-radius: 3px;
+    margin-top: 10px;
 }
 
 .border_top {

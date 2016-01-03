@@ -50,6 +50,7 @@ $( '.game_board' ).on( 'click', '.tile._', function() {
 $('.play_again').on('click', function() {
     console.log('reset the game');
     reset_the_game();
+    $('.play_again').hide();
 });
 
 $( window ).on('resize orientationchange', function() {
@@ -220,6 +221,8 @@ function we_have_a_winner(coordinate_array, player_turn) {
             console.log('Synchronization succeeded');
         }
     });
+
+    $('.play_again').show();
 
     //remove the players
     onerope_game.total_players = 0;
