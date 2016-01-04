@@ -165,7 +165,7 @@ onerope.tables = {
         var player_data = {};
         player_data[player_slot] = onerope.tables.player_name;
 
-        onerope.tables.set_joined_table_info(table_id, player_slot, player_data);
+        onerope.tables.set_joined_table_info(table_id, player_slot, player_data, player_ref);
 
         // Remove Player from members when player disconnects
         player_ref.child(player_slot).onDisconnect().set(false);
@@ -173,7 +173,7 @@ onerope.tables = {
         onerope.tables.load_game();
     },
 
-    set_joined_table_info : function(table_id, player_slot, player_data) {
+    set_joined_table_info : function(table_id, player_slot, player_data, player_ref) {
         console.log('');
         console.log('FUNCTION: onerope.tables.set_joined_table_info');
 
@@ -202,10 +202,10 @@ onerope.tables = {
             });
         });
 
-        // console.log('player number: ', player_number);
+        console.log('player slot: ', player_slot);
 
         //show an alert if the room is full
-        if ( !player_number ) {
+        if ( !player_slot ) {
             alert('room full');
             return false;
         }
@@ -218,7 +218,7 @@ onerope.tables = {
         console.log('FUNCTION: onerope.tables.start_join_table_animation');
 
         //hide tables container to prevent clicking multiple rooms
-        $('.tables').fadeOut('fast');
+        $('.page_wrapper').fadeOut('fast');
         $('.loading').fadeIn('slow');
 
         var current_frame = 1;
