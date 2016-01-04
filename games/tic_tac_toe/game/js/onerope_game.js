@@ -1,7 +1,8 @@
 var table = window.parent.onerope.tables.table;
 var player = window.parent.onerope.tables.player;
-var game_ref = window.parent.onerope_ref.child('games').child(table);
+var game_ref = window.parent.onerope.ref.child('games').child(table);
 var player_name = 'guest';
+var round = 0;
 
 console.log('game loaded');
 console.log('you are player: ', player);
@@ -12,11 +13,11 @@ var onerope_game = {
     total_players : 0,
 
     init : function() {
-
         onerope_game.started = false;
         onerope_game.max_players = 2;
         onerope_game.turn = false;
 
+        //if your name is not set yet set player name
         game_ref.child('players').child(player).update({name: player_name});
     },
 
@@ -73,6 +74,11 @@ var onerope_game = {
             }
         });
         console.log('total players: ', onerope_game.total_players);
+
+        //reset the game if you are the only initial player
+        if ( onerope_game.total_players === 1 ) {
+            onerope_game.reset_game();
+        }
 
         if ( !onerope_game.started && onerope_game.total_players === onerope_game.max_players ) {
             console.log('room is full');
@@ -136,6 +142,10 @@ var onerope_game = {
 
     status_message : function(message) {
         $('.game_status').text(message);
+    },
+
+    reset_game : function() {
+        game_ref.child('game').set({});
     }
 
 };
