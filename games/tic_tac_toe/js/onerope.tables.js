@@ -1,13 +1,12 @@
-var onerope = {
-    game: 'tictactoe',
-};
-onerope.ref = new Firebase("https://onerope.firebaseio.com/" + onerope.game);
-console.log('connected to Firebase');
+var onerope = {};
+onerope.game_name = 'tictactoe';
+onerope.ref = new Firebase("https://onerope.firebaseio.com/" + onerope.game_name);
+// console.log('connected to Firebase');
 
 onerope.tables = {
     ref : onerope.ref.child('tables'),
     table : null,
-    player : null,
+    player_slot : null,
     player_name : 'guest',
     max_players : 2,
     loading_animation : null,
@@ -179,7 +178,7 @@ onerope.tables = {
         console.log('FUNCTION: onerope.tables.set_joined_table_info');
 
         onerope.tables.table = table_id;
-        onerope.tables.player = player_slot;
+        onerope.tables.player_slot = player_slot;
 
         //Add Player to Table
         player_ref.update(player_data);

@@ -1,29 +1,34 @@
-var table = window.parent.onerope.tables.table;
-var player = window.parent.onerope.tables.player;
-var game_ref = window.parent.onerope.ref.child('games').child(table);
-var player_name = 'guest';
-var round = 0;
-
 console.log('game loaded');
-console.log('you are player: ', player);
-console.log('you are sitting at table: ', table);
+console.log('you are player: ', onerope.tables.player_slot);
+console.log('you are sitting at table: ', onerope.tables.table);
 
-var onerope_game = {
+var onerope = window.parent.onerope;
 
+var player = window.parent.onerope.tables.player_slot;
+
+var game_ref = window.parent.onerope.ref.child('games').child(table);
+
+
+onerope.game_controller = {
+
+    ref : onerope.ref.child('games').child(onerope.tables.table),
     total_players : 0,
+    round: 0,
 
     init : function() {
+        console.log('');
+        console.log('FUNCTION: onerope_game.init');
+
         onerope_game.started = false;
         onerope_game.max_players = 2;
         onerope_game.turn = false;
 
-        //if your name is not set yet set player name
-        game_ref.child('players').child(player).update({name: player_name});
+        game_ref.child('players').child( onerope.tables.player_slot ).update( {name: onerope.tables.player_name} );
     },
 
     game_listeners : function() {
         // ==== PLAYERS ==== //
-        game_ref.child('players').once('value', function(snapshot) {
+        onerope.game.ref.child('players').once('value', function(snapshot) {
             console.log('checking player status');
             onerope_game.initial_player_status(snapshot);
         });

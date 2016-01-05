@@ -291,7 +291,7 @@ function init() {
 $(document).ready(function() {
 
     //stop the joining table animation
-    window.parent.onerope.tables.stop_join_table_animation();
+    onerope.tables.stop_join_table_animation();
 
     onerope_game.init();
 
