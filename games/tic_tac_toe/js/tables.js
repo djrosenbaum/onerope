@@ -11,6 +11,7 @@ onerope.tables = {
     player_name : 'guest',
     max_players : 2,
     loading_animation : null,
+    joining : false,
 
     //temp variables for each table
     total_players : 0,
@@ -277,10 +278,17 @@ onerope.tables = {
 
         // ==== JOIN TABLE ==== //
         $('.tables').on('click', '.table', function() {
-            if ( $(this).data('availability') === 'full' ) {
-                //console.log('room is full');
+            if (joining_table) {
                 return;
             }
+
+            if ( $(this).data('availability') === 'full' ) {
+                //console.log('room is full');
+                onerope.tables.joining = false;
+                return;
+            }
+
+            onerope.tables.joining = true;
 
             var table_id = $(this).attr('data-table-id');
             //console.log('table id: ', table_id);
