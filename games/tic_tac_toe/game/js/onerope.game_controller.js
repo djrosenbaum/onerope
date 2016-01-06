@@ -2,28 +2,20 @@ console.log('game loaded');
 console.log('you are player: ', onerope.tables.player_slot);
 console.log('you are sitting at table: ', onerope.tables.table);
 
-var onerope = window.parent.onerope;
-
-var player = window.parent.onerope.tables.player_slot;
-
-var game_ref = window.parent.onerope.ref.child('games').child(table);
-
-
 onerope.game_controller = {
-
     ref : onerope.ref.child('games').child(onerope.tables.table),
-    total_players : 0,
-    round: 0,
 
     init : function() {
         console.log('');
-        console.log('FUNCTION: onerope_game.init');
+        console.log('FUNCTION: onerope.game_controller.init');
 
         onerope_game.started = false;
         onerope_game.max_players = 2;
         onerope_game.turn = false;
+    },
 
-        game_ref.child('players').child( onerope.tables.player_slot ).update( {name: onerope.tables.player_name} );
+    set_player_name : function(player_name) {
+        onerope.game_controller.ref.child('players').child( onerope.tables.player_slot ).update( {name: player_name} );
     },
 
     game_listeners : function() {
@@ -33,13 +25,13 @@ onerope.game_controller = {
             onerope_game.initial_player_status(snapshot);
         });
 
-        game_ref.child('players').on('child_changed', function(snapshot) {
+        onerope.game_controller.ref.child('players').on('child_changed', function(snapshot) {
             //console.log('gameroom changed snapshot: ', snapshot.val());
             onerope_game.changed_player_status(snapshot);
         });
 
         // ==== GAME ==== //
-        game_ref.child('game').child('board').on('child_added', function(snapshot) {
+        onerope.game_controller.ref.child('game').child('board').on('child_added', function(snapshot) {
             //console.log('gameroom changed snapshot: ', snapshot.val());
             onerope_game.update(snapshot);
         });
@@ -150,7 +142,7 @@ onerope.game_controller = {
     },
 
     reset_game : function() {
-        game_ref.child('game').set({});
+        onerope.game_controller.ref.child('game').set({});
     }
 
 };

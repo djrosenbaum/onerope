@@ -1,20 +1,14 @@
-var onerope = {};
-onerope.game_name = 'tictactoe';
-onerope.ref = new Firebase("https://onerope.firebaseio.com/" + onerope.game_name);
-// console.log('connected to Firebase');
-
+// ==== ONEROPE.TABLES ==== //
 onerope.tables = {
-    ref : onerope.ref.child('tables'),
-    table : null,
-    player_slot : null,
-    player_name : 'guest',
+    ref : onerope.ref.child('tables'), //tables firebase ref
+    table_name : null, // string 'table_01'
+    player_slot : null, // string 'player1'
     max_players : 2,
-    loading_animation : null,
-    joining : false,
+    loading_animation : null, // setting timeout or clearing timeout
+    joining : false, // flag to prevent clicking multiple times on a table
 
     //temp variables for each table
     total_players : 0,
-    table_players : [],
 
     get_table_info : function() {
         console.log('');
@@ -69,8 +63,6 @@ onerope.tables = {
 
         //reset total players
         onerope.tables.total_players = 0;
-        //reset table players
-        onerope.tables.table_players = [];
 
         //loop through each player
         _.each(players, function(value, key, list) {
@@ -90,14 +82,13 @@ onerope.tables = {
         var player_slot = key;
         console.log('player slot: ', player_slot);
 
-        var player_name = value;
-        console.log('player name: ', player_name);
+        var player_status = value;
+        console.log('player status: ', player_status);
 
         var player_data = {};
-        player_data[key] = player_name;
-        onerope.tables.table_players.push(player_data);
+        player_data[key] = true;
 
-        if ( player_name ) {
+        if ( player_status ) {
             onerope.tables.total_players++;
         }
     },
@@ -108,9 +99,6 @@ onerope.tables = {
 
         console.log('table name: ', table_name);
         var $table = $('.table[data-table-id=' + table_name + ']');
-
-        // console.log('table data: ', onerope.tables.table_players);
-        $table.data('players', onerope.tables.table_players);
 
         onerope.tables.set_table_availability($table);
 
@@ -152,20 +140,18 @@ onerope.tables = {
         console.log(' ');
     },
 
-    join_table : function(table_id) {
+    join_table : function(table_name) {
         console.log('');
         console.log('FUNCTION: onerope.tables.join_table');
 
-        // console.log('table id: ', table_id);
-
-        var player_ref = onerope.tables.ref.child(table_id).child('players');
+        var player_ref = onerope.tables.ref.child(table_name).child('players');
 
         var player_slot = onerope.tables.get_player_slot(player_ref);
 
         var player_data = {};
-        player_data[player_slot] = onerope.tables.player_name;
+        player_data[player_slot] = true;
 
-        onerope.tables.set_joined_table_info(table_id, player_slot, player_data, player_ref);
+        onerope.tables.set_joined_table_info(table_name, player_slot, player_data, player_ref);
 
         // Remove Player from members when player disconnects
         player_ref.child(player_slot).onDisconnect().set(false);
@@ -173,11 +159,11 @@ onerope.tables = {
         onerope.tables.load_game();
     },
 
-    set_joined_table_info : function(table_id, player_slot, player_data, player_ref) {
+    set_joined_table_info : function(table_name, player_slot, player_data, player_ref) {
         console.log('');
         console.log('FUNCTION: onerope.tables.set_joined_table_info');
 
-        onerope.tables.table = table_id;
+        onerope.tables.table = table_name;
         onerope.tables.player_slot = player_slot;
 
         //Add Player to Table
@@ -289,12 +275,12 @@ onerope.tables = {
 
             onerope.tables.joining = true;
 
-            var table_id = $(this).attr('data-table-id');
-            //console.log('table id: ', table_id);
+            var table_name = $(this).attr('data-table-id');
+            //console.log('table id: ', table_name);
 
             onerope.tables.start_join_table_animation();
 
-            onerope.tables.join_table(table_id);
+            onerope.tables.join_table(table_name);
         });
     }
 
