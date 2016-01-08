@@ -1,36 +1,37 @@
-console.log('game loaded');
-console.log('you are player: ', onerope.tables.player_slot);
-console.log('you are sitting at table: ', onerope.tables.table);
-
 onerope.game_controller = {
-    ref : onerope.ref.child('games').child(onerope.tables.table),
+    //reference to the table
 
     init : function() {
+        onerope.game_controller.ref = onerope.ref.child('games').child(onerope.tables.table);
+
+        console.log('game loaded');
+        console.log('you are player: ', onerope.tables.player_slot);
+        console.log('you are sitting at table: ', onerope.tables.table);
+
         console.log('');
         console.log('FUNCTION: onerope.game_controller.init');
-
-        onerope_game.started = false;
-        onerope_game.max_players = 2;
-        onerope_game.turn = false;
     },
 
     set_player_name : function(player_name) {
+        console.log('');
+        console.log('FUNCTION: onerope.game_controller.set_player_name');
         onerope.game_controller.ref.child('players').child( onerope.tables.player_slot ).update( {name: player_name} );
     },
 
-    game_listeners : function() {
-        // ==== PLAYERS ==== //
+    listeners : function() {
+        // ==== INITIAL PLAYERS ==== //
         onerope.game.ref.child('players').once('value', function(snapshot) {
             console.log('checking player status');
             onerope_game.initial_player_status(snapshot);
         });
 
+        // ==== ON PLAYER CHANGE ==== //
         onerope.game_controller.ref.child('players').on('child_changed', function(snapshot) {
             //console.log('gameroom changed snapshot: ', snapshot.val());
             onerope_game.changed_player_status(snapshot);
         });
 
-        // ==== GAME ==== //
+        // ==== GAME MESSAGES ==== //
         onerope.game_controller.ref.child('game').child('board').on('child_added', function(snapshot) {
             //console.log('gameroom changed snapshot: ', snapshot.val());
             onerope_game.update(snapshot);
@@ -38,7 +39,7 @@ onerope.game_controller = {
     },
 
     check_status : function(snapshot) {
-        console.log('checking status');
+        console.log('checking game status');
 
         var status = snapshot.val();
 

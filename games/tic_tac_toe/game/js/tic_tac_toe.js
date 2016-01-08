@@ -1,3 +1,8 @@
+var game_started = false;
+var max_players = 2;
+var turn = false;
+
+
 // Variables
 var board_state = generate_new_board(3,3);
 var new_game_board;
@@ -280,7 +285,7 @@ function reset_the_game() {
 function init() {
     set_game_dimensions();
 
-    onerope_game.game_listeners();
+    onerope.game_controller.listeners();
 
     new_game_board = $('.game_board').html();
 
