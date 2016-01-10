@@ -2,20 +2,64 @@ onerope.game_controller = {
     //reference to the table
 
     init : function() {
-        onerope.game_controller.ref = onerope.ref.child('games').child(onerope.tables.table);
-
-        console.log('game loaded');
-        console.log('you are player: ', onerope.tables.player_slot);
-        console.log('you are sitting at table: ', onerope.tables.table);
-
         console.log('');
         console.log('FUNCTION: onerope.game_controller.init');
+
+        //create a reference to the table
+        onerope.game_controller.ref = onerope.ref.child('games').child(onerope.tables.table);
+        console.log('you are sitting at table: ', onerope.tables.table);
+
+        //console.log('you are player slot: ', onerope.tables.player_slot);
+        if ( onerope.tables.player_slot === 'player1') {
+            onerope.game_controller.set_new_game();
+        }
+        else {
+            onerope.game_controller.get_new_game();
+        }
+    },
+
+    set_new_game : function() {
+        console.log('');
+        console.log('FUNCTION: onerope.game_controller.set_new_game');
+
+        //push unique id to games, add unique id to games table
+        onerope.game_controller.game = onerope.game_controller.ref.child('game').push();
+
+        //set the game id
+        onerope.game_controller.ref.update({game_id: onerope.game_controller.game.key()});
+
+        //set player info
+        onerope.game_controller.set_player_name('guest');
+
+        //join the game
+        onerope.game_controller.load_game();
+    },
+
+    get_new_game : function() {
+        console.log('');
+        console.log('FUNCTION: onerope.game_controller.get_new_game');
+
+        onerope.game_controller.ref.child('game_id').once('value', function(data) {
+            var game_id = data.val();
+            console.log('game id: ', game_id);
+            onerope.game_controller.game = onerope.game_controller.ref.child('game').child(game_id);
+        });
+
+    },
+
+    load_game: function() {
+        console.log('');
+        console.log('FUNCTION: onerope.game_controller.load_game');
+
+        $('iframe.game_room').remove();
+        $('body').append('<iframe class="game_room" src="game/"></iframe>');
     },
 
     set_player_name : function(player_name) {
         console.log('');
         console.log('FUNCTION: onerope.game_controller.set_player_name');
-        onerope.game_controller.ref.child('players').child( onerope.tables.player_slot ).update( {name: player_name} );
+
+        onerope.game_controller.game.child('players').child( onerope.tables.player_slot ).update( {name: player_name} );
     },
 
     listeners : function() {

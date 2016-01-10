@@ -1,3 +1,5 @@
+var onerope = window.parent.onerope;
+
 var game_started = false;
 var max_players = 2;
 var turn = false;
@@ -233,6 +235,7 @@ function we_have_a_winner(coordinate_array, player_turn) {
     onerope_game.total_players = 0;
 }
 
+/*
 onerope_game.update = function( snapshot ) {
     // console.log('player selected a tile', snapshot.val());
     // console.log('key: ', snapshot.key());
@@ -269,6 +272,7 @@ onerope_game.update = function( snapshot ) {
         onerope_game.turn = 'player1';
     }
 };
+*/
 
 function reset_the_game() {
 
@@ -295,11 +299,16 @@ function init() {
 
 $(document).ready(function() {
 
+    console.log('tic tac toe loaded');
+
     //stop the joining table animation
     onerope.tables.stop_join_table_animation();
 
-    onerope_game.init();
+    //set player status to ready
+    onerope.game_controller.game
 
-    init();
+    //onerope_game.init();
+
+    //init();
 
 });

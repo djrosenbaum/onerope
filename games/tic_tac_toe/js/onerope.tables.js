@@ -151,7 +151,7 @@ onerope.tables = {
         var player_ref = onerope.tables.ref.child(table_name).child('players');
 
         var player_slot = onerope.tables.get_player_slot(player_ref);
-        console.log('player slot: ', player_slot);
+        console.log('join table player slot: ', player_slot);
 
         var player_data = {};
         player_data[player_slot] = true;
@@ -165,7 +165,8 @@ onerope.tables = {
         // Remove Player from members when player disconnects
         player_ref.child(player_slot).onDisconnect().set(false);
 
-        onerope.tables.load_game();
+        //Initialize Game Controller
+        onerope.game_controller.init();
     },
 
     get_player_slot : function(player_ref) {
@@ -249,12 +250,12 @@ onerope.tables = {
         $('.loading').hide();
     },
 
-    load_game: function() {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.load_game');
+    // load_game: function() {
+    //     console.log('');
+    //     console.log('FUNCTION: onerope.tables.load_game');
 
-        //$('body').append('<iframe class="game_room" src="game/"></iframe>');
-    },
+    //     //$('body').append('<iframe class="game_room" src="game/"></iframe>');
+    // },
 
     add_listeners: function() {
         console.log('');
