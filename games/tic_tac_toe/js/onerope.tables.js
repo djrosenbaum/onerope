@@ -23,7 +23,6 @@ onerope.tables = {
         });
 
         onerope.tables.ref.on('child_changed', function(snapshot) {
-            console.log('table changed');
             var value = snapshot.val();
             var key = snapshot.key();
             onerope.tables.check_table( value, key );

@@ -1,10 +1,3 @@
-var onerope = window.parent.onerope;
-
-var game_started = false;
-var max_players = 2;
-var turn = false;
-
-
 // Variables
 var board_state = generate_new_board(3,3);
 var new_game_board;
@@ -289,26 +282,13 @@ function reset_the_game() {
 function init() {
     set_game_dimensions();
 
-    onerope.game_controller.listeners();
-
     new_game_board = $('.game_board').html();
-
-    //after listeners are added, player is ready
-    game_ref.child('players').child(player).update({status: 'ready'});
 }
 
 $(document).ready(function() {
 
     console.log('tic tac toe loaded');
 
-    //stop the joining table animation
-    onerope.tables.stop_join_table_animation();
-
-    //set player status to ready
-    onerope.game_controller.game
-
-    //onerope_game.init();
-
-    //init();
+    onerope.game.init();
 
 });
