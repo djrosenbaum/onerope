@@ -7,7 +7,6 @@ onerope.game = {
     players : {},
     started : false,
     max_players : 2,
-    turn : false,
 
     init : function() {
         console.log('');
@@ -36,6 +35,7 @@ onerope.game = {
         //loop through each player at the table
         _.each(players, function(value, key, list) {
             var player_slot = key;
+            var player = value;
             onerope.game.players[player_slot] = player.status;
         });
 
@@ -53,25 +53,36 @@ onerope.game = {
 
         onerope.game.players[player_slot] = player.status;
 
-/*
-        if ( !onerope.game.started && onerope_game.total_players === onerope_game.max_players ) {
-            console.log('room is full');
-            onerope_game.start_the_game();
+        if ( !onerope.game.started && onerope.game.max_players_ready() ) {
+            //room is ready to play
+            onerope.game[onerope.game_name].start_the_countdown();
         }
-*/
 
     },
 
-    start_the_game : function() {
+    max_players_ready : function() {
         console.log('');
-        console.log('FUNCTION: onerope.game.start_the_game');
+        console.log('FUNCTION: onerope.game.max_players_ready');
 
-        // onerope_game.status_message('player1 vs. player2');
+        var total_players_ready = 0;
 
-        // onerope_game.started = true;
+        //loop through each player at the table and check their readiness status
+        _.each(onerope.game.players, function(value, key, list) {
+            var player_slot = key;
+            var player_status = value;
 
-        // onerope_game.countdown_screen();
+            if ( player_status === 'ready' ) {
+                total_players_ready++;
+            }
+        });
 
-        // console.log('starting the game');
+        if ( total_players_ready === onerope.game.max_players ) {
+            return true;
+        }
     },
+
+    update : function(snapshot) {
+        console.log('');
+        console.log('FUNCTION: onerope.game.update');
+    }
 };

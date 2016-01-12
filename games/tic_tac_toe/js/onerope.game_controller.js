@@ -91,70 +91,14 @@ onerope.game_controller = {
             onerope.game.changed_player_status(snapshot);
         });
 
-/*
-        // ==== GAME MESSAGES ==== //
-        onerope.game_controller.table_ref.child('game').child('board').on('child_added', function(snapshot) {
-            //console.log('gameroom changed snapshot: ', snapshot.val());
+        // ==== GAME MESSAGE ==== //
+        onerope.game_controller.game_ref.child('game').on('child_added', function(snapshot) {
             onerope_game.update(snapshot);
         });
-*/
     },
 
     listeners_off : function() {
         onerope.game_controller.game_ref.off();
-    },
-
-/*
-    check_status : function(snapshot) {
-        console.log('checking game status');
-
-        var status = snapshot.val();
-
-        if ( status === 'waiting' ) {
-            return;
-        }
-        else if ( status === 'ready' ) {
-            onerope_game.start_the_game(snapshot);
-        }
-    },
-*/
-
-    countdown_screen : function() {
-        $('.overlay').show();
-        var seconds = 1;
-        var timer;
-        var countdown_text = $('.overlay .countdown_timer');
-
-        function countdown() {
-            countdown_text.text(seconds);
-
-            if ( seconds <= 0 ) {
-                console.log('start the game');
-                onerope_game.ready_to_start_the_game();
-                return;
-            }
-
-            timer = setTimeout(function() {
-                seconds--;
-                countdown();
-            }, 1000);
-        }
-
-        countdown();
-    },
-
-    ready_to_start_the_game : function() {
-        $('.overlay').fadeOut('fast');
-
-        onerope_game.turn = 'player1';
-    },
-
-    status_message : function(message) {
-        $('.game_status').text(message);
-    },
-
-    reset_game : function() {
-        onerope.game_controller.table_ref.child('game').set({});
     }
 
 };

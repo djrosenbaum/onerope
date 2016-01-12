@@ -1,7 +1,73 @@
-// Variables
-var board_state = generate_new_board(3,3);
+var onerope = window.parent.onerope;
+
+//board state is an array that holds the current state of the tic tac toe board
+var board_state;
+
+//new game board is a variabe which is a copy of the dom of a clean game board
 var new_game_board;
 
+//set to either player 1 or player 2
+var player_turn = false;
+
+//send tictactoe reference up to parent
+var tictactoe = {
+
+    start_the_countdown : function() {
+        console.log('');
+        console.log('FUNCTION: tictactoe.start_the_countdown');
+
+        $('.overlay[data-overlay="countdown"]').show();
+        var seconds = 10;
+        var timer;
+        var countdown_text = $('.overlay[data-overlay="countdown"] .countdown_timer');
+
+        function countdown() {
+            countdown_text.text(seconds);
+
+            if ( seconds <= 0 ) {
+                console.log('start the game');
+                start_the_game();
+                return;
+            }
+
+            timer = setTimeout(function() {
+                seconds--;
+                countdown();
+            }, 1000);
+        }
+
+        countdown();
+    },
+
+};
+onerope.game.tictactoe = tictactoe;
+
+//start the game after countdown reaches 0
+function start_the_game() {
+    console.log('');
+    console.log('FUNCTION: start_the_game');
+
+    onerope.game.started = true;
+
+    player_turn = 'player1';
+
+    init();
+
+    $('.overlay[data-overlay="countdown"]').fadeOut('fast');
+
+    // onerope_game.status_message('player1 vs. player2');
+
+    // onerope_game.countdown_screen();
+
+    // console.log('starting the game');
+}
+
+//set the status message at the top of the screen
+function set_status_message(message) {
+    $('.game_status').text(message);
+}
+
+//input number of rows and columns, and returns of an array with that number of rows and columns
 function generate_new_board(total_rows, total_columns) {
     var grid = [];
     var row;
@@ -14,49 +80,54 @@ function generate_new_board(total_rows, total_columns) {
     return grid;
 }
 
-function player_type( player ) {
-    if ( player === 'player1' ) {
+//returns an x or an o depending on player slot
+function player_type() {
+    if ( onerope.tables.player_slot === 'player1' ) {
         return 'x';
     }
-    else if ( player === 'player2' ) {
+    else if ( onerope.tables.player_slot === 'player2' ) {
         return 'o';
     }
 }
 
-$( '.game_board' ).on( 'click', '.tile._', function() {
 
-    if ( onerope_game.turn !== player ) {
-        return;
-    }
+function add_listeners() {
+    $( '.game_board' ).on( 'click', '.tile._', function() {
 
-    onerope_game.turn = false;
-
-    var row = $(this).parent().index();
-    var column = $(this).index();
-    // console.log('row: ', row );
-    // console.log('column: ', column );
-
-    var grid_coordinate = row + ',' + column;
-
-    game_ref.child('game').child('board').push(
-        {
-            player: player,
-            grid_coordinate:grid_coordinate
+        if ( onerope.game.turn !== player ) {
+            return;
         }
-    );
-    //$(this).removeClass('_').addClass( player_type() );
-});
 
-$('.play_again').on('click', function() {
-    console.log('reset the game');
-    reset_the_game();
-    $('.play_again').hide();
-});
+        onerope.game.turn = false;
 
-$( window ).on('resize orientationchange', function() {
-    set_game_dimensions();
-});
+        var row = $(this).parent().index();
+        var column = $(this).index();
+        // console.log('row: ', row );
+        // console.log('column: ', column );
 
+        var grid_coordinate = row + ',' + column;
+
+        game_ref.child('game').child('board').push(
+            {
+                player: player,
+                grid_coordinate:grid_coordinate
+            }
+        );
+        //$(this).removeClass('_').addClass( player_type() );
+    });
+
+    $('.play_again').on('click', function() {
+        console.log('reset the game');
+        reset_the_game();
+        $('.play_again').hide();
+    });
+
+    $( window ).on('resize orientationchange', function() {
+        set_game_dimensions();
+    });
+}
+
+//responsive game board to set game dimensions based on screen size
 function set_game_dimensions() {
     var window_height = $(window).innerHeight();
     var window_width = $(window).innerWidth();
@@ -73,17 +144,17 @@ function set_game_dimensions() {
 
     tile_size = get_tile_size(total_span);
     set_tile_size(tile_size);
-}
 
-function get_tile_size( total_span ) {
-    return Math.floor( total_span / 3 ) - 16;
-}
+    function get_tile_size( total_span ) {
+        return Math.floor( total_span / 3 ) - 16;
+    }
 
-function set_tile_size( tile_size ) {
-    $('.tile').css({
-        width: tile_size + 'px',
-        height: tile_size + 'px'
-    });
+    function set_tile_size( tile_size ) {
+        $('.tile').css({
+            width: tile_size + 'px',
+            height: tile_size + 'px'
+        });
+    }
 }
 
 function check_for_winner( player_turn ) {
@@ -267,6 +338,7 @@ onerope_game.update = function( snapshot ) {
 };
 */
 
+/*
 function reset_the_game() {
 
     board_state = generate_new_board(3,3);
@@ -278,8 +350,11 @@ function reset_the_game() {
     game_ref.child('players').child(player).update({status: 'ready'});
 
 }
+*/
 
 function init() {
+    board_state = generate_new_board(3,3);
+
     set_game_dimensions();
 
     new_game_board = $('.game_board').html();
