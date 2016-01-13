@@ -1,10 +1,7 @@
 var onerope = window.parent.onerope;
 
-//board state is an array that holds the current state of the tic tac toe board
+//an array that holds the current state of the tic tac toe board
 var board_state;
-
-//new game board is a variabe which is a copy of the dom of a clean game board
-var new_game_board;
 
 //set to either player 1 or player 2
 var player_turn = false;
@@ -17,7 +14,7 @@ var tictactoe = {
         console.log('FUNCTION: tictactoe.start_the_countdown');
 
         $('.overlay[data-overlay="countdown"]').show();
-        var seconds = 10;
+        var seconds = 3;
         var timer;
         var countdown_text = $('.overlay[data-overlay="countdown"] .countdown_timer');
 
@@ -35,9 +32,12 @@ var tictactoe = {
                 countdown();
             }, 1000);
         }
-
         countdown();
     },
+
+    set_status_message : function(message) {
+        $('.game_status').text(message);
+    }
 
 };
 onerope.game.tictactoe = tictactoe;
@@ -51,20 +51,20 @@ function start_the_game() {
 
     player_turn = 'player1';
 
-    init();
+    set_turn_status();
 
     $('.overlay[data-overlay="countdown"]').fadeOut('fast');
 
-    // onerope_game.status_message('player1 vs. player2');
-
-    // onerope_game.countdown_screen();
-
-    // console.log('starting the game');
+    init();
 }
 
-//set the status message at the top of the screen
-function set_status_message(message) {
-    $('.game_status').text(message);
+function set_turn_status() {
+    if ( onerope.tables.player_slot === 'player1' ) {
+        tictactoe.set_status_message('Your turn Player 1');
+    }
+    else {
+        tictactoe.set_status_message('Player1\'s turn');
+    }
 }
 
 //input number of rows and columns, and returns of an array with that number of rows and columns
@@ -353,11 +353,14 @@ function reset_the_game() {
 */
 
 function init() {
+    console.log('');
+    console.log('FUNCTION: tictactoe.init');
+
     board_state = generate_new_board(3,3);
 
     set_game_dimensions();
 
-    new_game_board = $('.game_board').html();
+    add_listeners();
 }
 
 $(document).ready(function() {
