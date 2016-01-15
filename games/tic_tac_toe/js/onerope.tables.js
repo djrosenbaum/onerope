@@ -11,8 +11,7 @@ onerope.tables = {
     total_players : 0,
 
     get_table_info : function() {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.get_table_info');
+        console.log('\n FUNCTION: onerope.tables.get_table_info');
 
         //loop through each table in the room
         onerope.tables.ref.once('value', function(snapshot) {
@@ -30,8 +29,7 @@ onerope.tables = {
     },
 
     check_tables : function(snapshot) {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.check_tables');
+        console.log('\n FUNCTION: onerope.tables.check_tables');
 
         //store the tables object
         var tables = snapshot.val();
@@ -49,8 +47,7 @@ onerope.tables = {
     },
 
     check_table : function(value, key) {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.check_table');
+        console.log('\n FUNCTION: onerope.tables.check_table');
 
         var table = value;
         var table_name = key;
@@ -75,8 +72,7 @@ onerope.tables = {
     },
 
     check_player : function(value, key) {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.check_player');
+        console.log('\n FUNCTION: onerope.tables.check_player');
 
         var player_slot = key;
         console.log('player slot: ', player_slot);
@@ -93,8 +89,7 @@ onerope.tables = {
     },
 
     set_table_info : function(table_name) {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.set_table_info');
+        console.log('\n FUNCTION: onerope.tables.set_table_info');
 
         console.log('table name: ', table_name);
         var $table = $('.table[data-table-name=' + table_name + ']');
@@ -105,8 +100,7 @@ onerope.tables = {
     },
 
     set_table_availability : function($table) {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.set_table_availability');
+        console.log('\n FUNCTION: onerope.tables.set_table_availability');
 
         var total_players = onerope.tables.total_players;
 
@@ -129,8 +123,7 @@ onerope.tables = {
     },
 
     set_total_players : function( $table ) {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.set_total_players');
+        console.log('\n FUNCTION: onerope.tables.set_total_players');
 
         var total_players = onerope.tables.total_players;
         console.log(total_players + '/' + onerope.tables.max_players);
@@ -142,8 +135,7 @@ onerope.tables = {
     },
 
     join_table : function(table_name) {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.join_table');
+        console.log('\n FUNCTION: onerope.tables.join_table');
 
         console.log('table name: ', table_name);
 
@@ -169,8 +161,7 @@ onerope.tables = {
     },
 
     get_player_slot : function(player_ref) {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.get_player_slot');
+        console.log('\n FUNCTION: onerope.tables.get_player_slot');
 
         var player_slot;
 
@@ -199,8 +190,7 @@ onerope.tables = {
     },
 
     start_join_table_animation: function() {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.start_join_table_animation');
+        console.log('\n FUNCTION: onerope.tables.start_join_table_animation');
 
         //hide tables container to prevent clicking multiple rooms
         $('.page_wrapper').fadeOut('fast');
@@ -242,8 +232,7 @@ onerope.tables = {
     },
 
     stop_join_table_animation: function() {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.stop_join_table_animation');
+        console.log('\n FUNCTION: onerope.tables.stop_join_table_animation');
 
         clearTimeout(onerope.tables.loading_animation);
         $('.loading').hide();
@@ -257,8 +246,7 @@ onerope.tables = {
     // },
 
     add_listeners: function() {
-        console.log('');
-        console.log('FUNCTION: onerope.tables.add_listeners');
+        console.log('\n FUNCTION: onerope.tables.add_listeners');
 
         // ==== JOIN TABLE ==== //
         $('.tables').on('click', '.table', function() {

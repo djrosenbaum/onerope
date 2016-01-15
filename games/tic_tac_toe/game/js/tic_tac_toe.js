@@ -6,12 +6,13 @@ var board_state;
 //set to either player 1 or player 2
 var player_turn = false;
 
+var player_slot = onerope.tables.player_slot;
+
 //send tictactoe reference up to parent
 var tictactoe = {
 
     start_the_countdown : function() {
-        console.log('');
-        console.log('FUNCTION: tictactoe.start_the_countdown');
+        console.log('\n FUNCTION: tictactoe.start_the_countdown');
 
         $('.overlay[data-overlay="countdown"]').show();
         var seconds = 3;
@@ -44,8 +45,7 @@ onerope.game.tictactoe = tictactoe;
 
 //start the game after countdown reaches 0
 function start_the_game() {
-    console.log('');
-    console.log('FUNCTION: start_the_game');
+    console.log('\n FUNCTION: start_the_game');
 
     onerope.game.started = true;
 
@@ -59,16 +59,20 @@ function start_the_game() {
 }
 
 function set_turn_status() {
-    if ( onerope.tables.player_slot === 'player1' ) {
-        tictactoe.set_status_message('Your turn Player 1');
+    console.log('\n FUNCTION: set_turn_status');
+
+    if ( player_slot === player_turn ) {
+        tictactoe.set_status_message('Your turn');
     }
     else {
-        tictactoe.set_status_message('Player1\'s turn');
+        tictactoe.set_status_message('Waiting for opponent');
     }
 }
 
 //input number of rows and columns, and returns of an array with that number of rows and columns
 function generate_new_board(total_rows, total_columns) {
+    console.log('\n FUNCTION: generate_new_board');
+
     var grid = [];
     var row;
 
@@ -82,23 +86,27 @@ function generate_new_board(total_rows, total_columns) {
 
 //returns an x or an o depending on player slot
 function player_type() {
-    if ( onerope.tables.player_slot === 'player1' ) {
+    console.log('\n FUNCTION: player_type');
+
+    if ( player_slot === 'player1' ) {
         return 'x';
     }
-    else if ( onerope.tables.player_slot === 'player2' ) {
+    else if ( player_slot === 'player2' ) {
         return 'o';
     }
 }
 
 
 function add_listeners() {
+    console.log('\n FUNCTION: add_listeners');
+
     $( '.game_board' ).on( 'click', '.tile._', function() {
 
-        if ( onerope.game.turn !== player ) {
+        if ( player_slot !== player_turn ) {
             return;
         }
 
-        onerope.game.turn = false;
+        player_turn = false;
 
         var row = $(this).parent().index();
         var column = $(this).index();
@@ -107,9 +115,9 @@ function add_listeners() {
 
         var grid_coordinate = row + ',' + column;
 
-        game_ref.child('game').child('board').push(
+        onerope.game_controller.game_ref.child('game').push(
             {
-                player: player,
+                player: player_slot,
                 grid_coordinate:grid_coordinate
             }
         );
@@ -129,6 +137,8 @@ function add_listeners() {
 
 //responsive game board to set game dimensions based on screen size
 function set_game_dimensions() {
+    console.log('\n FUNCTION: set_game_dimensions');
+
     var window_height = $(window).innerHeight();
     var window_width = $(window).innerWidth();
     var total_span;
@@ -158,6 +168,7 @@ function set_game_dimensions() {
 }
 
 function check_for_winner( player_turn ) {
+    console.log('\n FUNCTION: check_for_winner');
     // console.log(board_state);
 
     var total_rows = board_state.length;
@@ -259,6 +270,8 @@ function check_for_winner( player_turn ) {
 }
 
 function we_have_a_winner(coordinate_array, player_turn) {
+    console.log('\n FUNCTION: we_have_a_winner');
+
     console.log(player_turn + ' has won the game');
     console.log('winning array: ', coordinate_array);
 
@@ -353,8 +366,7 @@ function reset_the_game() {
 */
 
 function init() {
-    console.log('');
-    console.log('FUNCTION: tictactoe.init');
+    console.log('\n FUNCTION: tictactoe.init');
 
     board_state = generate_new_board(3,3);
 

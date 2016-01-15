@@ -9,8 +9,7 @@ onerope.game = {
     max_players : 2,
 
     init : function() {
-        console.log('');
-        console.log('FUNCTION: onerope.game.init');
+        console.log('\n FUNCTION: onerope.game.init');
 
         //stop the joining table animation
         onerope.tables.stop_join_table_animation();
@@ -23,8 +22,7 @@ onerope.game = {
     },
 
     initial_player_status : function(snapshot) {
-        console.log('');
-        console.log('FUNCTION: onerope.game.initial_player_status');
+        console.log('\n FUNCTION: onerope.game.initial_player_status');
 
         //console.log('checking player status');
 
@@ -43,8 +41,7 @@ onerope.game = {
     },
 
     changed_player_status : function(snapshot) {
-        console.log('');
-        console.log('FUNCTION: onerope.game.changed_player_status');
+        console.log('\n FUNCTION: onerope.game.changed_player_status');
 
         var player = snapshot.val();
         var player_slot = snapshot.key();
@@ -61,8 +58,7 @@ onerope.game = {
     },
 
     max_players_ready : function() {
-        console.log('');
-        console.log('FUNCTION: onerope.game.max_players_ready');
+        console.log('\n FUNCTION: onerope.game.max_players_ready');
 
         var total_players_ready = 0;
 
@@ -82,7 +78,8 @@ onerope.game = {
     },
 
     update : function(snapshot) {
-        console.log('');
-        console.log('FUNCTION: onerope.game.update');
+        console.log('\n FUNCTION: onerope.game.update');
+
+        console.log(snapshot);
     }
 };
