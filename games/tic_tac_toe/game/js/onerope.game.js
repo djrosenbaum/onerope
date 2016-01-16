@@ -80,6 +80,6 @@ onerope.game = {
     update : function(snapshot) {
         console.log('\n FUNCTION: onerope.game.update');
 
-        console.log(snapshot);
+        onerope.game[onerope.game_name].update(snapshot);
     }
 };

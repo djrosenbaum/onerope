@@ -65,7 +65,7 @@ function set_turn_status() {
         tictactoe.set_status_message('Your turn');
     }
     else {
-        tictactoe.set_status_message('Waiting for opponent');
+        tictactoe.set_status_message('Waiting for opponent to make a move');
     }
 }
 
@@ -85,13 +85,13 @@ function generate_new_board(total_rows, total_columns) {
 }
 
 //returns an x or an o depending on player slot
-function player_type() {
+function player_type(player) {
     console.log('\n FUNCTION: player_type');
 
-    if ( player_slot === 'player1' ) {
+    if ( player === 'player1' ) {
         return 'x';
     }
-    else if ( player_slot === 'player2' ) {
+    else if ( player === 'player2' ) {
         return 'o';
     }
 }
@@ -272,11 +272,12 @@ function check_for_winner( player_turn ) {
 function we_have_a_winner(coordinate_array, player_turn) {
     console.log('\n FUNCTION: we_have_a_winner');
 
-    console.log(player_turn + ' has won the game');
+    tictactoe.set_status_message(player_turn + ' has won the game');
+
     console.log('winning array: ', coordinate_array);
 
     //no more moves
-    onerope_game.turn = false;
+    player_turn = false;
 
     $('.tile').css('opacity', 0.4);
 
@@ -294,35 +295,20 @@ function we_have_a_winner(coordinate_array, player_turn) {
 
     });
 
-    onerope_game.status_message(player_turn + ' has won the game');
-
-    //remove the game board
-    game_ref.remove( function(error) {
-        if (error) {
-            console.log('Synchronization failed');
-        }
-        else {
-            console.log('Synchronization succeeded');
-        }
-    });
+    tictactoe.set_status_message(player_turn + ' has won the game');
 
     $('.play_again').show();
-
-    //remove the players
-    onerope_game.total_players = 0;
 }
 
-/*
-onerope_game.update = function( snapshot ) {
-    // console.log('player selected a tile', snapshot.val());
-    // console.log('key: ', snapshot.key());
-    // console.log('snapshot: ', snapshot.val());
+tictactoe.update = function( snapshot ) {
+    console.log('\n FUNCTION: onerope.game.tictactoe.update');
+    console.log('snapshot: ', snapshot.val());
 
     var update = snapshot.val();
-    var player_turn = update.player;
+    var player = update.player;
     var grid_coordinate = update.grid_coordinate.split(',');
 
-    // console.log('player turn: ', player_turn);
+    // console.log('player: ', player);
     // console.log('grid coordinate: ', grid_coordinate);
 
     var row_coordinate = parseInt(grid_coordinate[0], 10);
@@ -330,26 +316,24 @@ onerope_game.update = function( snapshot ) {
 
     //update the board state array
     // console.log('updating board state: ', row_coordinate + ',' + column_coordinate);
-    board_state[row_coordinate][column_coordinate] = player_type(player_turn);
+    board_state[row_coordinate][column_coordinate] = player_type(player);
 
     var row = $('.row:nth-child(' + (row_coordinate + 1) + ')');
     var tile = row.find( $('.tile:nth-child(' + (column_coordinate + 1) + ')') );
 
-    // console.log('tile: ', tile);
-    // console.log('player type: ', player_type( player_turn ));
+    tile.removeClass('_').addClass( player_type( player ) );
 
-    tile.removeClass('_').addClass( player_type( player_turn ) );
+    check_for_winner(player);
 
-    check_for_winner(player_turn);
-
-    if ( player_turn === 'player1' ) {
-        onerope_game.turn = 'player2';
+    if ( player === 'player1' ) {
+        player_turn = 'player2';
     }
-    else if ( player_turn === 'player2' ) {
-        onerope_game.turn = 'player1';
+    else if ( player === 'player2' ) {
+        player_turn = 'player1';
     }
+
+    set_turn_status();
 };
-*/
 
 /*
 function reset_the_game() {
