@@ -13,6 +13,7 @@ var tictactoe = {
 
     start_the_countdown : function() {
         console.log('\n FUNCTION: tictactoe.start_the_countdown');
+        init();
 
         $('.overlay[data-overlay="countdown"]').show();
         var seconds = 3;
@@ -37,8 +38,9 @@ var tictactoe = {
     },
 
     set_status_message : function(message) {
+        console.log('\n FUNCTION: tictactoe.set_status_countdown');
         $('.game_status').text(message);
-    }
+    },
 
 };
 onerope.game.tictactoe = tictactoe;
@@ -47,15 +49,7 @@ onerope.game.tictactoe = tictactoe;
 function start_the_game() {
     console.log('\n FUNCTION: start_the_game');
 
-    onerope.game.started = true;
-
-    player_turn = 'player1';
-
-    set_turn_status();
-
     $('.overlay[data-overlay="countdown"]').fadeOut('fast');
-
-    init();
 }
 
 function set_turn_status() {
@@ -272,12 +266,11 @@ function check_for_winner( player_turn ) {
 function we_have_a_winner(coordinate_array, player_turn) {
     console.log('\n FUNCTION: we_have_a_winner');
 
+    tictactoe.game_winner = player_turn;
+
     tictactoe.set_status_message(player_turn + ' has won the game');
 
     console.log('winning array: ', coordinate_array);
-
-    //no more moves
-    player_turn = false;
 
     $('.tile').css('opacity', 0.4);
 
@@ -296,6 +289,9 @@ function we_have_a_winner(coordinate_array, player_turn) {
     });
 
     tictactoe.set_status_message(player_turn + ' has won the game');
+
+    //no more moves
+    player_turn = false;
 
     $('.play_again').show();
 }
@@ -324,6 +320,10 @@ tictactoe.update = function( snapshot ) {
     tile.removeClass('_').addClass( player_type( player ) );
 
     check_for_winner(player);
+
+    if ( tictactoe.game_winner ) {
+        return;
+    }
 
     if ( player === 'player1' ) {
         player_turn = 'player2';
@@ -357,6 +357,12 @@ function init() {
     set_game_dimensions();
 
     add_listeners();
+
+    onerope.game.started = true;
+
+    player_turn = 'player1';
+
+    set_turn_status();
 }
 
 $(document).ready(function() {

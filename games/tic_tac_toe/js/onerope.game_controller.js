@@ -76,16 +76,19 @@ onerope.game_controller = {
 
         // ==== INITIAL PLAYERS ==== //
         onerope.game_controller.game_ref.child('players').once('value', function(snapshot) {
+            console.log('ON INITIAL PLAYERS');
             onerope.game.initial_player_status(snapshot);
         });
 
         // ==== ON PLAYER CHANGE ==== //
         onerope.game_controller.game_ref.child('players').on('child_changed', function(snapshot) {
+            console.log('ON PLAYER CHANGE');
             onerope.game.changed_player_status(snapshot);
         });
 
         // ==== GAME MESSAGE ==== //
         onerope.game_controller.game_ref.child('game').on('child_added', function(snapshot) {
+            console.log('ON GAME MESSAGE');
             onerope.game.update(snapshot);
         });
     },
