@@ -172,10 +172,11 @@ function check_for_winner( player_turn ) {
     check_rows();
     check_diagonal_left();
     check_diagonal_right();
+    check_for_tie();
 
     //CHECK COLUMNS
     function check_columns() {
-        // console.log('checking columns');
+        console.log('\n FUNCTION: check_columns');
         for ( var column=0; column<total_columns; column++ ) {
             // console.log('checking column ', column);
             var column_array = [];
@@ -190,7 +191,7 @@ function check_for_winner( player_turn ) {
 
     //CHECK ROWS
     function check_rows() {
-        // console.log('checking rows');
+        console.log('\n FUNCTION: check_rows');
         for ( var row=0; row<total_rows; row++ ) {
             // console.log('checking row ', row);
             var row_array = [];
@@ -205,7 +206,7 @@ function check_for_winner( player_turn ) {
 
     //CHECK DIAGONALS
     function check_diagonal_left() {
-        // console.log('checking diagonal left');
+        console.log('\n FUNCTION: check_diagonal_left');
         var diagonal_array = [];
         var coordinate_array = [];
         for ( var row=0; row<total_rows; row++ ) {
@@ -217,7 +218,7 @@ function check_for_winner( player_turn ) {
     }
 
     function check_diagonal_right() {
-        // console.log('checking diagonal right');
+        console.log('\n FUNCTION: check_diagonal_right');
         var diagonal_array = [];
         var coordinate_array = [];
         var column = total_columns - 1;
@@ -229,7 +230,15 @@ function check_for_winner( player_turn ) {
         tile_check(diagonal_array, coordinate_array);
     }
 
+    function check_for_tie() {
+        console.log('\n FUNCTION: check_for_tie');
+        if ( $('.tile._').length === 0 && !tictactoe.game_winner ) {
+            we_have_a_tie();
+        }
+    }
+
     function tile_check(tile_array, coordinate_array) {
+        console.log('\n FUNCTION: tile_check');
         var consecutive = 0;
         var match = '';
         var winner = 3;
@@ -268,8 +277,6 @@ function we_have_a_winner(coordinate_array, player_turn) {
 
     tictactoe.game_winner = player_turn;
 
-    tictactoe.set_status_message(player_turn + ' has won the game');
-
     console.log('winning array: ', coordinate_array);
 
     $('.tile').css('opacity', 0.4);
@@ -291,6 +298,18 @@ function we_have_a_winner(coordinate_array, player_turn) {
     tictactoe.set_status_message(player_turn + ' has won the game');
 
     //no more moves
+    player_turn = false;
+
+    $('.play_again').show();
+}
+
+function we_have_a_tie() {
+    console.log('\n FUNCTION: we_have_a_tie');
+
+    tictactoe.set_status_message('tie game, no winner');
+
+    $('.tile').css('opacity', 0.4);
+
     player_turn = false;
 
     $('.play_again').show();
@@ -334,20 +353,6 @@ tictactoe.update = function( snapshot ) {
 
     set_turn_status();
 };
-
-/*
-function reset_the_game() {
-
-    board_state = generate_new_board(3,3);
-
-    $('.game_board').html(new_game_board);
-
-    onerope_game.init();
-
-    game_ref.child('players').child(player).update({status: 'ready'});
-
-}
-*/
 
 function init() {
     console.log('\n FUNCTION: tictactoe.init');
