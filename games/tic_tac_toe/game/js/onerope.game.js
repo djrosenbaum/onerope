@@ -4,12 +4,13 @@ var onerope = window.parent.onerope;
 onerope.game = {};
 
 onerope.game = {
-    players : {},
-    started : false,
-    max_players : 2,
 
     init : function() {
         console.log('\n FUNCTION: onerope.game.init');
+
+        onerope.game.players = {};
+        onerope.game.started = false;
+        onerope.game.max_players = 2;
 
         //stop the joining table animation
         onerope.tables.stop_join_table_animation();
@@ -52,6 +53,11 @@ onerope.game = {
 
         if ( !onerope.game.started && onerope.game.max_players_ready() ) {
             //room is ready to play
+
+            //remove game id
+            onerope.game_controller.table_ref.update({game_id: ''});
+
+            //start the countdown to start the game
             onerope.game[onerope.game_name].start_the_countdown();
         }
 

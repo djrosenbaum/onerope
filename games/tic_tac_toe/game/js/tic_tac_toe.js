@@ -45,6 +45,22 @@ var tictactoe = {
 };
 onerope.game.tictactoe = tictactoe;
 
+function init() {
+    console.log('\n FUNCTION: tictactoe.init');
+
+    board_state = generate_new_board(3,3);
+
+    set_game_dimensions();
+
+    add_listeners();
+
+    onerope.game.started = true;
+
+    player_turn = 'player1';
+
+    set_turn_status();
+}
+
 //start the game after countdown reaches 0
 function start_the_game() {
     console.log('\n FUNCTION: start_the_game');
@@ -119,9 +135,7 @@ function add_listeners() {
     });
 
     $('.play_again').on('click', function() {
-        console.log('reset the game');
-        reset_the_game();
-        $('.play_again').hide();
+        onerope.game_controller.get_new_game();
     });
 
     $( window ).on('resize orientationchange', function() {
@@ -355,22 +369,6 @@ tictactoe.update = function( snapshot ) {
 
     set_turn_status();
 };
-
-function init() {
-    console.log('\n FUNCTION: tictactoe.init');
-
-    board_state = generate_new_board(3,3);
-
-    set_game_dimensions();
-
-    add_listeners();
-
-    onerope.game.started = true;
-
-    player_turn = 'player1';
-
-    set_turn_status();
-}
 
 $(document).ready(function() {
 

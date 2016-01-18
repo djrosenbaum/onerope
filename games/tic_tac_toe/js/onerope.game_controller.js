@@ -40,7 +40,18 @@ onerope.game_controller = {
         onerope.game_controller.table_ref.child('game_id').once('value', function(data) {
             var game_id = data.val();
             console.log('game id: ', game_id);
-            onerope.game_controller.game_ref = onerope.game_controller.table_ref.child('game').child(game_id);
+
+            //if a player clicks on play again
+            if ( !game_id ) {
+                //push unique id to games, add unique id to games table
+                onerope.game_controller.game_ref = onerope.game_controller.table_ref.child('game').push();
+
+                //set the game id
+                onerope.game_controller.table_ref.update({game_id: onerope.game_controller.game_ref.key()});
+            }
+            else {
+                onerope.game_controller.game_ref = onerope.game_controller.table_ref.child('game').child(game_id);
+            }
 
             //set player info
             onerope.game_controller.set_player_name('guest');
