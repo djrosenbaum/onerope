@@ -51,6 +51,11 @@ onerope.game = {
 
         onerope.game.players[player_slot] = player.status;
 
+        if ( player.status === 'disconnected' ) {
+            onerope.game[onerope.game_name].player_disconnected(player_slot, player);
+            return;
+        }
+
         if ( !onerope.game.started && onerope.game.max_players_ready() ) {
             //room is ready to play
 
@@ -60,7 +65,6 @@ onerope.game = {
             //start the countdown to start the game
             onerope.game[onerope.game_name].start_the_countdown();
         }
-
     },
 
     max_players_ready : function() {

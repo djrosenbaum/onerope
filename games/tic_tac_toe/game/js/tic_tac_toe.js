@@ -10,40 +10,58 @@ var player_slot = onerope.tables.player_slot;
 
 //send tictactoe reference up to parent
 var tictactoe = {
-
-    start_the_countdown : function() {
-        console.log('\n FUNCTION: tictactoe.start_the_countdown');
-        init();
-
-        $('.overlay[data-overlay="countdown"]').show();
-        var seconds = 3;
-        var timer;
-        var countdown_text = $('.overlay[data-overlay="countdown"] .countdown_timer');
-
-        function countdown() {
-            countdown_text.text(seconds);
-
-            if ( seconds <= 0 ) {
-                console.log('start the game');
-                start_the_game();
-                return;
-            }
-
-            timer = setTimeout(function() {
-                seconds--;
-                countdown();
-            }, 1000);
-        }
-        countdown();
-    },
-
-    set_status_message : function(message) {
-        console.log('\n FUNCTION: tictactoe.set_status_countdown');
-        $('.game_status').text(message);
-    },
-
+    start_the_countdown : start_the_countdown,
+    set_status_message : set_status_message,
+    player_disconnected : player_disconnected
 };
 onerope.game.tictactoe = tictactoe;
+
+function start_the_countdown() {
+    console.log('\n FUNCTION: tictactoe.start_the_countdown');
+    init();
+
+    $('.overlay[data-overlay="countdown"]').show();
+    var seconds = 3;
+    var timer;
+    var countdown_text = $('.overlay[data-overlay="countdown"] .countdown_timer');
+
+    function countdown() {
+        countdown_text.text(seconds);
+
+        if ( seconds <= 0 ) {
+            console.log('start the game');
+            start_the_game();
+            return;
+        }
+
+        timer = setTimeout(function() {
+            seconds--;
+            countdown();
+        }, 1000);
+    }
+    countdown();
+}
+
+function set_status_message(message) {
+    console.log('\n FUNCTION: tictactoe.set_status_countdown');
+    $('.game_status').text(message);
+}
+
+function player_disconnected(player_slot, player) {
+    var moves_remaining = $('.tile._').length;
+
+    if ( !onerope.game.started || moves_remaining === 9 ) {
+        //game has not yet started
+        //do nothing, wait for another player
+    }
+    else if ( tictactoe.game_winner || moves_remaining === 0 ) {
+        //game has ended
+    }
+    else {
+        //game was in play
+    }
+    console.log( player_slot, 'disconnected after game start');
+}
 
 function init() {
     console.log('\n FUNCTION: tictactoe.init');
