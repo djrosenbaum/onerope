@@ -306,6 +306,8 @@ function we_have_a_winner(coordinate_array, player_turn) {
 function we_have_a_tie() {
     console.log('\n FUNCTION: we_have_a_tie');
 
+    tictactoe.game_winner = 'no winner';
+
     tictactoe.set_status_message('tie game, no winner');
 
     $('.tile').css('opacity', 0.4);
