@@ -47,20 +47,33 @@ function set_status_message(message) {
     $('.game_status').text(message);
 }
 
+function set_status_overlay(message, type) {
+    var overlay = $('.overlay[data-overlay="status"]');
+    overlay.find('.status').text(message);
+    overlay.attr('data-type',type);
+    overlay.show();
+}
+
 function player_disconnected(player_slot, player) {
+    console.log('\n FUNCTION: tictactoe.player_disconnected');
+
     var moves_remaining = $('.tile._').length;
 
-    if ( !onerope.game.started || moves_remaining === 9 ) {
+    if ( !onerope.game.started ) {
         //game has not yet started
         //do nothing, wait for another player
+        return;
     }
     else if ( tictactoe.game_winner || moves_remaining === 0 ) {
         //game has ended
+        //return to lobby
     }
     else {
         //game was in play
+        //end the game
     }
-    console.log( player_slot, 'disconnected after game start');
+    set_status_overlay(player_slot + ' disconnected', 'disconnect');
+    onerope.game_controller.disconnect();
 }
 
 function init() {
@@ -154,6 +167,17 @@ function add_listeners() {
 
     $('.play_again').on('click', function() {
         onerope.game_controller.get_new_game();
+    });
+
+    $('.overlay[data-overlay="status"]').on('click', function() {
+        console.log('clicked on an overlay');
+
+        console.log( 'data type:', $(this).data('type') );
+
+        if ( $(this).data('type') === 'disconnect' ) {
+            onerope.game_controller.return_to_tables();
+        }
+
     });
 
     $( window ).on('resize orientationchange', function() {

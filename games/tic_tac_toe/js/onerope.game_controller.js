@@ -106,6 +106,20 @@ onerope.game_controller = {
 
     listeners_off : function() {
         onerope.game_controller.game_ref.off();
+    },
+
+    disconnect : function() {
+        onerope.game_controller.listeners_off();
+        onerope.tables.ref.child(onerope.tables.table).child('players').child(onerope.tables.player_slot).set(false);
+    },
+
+    return_to_tables : function() {
+        console.log('\n FUNCTION: onerope.game_controller.return_to_tables');
+
+        $('iframe.game_room').fadeOut('slow', function() {
+            $('iframe.game_room').remove();
+            $('.page_wrapper').fadeIn('fast');
+        });
     }
 
 };
