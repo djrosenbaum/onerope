@@ -111,6 +111,7 @@ onerope.game_controller = {
     disconnect : function() {
         onerope.game_controller.listeners_off();
         onerope.tables.ref.child(onerope.tables.table).child('players').child(onerope.tables.player_slot).set(false);
+        onerope.tables.joining = false;
     },
 
     return_to_tables : function() {
