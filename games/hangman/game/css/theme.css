@@ -1,0 +1,66 @@
+.page_wrapper {
+    color: #333;
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+}
+
+.game_name {
+    font-size: 21px;
+    background-color: #ccc;
+    color: #000;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.game_status {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.play_again {
+    cursor: pointer;
+    border-radius: 4px;
+    display: inline-block;
+    background-color: #ccc;
+    padding-top: 10px;
+    padding-right: 16px;
+    padding-bottom: 10px;
+    padding-left: 16px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.overlay {
+    background-color: rgba(255,255,255,0.7);
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.overlay .countdown_timer {
+    font-weight: bold;
+    font-size: 34px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+.overlay[data-overlay="status"] {
+    cursor: pointer;
+}
+
+.overlay .status {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    font-size: 18px;
+}

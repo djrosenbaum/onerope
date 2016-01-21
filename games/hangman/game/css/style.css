@@ -1,0 +1,62 @@
+body {
+    font-family: arial;
+    text-shadow: 0 1px 0 #f3f3f3;
+}
+
+.game_title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.game_wrapper {
+    text-align: center;
+}
+
+.game_board {
+    display: inline-block;
+}
+
+.tile {
+    cursor: pointer;
+    float: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+    max-width: 150px;
+    max-height: 150px;
+    margin: 4px;
+}
+
+.tile._:hover {
+    opacity: 0.8;
+}
+
+.row .tile:first-of-type {
+    clear: both;
+}
+
+.tile._ {
+    background-image: url('../images/tile.svg');
+}
+
+.tile.x {
+    background-image: url('../images/tile_x.svg');
+}
+
+.tile.o {
+    background-image: url('../images/tile_o.svg');
+}
+
+/* MOBILE */
+@media only screen and (max-width: 480px) {
+    .tile {
+        width: 90px;
+        height: 90px;
+        margin: 2px;
+    }
+}
+
+/* TABLET */
+@media only screen and (max-width: 728px) and (min-width: 480px) {
+
+}
