@@ -13,12 +13,13 @@
     background-color: #ccc;
     color: #000;
     padding: 10px;
-    margin-bottom: 10px;
 }
 
 .game_status {
+    background-color: #fff;
+    padding-top: 10px;
     text-align: center;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .play_again {
