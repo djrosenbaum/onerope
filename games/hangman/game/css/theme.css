@@ -6,6 +6,7 @@
     margin: 0 auto;
     text-align: center;
     position: relative;
+    overflow: hidden;
 }
 
 .game_name {
