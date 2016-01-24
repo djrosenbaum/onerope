@@ -49,6 +49,43 @@ body {
     width: 75px;
 }
 
+/* ==== LETTERS TO GUESS ==== */
+
+.word_to_guess {
+    position: absolute;
+    bottom: 50px;
+    left: 250px;
+}
+
+.letter_underline {
+    background-image: url(../images/letter_underline.png);
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 3px;
+    float: left;
+    margin-left: 5px;
+    position: relative;
+}
+
+.letter_underline:first-of-type {
+    margin-left: 0;
+}
+
+.letter_underline .letter {
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 30px;
+    position: absolute;
+    top: -48px;
+    left: 0;
+}
+
+
+/* ==== ALPHABET ==== */
 .alphabet {
     padding-top: 50px;
     padding-left: 10px;
