@@ -28,17 +28,23 @@ body {
 .hangman_inner_wrapper {
     position: relative;
     width: 2000px;
-    height: 250px;
+    height: 200px;
 }
 
 /* ==== NAME PROMPT ==== */
 
-.name_prompt {
+.name_cta {
     color: #fff;
     position: absolute;
-    top: 50px;
+    top: 20px;
     left: 50px;
     font-size: 20px;
+}
+
+.name_wrapper {
+    position: absolute;
+    bottom: 10px;
+    left: 50px;
 }
 
 /* ==== EXECUTION STAND ==== */
@@ -82,6 +88,7 @@ body {
 }
 
 .letter_underline .letter {
+    cursor: pointer;
     color: #fff;
     width: 40px;
     height: 40px;
@@ -112,6 +119,10 @@ body {
     border: 1px dotted #444;
     text-align: center;
     font-size: 30px;
+}
+
+.alphabet .letter:active {
+    background-color: #111;
 }
 
 /* MOBILE */
