@@ -31,6 +31,16 @@ body {
     height: 250px;
 }
 
+/* ==== NAME PROMPT ==== */
+
+.name_prompt {
+    color: #fff;
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    font-size: 20px;
+}
+
 /* ==== EXECUTION STAND ==== */
 .execution_stand {
     position: absolute;
@@ -60,8 +70,8 @@ body {
 .letter_underline {
     background-image: url(../images/letter_underline.png);
     background-repeat: no-repeat;
-    width: 50px;
-    height: 3px;
+    width: 40px;
+    height: 2px;
     float: left;
     margin-left: 5px;
     position: relative;
@@ -73,14 +83,14 @@ body {
 
 .letter_underline .letter {
     color: #fff;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     line-height: 50px;
     box-sizing: border-box;
     text-align: center;
     font-size: 30px;
     position: absolute;
-    top: -48px;
+    top: -40px;
     left: 0;
 }
 
@@ -89,11 +99,7 @@ body {
 .alphabet {
     padding-top: 50px;
     padding-left: 10px;
-}
-
-.alphabet img {
-    width: 560px;
-    padding-right: 30px;
+    font-family: 'Short Stack', cursive;
 }
 
 .alphabet .letter {
