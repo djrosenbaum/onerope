@@ -4,6 +4,7 @@
         <link rel='stylesheet' type='text/css' href='css/reset.css'/>
         <link rel='stylesheet' type='text/css' href='css/style.css'/>
         <link rel='stylesheet' type='text/css' href='css/theme.css'/>
+        <link href='https://fonts.googleapis.com/css?family=Short+Stack' rel='stylesheet' type='text/css'>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>One Rope - Tic Tac Toe</title>
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
@@ -15,46 +16,52 @@
             <div class='game_status'>waiting for players...</div>
             <div class='play_again' style="display:none;">Play Again</div>
             <div class='game_wrapper'>
-                <div class='execution_stand'>
-                    <img src='images/stand.png'>
-                </div>
 
-                <div class='man_parts'>
+                <div class='hangman_outer_wrapper'>
+                    <div class='hangman_inner_wrapper'>
+                        <div class='execution_stand'>
+                            <img class='stand' src='images/stand.png'>
+                            <img class='body_part head' src='images/head.png'>
+                            <img class='body_part torso' src='images/torso.png'>
+                            <img class='body_part arm_left' src='images/arm_left.png'>
+                            <img class='body_part arm_right' src='images/arm_right.png'>
+                            <img class='body_part leg_left' src='images/leg_left.png'>
+                            <img class='body_part leg_right' src='images/leg_right.png'>
+                        </div>
 
+                        <div class='word_to_guess'></div>
+                    </div>
                 </div>
 
                 <div class='alphabet'>
-                    <div class='letter' data-letter="a"></div>
-                    <div class='letter' data-letter="b"></div>
-                    <div class='letter' data-letter="c"></div>
-                    <div class='letter' data-letter="d"></div>
-                    <div class='letter' data-letter="e"></div>
-                    <div class='letter' data-letter="f"></div>
-                    <div class='letter' data-letter="g"></div>
-                    <div class='letter' data-letter="h"></div>
-                    <div class='letter' data-letter="i"></div>
-                    <div class='letter' data-letter="j"></div>
-                    <div class='letter' data-letter="k"></div>
-                    <div class='letter' data-letter="l"></div>
-                    <div class='letter' data-letter="m"></div>
-                    <div class='letter' data-letter="n"></div>
-                    <div class='letter' data-letter="o"></div>
-                    <div class='letter' data-letter="p"></div>
-                    <div class='letter' data-letter="q"></div>
-                    <div class='letter' data-letter="r"></div>
-                    <div class='letter' data-letter="s"></div>
-                    <div class='letter' data-letter="t"></div>
-                    <div class='letter' data-letter="u"></div>
-                    <div class='letter' data-letter="v"></div>
-                    <div class='letter' data-letter="w"></div>
-                    <div class='letter' data-letter="x"></div>
-                    <div class='letter' data-letter="y"></div>
-                    <div class='letter' data-letter="z"></div>
+                    <div class='letter'>a</div>
+                    <div class='letter'>b</div>
+                    <div class='letter'>c</div>
+                    <div class='letter'>d</div>
+                    <div class='letter'>e</div>
+                    <div class='letter'>f</div>
+                    <div class='letter'>g</div>
+                    <div class='letter'>h</div>
+                    <div class='letter'>i</div>
+                    <div class='letter'>j</div>
+                    <div class='letter'>k</div>
+                    <div class='letter'>l</div>
+                    <div class='letter'>m</div>
+                    <div class='letter'>n</div>
+                    <div class='letter'>o</div>
+                    <div class='letter'>p</div>
+                    <div class='letter'>q</div>
+                    <div class='letter'>r</div>
+                    <div class='letter'>s</div>
+                    <div class='letter'>t</div>
+                    <div class='letter'>u</div>
+                    <div class='letter'>v</div>
+                    <div class='letter'>w</div>
+                    <div class='letter'>x</div>
+                    <div class='letter'>y</div>
+                    <div class='letter'>z</div>
                 </div>
 
-                <div class='word_to_guess'>
-
-                </div>
             </div>
         </div>
         <div class='overlay' data-overlay='countdown' style='display:none;'>

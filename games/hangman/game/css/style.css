@@ -17,14 +17,36 @@ body {
 .game_wrapper {
     text-align: left;
     position: relative;
+    font-family: 'Short Stack', cursive;
 }
 
+.hangman_outer_wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.hangman_inner_wrapper {
+    position: relative;
+    width: 2000px;
+    height: 250px;
+}
+
+/* ==== EXECUTION STAND ==== */
 .execution_stand {
-    margin-top:10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
-.execution_stand img {
+.stand {
     width:150px;
+}
+
+.body_part {
+    position: absolute;
+    top: 30px;
+    left: 111px;
+    width: 75px;
 }
 
 .alphabet {
@@ -38,12 +60,15 @@ body {
 }
 
 .alphabet .letter {
-    background-color: #ccc;
+    color: #fff;
     float: left;
     width: 50px;
     height: 50px;
+    line-height: 50px;
     box-sizing: border-box;
-    border: 1px solid #000;
+    border: 1px dotted #444;
+    text-align: center;
+    font-size: 30px;
 }
 
 /* MOBILE */
