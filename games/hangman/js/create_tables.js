@@ -1,6 +1,6 @@
 console.log('connected to firebase');
 
-var game = 'tictactoe';
+var game = 'hangman';
 var onerope_ref = new Firebase('https://onerope.firebaseio.com/' + game);
 var table_ref = onerope_ref.child('tables');
 //var game_ref = onerope_ref.child('games');
@@ -24,19 +24,17 @@ for (var i=1; i<6; i++ ) {
     table_data[table_name] = {
         players : {
             player1: false,
-            player2: false
+            player2: false,
+            player3: false,
+            player4: false,
+            player5: false,
+            player6: false,
+            player7: false,
+            player8: false,
+            player9: false,
+            player10: false
         }
     };
-
-    // game_data[table_name] = {
-    //     game : {
-    //         board : false
-    //     },
-    //     players : {
-    //         player1: false,
-    //         player2: false
-    //     }
-    // };
 }
 
 onerope_ref.remove();

@@ -3,7 +3,7 @@ onerope.tables = {
     ref : onerope.ref.child('tables'), //tables firebase ref
     table_name : null, // string 'table_01'
     player_slot : null, // string 'player1'
-    max_players : 2,
+    max_players : 10,
     loading_animation : null, // setting timeout or clearing timeout
     joining : false, // flag to prevent clicking multiple times on a table
 

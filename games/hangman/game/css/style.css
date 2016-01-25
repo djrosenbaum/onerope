@@ -37,14 +37,14 @@ body {
     color: #fff;
     position: absolute;
     top: 20px;
-    left: 50px;
+    left: 10px;
     font-size: 20px;
 }
 
 .name_wrapper {
     position: absolute;
     bottom: 10px;
-    left: 50px;
+    left: 10px;
 }
 
 /* ==== EXECUTION STAND ==== */
@@ -121,8 +121,26 @@ body {
     font-size: 30px;
 }
 
-.alphabet .letter:active {
-    background-color: #111;
+/*.alphabet .letter:hover {
+    background-color: #777;
+}*/
+
+.alphabet .active_letter {
+    background-color: #777;
+}
+
+/* ==== Name Buttons ==== */
+.name_buttons {
+    clear: both;
+    color: #fff;
+    padding-top: 40px;
+    font-family: 'Short Stack', cursive;
+}
+
+.name_buttons div {
+    display: inline;
+    border: 1px dotted #444;
+    padding: 10px 20px;
 }
 
 /* MOBILE */

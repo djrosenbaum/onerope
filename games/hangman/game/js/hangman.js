@@ -5,12 +5,12 @@ console.log('hangman v4');
 //     scrollLeft: 300},
 // 500);
 
-var current_screen = 'enter_name';
+//ENTERING USER NAME
 var first_letter = false;
+var letters = $('.alphabet .letter');
 
-$('.alphabet .letter').on('click', function () {
-    if ( current_screen === 'enter_name'  ) {
-
+function player_name_listeners_on() {
+    letters.on('click', function () {
         if ( !first_letter ) {
             first_letter = true;
             $('.hangman_inner_wrapper .name_wrapper').empty();
@@ -25,5 +25,21 @@ $('.alphabet .letter').on('click', function () {
                 '<div class="letter">' + letter + '</div>' +
             '</div>'
         );
-    }
-});
+    });
+
+    letters.on('touchstart', function() {
+        letters.removeClass('active_letter');
+        $(this).addClass('active_letter');
+    });
+
+    letters.on('touchend', function() {
+        letters.removeClass('active_letter');
+    });
+
+    $('.name_buttons .clear').on('click', function() {
+        first_letter = true;
+        $('.hangman_inner_wrapper .name_wrapper').empty();
+    });
+}
+
+player_name_listeners_on();
