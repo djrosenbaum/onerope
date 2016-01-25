@@ -3,12 +3,13 @@ console.log('connected to firebase');
 var game = 'hangman';
 var onerope_ref = new Firebase('https://onerope.firebaseio.com/' + game);
 var table_ref = onerope_ref.child('tables');
-//var game_ref = onerope_ref.child('games');
+
+var total_tables = 5;
+var players_per_table = 7;
 
 var table_data = {};
-//var game_data = {};
 
-for (var i=1; i<6; i++ ) {
+for (var i=1; i<=total_tables; i++ ) {
 
     var table_number;
 
@@ -22,21 +23,16 @@ for (var i=1; i<6; i++ ) {
     var table_name = 'table' + table_number;
 
     table_data[table_name] = {
-        players : {
-            player1: false,
-            player2: false,
-            player3: false,
-            player4: false,
-            player5: false,
-            player6: false,
-            player7: false,
-            player8: false,
-            player9: false,
-            player10: false
-        }
+        players : {}
     };
+
+    for (var j=1; j<=players_per_table; j++ ) {
+        var player_slot = 'player' + j;
+        table_data[table_name]['players'][player_slot] = false;
+    }
 }
+
+console.log(table_data);
 
 onerope_ref.remove();
 table_ref.set(table_data);
-// game_ref.set(game_data);
