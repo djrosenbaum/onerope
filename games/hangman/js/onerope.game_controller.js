@@ -27,8 +27,7 @@ onerope.game_controller = {
         onerope.game_controller.table_ref.update({game_id: onerope.game_controller.game_ref.key()});
 
         //set player info
-        //TODO: set a player name instead of guest
-        onerope.game_controller.set_player_name('guest');
+        onerope.game_controller.set_player_name(onerope.player.player_name);
 
         //join the game
         onerope.game_controller.load_game();

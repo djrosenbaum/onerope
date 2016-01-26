@@ -110,6 +110,7 @@ body {
 }
 
 .alphabet .letter {
+    cursor: pointer;
     color: #fff;
     float: left;
     width: 50px;
