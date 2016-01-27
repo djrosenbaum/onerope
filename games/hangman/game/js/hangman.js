@@ -1,5 +1,18 @@
 var onerope = window.parent.onerope;
 
+var hangman = {
+    players : {}
+};
+
+onerope.game.hangman = hangman;
+
+hangman.initial_players = function( player_slot, player ) {
+    console.log('\n FUNCTION: onerope.game.initial_player_status');
+
+    hangman.players[player_slot] = {};
+    hangman.players[player_slot]['name'] = player['name'];
+};
+
 //ANIMATED SCROLLING FOR AFTER USER GUESSES A LETTER
 // $('#scrollable').animate({
 //     scrollLeft: 300},
@@ -82,4 +95,12 @@ function set_player_name() {
     onerope.game_controller.set_player_name(player_name);
 }
 
-player_name_listeners_on();
+$(document).ready(function() {
+
+    console.log('hangman loaded');
+
+    onerope.game.init();
+
+    player_name_listeners_on();
+
+});

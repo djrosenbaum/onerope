@@ -35,7 +35,9 @@ onerope.game = {
         _.each(players, function(value, key, list) {
             var player_slot = key;
             var player = value;
-            onerope.game.players[player_slot] = player.status;
+            onerope.game.players[player_slot] = player['status'];
+
+            onerope.game[onerope.game_name].initial_players(player_slot, player);
         });
 
         onerope.game_controller.set_player_status('ready');
