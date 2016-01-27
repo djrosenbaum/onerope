@@ -21,13 +21,19 @@ body {
 }
 
 .hangman_outer_wrapper {
-    overflow-x: auto;
+    overflow-x: scroll;
     overflow-y: hidden;
+}
+
+/* MOBILE SAFARI IFRAME HORIZONTAL SCROLL FIX */
+/* http://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari */
+.hangman_outer_wrapper {
+    width: 1px;
+    min-width: 100%;
 }
 
 .hangman_inner_wrapper {
     position: relative;
-    width: 2000px;
     height: 200px;
 }
 
@@ -104,6 +110,7 @@ body {
 
 /* ==== ALPHABET ==== */
 .alphabet {
+    display: inline-block;
     padding-top: 50px;
     padding-left: 10px;
     font-family: 'Short Stack', cursive;
@@ -133,16 +140,20 @@ body {
 /* ==== Name Buttons ==== */
 .name_buttons {
     clear: both;
+    display: inline-block;
     color: #fff;
     padding-top: 40px;
     font-family: 'Short Stack', cursive;
 }
 
 .name_buttons div {
+    cursor: pointer;
     display: inline;
     border: 1px dotted #444;
     padding: 10px 20px;
 }
+
+/* ==== SCOREBOARD ==== */
 
 /* MOBILE */
 @media only screen and (max-width: 480px) {

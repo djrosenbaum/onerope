@@ -43,28 +43,43 @@ function player_name_listeners_on() {
 
     $('.name_buttons .submit').on('click', function() {
 
-        var player_name_array = [];
+        //remove clear click listeners
+        $('.name_buttons .clear').off('click');
 
-        $('.name_wrapper .letter').each(function( index ) {
-            var letter = $(this).text();
-            player_name_array.push(letter);
+        //remove submit listener
+        $('.name_buttons .submit').off('click');
+
+        $.when( $('.name_cta, .name_wrapper, .name_buttons').fadeOut('fast') ).then(function() {
+            console.log('stuff faded out');
+            $('.execution_stand').fadeIn('slow');
         });
 
-        console.log('player_name_array:', player_name_array);
-
-        var player_name = player_name_array.join('');
-        console.log('player name: ', player_name);
-
-        if ( player_name.length === 0 ) {
-            player_name = 'guest';
-        }
-        else if ( player_name.length > 20 ) {
-            player_name = player_name.substring(0, 20);
-        }
-
-        onerope.game_controller.set_player_name(player_name);
+        set_player_name();
 
     });
+}
+
+function set_player_name() {
+    var player_name_array = [];
+
+    $('.name_wrapper .letter').each(function( index ) {
+        var letter = $(this).text();
+        player_name_array.push(letter);
+    });
+
+    console.log('player_name_array:', player_name_array);
+
+    var player_name = player_name_array.join('');
+    console.log('player name: ', player_name);
+
+    if ( player_name.length === 0 ) {
+        player_name = 'guest';
+    }
+    else if ( player_name.length > 20 ) {
+        player_name = player_name.substring(0, 20);
+    }
+
+    onerope.game_controller.set_player_name(player_name);
 }
 
 player_name_listeners_on();
