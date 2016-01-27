@@ -140,20 +140,41 @@ body {
 /* ==== Name Buttons ==== */
 .name_buttons {
     clear: both;
-    display: inline-block;
     color: #fff;
     padding-top: 40px;
+    padding-bottom: 40px;
     font-family: 'Short Stack', cursive;
 }
 
 .name_buttons div {
     cursor: pointer;
-    display: inline;
+    display: inline-block;
     border: 1px dotted #444;
     padding: 10px 20px;
 }
 
 /* ==== SCOREBOARD ==== */
+
+.leaderboard {
+    font-family: 'Short Stack', cursive;
+    font-size: 14px;
+    color: #fff;
+}
+
+.leaderboard .player {
+    clear: both;
+    text-align: left;
+    padding: 6px;
+    border-bottom: 1px dotted #444;
+}
+
+.leaderboard .player > div {
+    display: inline;
+}
+
+.leaderboard .player .stat {
+    float: right;
+}
 
 /* MOBILE */
 @media only screen and (max-width: 480px) {
