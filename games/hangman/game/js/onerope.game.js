@@ -37,7 +37,7 @@ onerope.game = {
             var player = value;
             onerope.game.players[player_slot] = player['status'];
 
-            onerope.game[onerope.game_name].initial_players(player_slot, player);
+            onerope.game[onerope.game_name].update_player(player_slot, player);
         });
 
         onerope.game_controller.set_player_status('ready');
@@ -52,6 +52,8 @@ onerope.game = {
         console.log('player slot: ', player_slot);
 
         onerope.game.players[player_slot] = player.status;
+
+        onerope.game[onerope.game_name].update_player(player_slot, player);
 
         if ( player.status === 'disconnected' ) {
             onerope.game[onerope.game_name].player_disconnected(player_slot, player);

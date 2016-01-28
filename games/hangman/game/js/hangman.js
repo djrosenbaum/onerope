@@ -6,11 +6,34 @@ var hangman = {
 
 onerope.game.hangman = hangman;
 
-hangman.initial_players = function( player_slot, player ) {
-    console.log('\n FUNCTION: onerope.game.initial_player_status');
+hangman.update_player = function( player_slot, player ) {
+    console.log('\n FUNCTION: hangman.update_player');
 
-    hangman.players[player_slot] = {};
+    hangman.players[player_slot] = hangman.players[player_slot] || {};
     hangman.players[player_slot]['name'] = player['name'];
+
+    var player_name = player['name'];
+
+    console.log('player slot:', player_slot);
+    console.log('player name:', player_name);
+
+    if ( $('.leaderboard .players .player[data-player-slot="' + player_slot + '"]').length > 0 ) {
+        console.log('player exists in the dom');
+        $('.leaderboard .players .player[data-player-slot="' + player_slot + '"] .name').text(player_name);
+    }
+    else {
+        console.log('player does not yet exist in the dom');
+        $('.leaderboard .players').append(
+            '<div class="player" data-player-slot="' + player_slot + '">' +
+                '<div class="name">' + player_name + '</div>' +
+                '<div class="stat">0/6</div>' +
+            '</div>'
+        );
+    }
+};
+
+hangman.remove_player = function( player_slot ) {
+    console.log('removing player');
 };
 
 //ANIMATED SCROLLING FOR AFTER USER GUESSES A LETTER
