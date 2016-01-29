@@ -33,7 +33,16 @@ hangman.update_player = function( player_slot, player ) {
 };
 
 hangman.remove_player = function( player_slot ) {
-    console.log('removing player');
+    console.log('\n FUNCTION: hangman.remove_player');
+
+    $('.leaderboard .players .player[data-player-slot="' + player_slot + '"]').remove();
+};
+
+hangman.player_disconnected = function( player_slot, player ) {
+    console.log('\n FUNCTION: hangman.player_disconnected');
+
+    hangman.remove_player( player_slot );
+    delete hangman.players[player_slot];
 };
 
 //ANIMATED SCROLLING FOR AFTER USER GUESSES A LETTER

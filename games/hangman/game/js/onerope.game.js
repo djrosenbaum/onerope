@@ -10,7 +10,7 @@ onerope.game = {
 
         onerope.game.players = {};
         onerope.game.started = false;
-        onerope.game.max_players = 2;
+        //onerope.game.max_players = 2;
 
         //stop the joining table animation
         onerope.tables.stop_join_table_animation();
