@@ -61,14 +61,14 @@ body {
 }
 
 .stand {
-    width:150px;
+    width:120px;
 }
 
 .body_part {
     position: absolute;
-    top: 30px;
-    left: 111px;
-    width: 75px;
+    top: 25px;
+    left: 90px;
+    width: 60px;
 }
 
 /* ==== LETTERS TO GUESS ==== */
