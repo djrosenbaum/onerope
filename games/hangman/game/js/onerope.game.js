@@ -9,6 +9,7 @@ onerope.game = {
         console.log('\n FUNCTION: onerope.game.init');
 
         onerope.game.players = {};
+        onerope.game.round = {};
         onerope.game.started = false;
         //onerope.game.max_players = 2;
 
@@ -20,6 +21,45 @@ onerope.game = {
 
         //turn on game listeners
         onerope.game_controller.listeners_on();
+    },
+
+    get_round : function(callback) {
+        console.log('\n FUNCTION: onerope.game.get_round');
+
+        var round;
+        var player_turn;
+
+        onerope.game_controller.game_ref.child('round').once('value', function(snapshot) {
+            if ( !snapshot.exists() ) {
+                //if snapshot does not exist, new game, round 1
+                round = 1;
+                player_turn = onerope.tables.player_slot;
+                onerope.game.set_round( round, player_turn, callback );
+            }
+            else {
+                round = snapshot.round;
+                player_turn = snapshot.player_turn;
+                onerope.game.round.interval = round;
+                onerope.game.round.player_turn = player_turn;
+                callback();
+            }
+        });
+    },
+
+    set_round : function( round, player_turn, callback ) {
+        console.log('\n FUNCTION: onerope.game.set_round');
+
+        onerope.game.round.interval = round;
+        onerope.game.round.player_turn = player_turn;
+
+        var round_data = {
+            round: round,
+            player_turn: player_turn
+        };
+
+        onerope.game_controller.game_ref.child('round').update(round_data, function() {
+            callback();
+        });
     },
 
     initial_player_status : function(snapshot) {

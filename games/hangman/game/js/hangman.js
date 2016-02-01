@@ -1,7 +1,8 @@
 var onerope = window.parent.onerope;
 
 var hangman = {
-    players : {}
+    players : {},
+    listeners_on : false
 };
 
 onerope.game.hangman = hangman;
@@ -55,6 +56,8 @@ var first_letter = false;
 var letters = $('.alphabet .letter');
 
 function player_name_listeners_on() {
+    hangman.listeners_on = true;
+
     letters.on('click', function () {
         if ( !first_letter ) {
             first_letter = true;
@@ -127,12 +130,26 @@ function set_player_name() {
     onerope.game_controller.set_player_name(player_name);
 }
 
+hangman.init = function() {
+    console.log('\n FUNCTION: hangman.init');
+
+    onerope.game.get_round(check_listeners);
+};
+
+function check_listeners() {
+    console.log('\n FUNCTION: check_listeners');
+
+    if ( !hangman.listeners_on ) {
+        player_name_listeners_on();
+    }
+}
+
 $(document).ready(function() {
 
     console.log('hangman loaded');
 
     onerope.game.init();
 
-    player_name_listeners_on();
+    hangman.init();
 
 });

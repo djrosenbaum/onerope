@@ -81,24 +81,6 @@ onerope.game_controller = {
         onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).onDisconnect().update({status: 'disconnected'});
     },
 
-    get_round_number : function() {
-        console.log('\n FUNCTION: onerope.game_controller.get_round_number');
-
-        onerope.game_controller.game_ref.child('round').once('value', function(snapshot) {
-            console.log('round exists:', snapshot.exists() );
-            return snapshot.exists();
-        });
-    },
-
-    set_round_number : function( round, player_slot ) {
-        console.log('\n FUNCTION: onerope.game_controller.set_round_number');
-
-        onerope.game_controller.game_ref.child('round').update({
-            round: round,
-            player_slot: player_slot
-        });
-    },
-
     listeners_on : function() {
         console.log('\n FUNCTION: onerope.game_controller.listeners_on');
 
