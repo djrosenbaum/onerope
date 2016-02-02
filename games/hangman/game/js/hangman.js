@@ -97,12 +97,13 @@ function player_name_listeners_on() {
         //remove submit listener
         $('.name_buttons .submit').off('click');
 
+        set_player_name();
+
         $.when( $('.name_cta, .name_wrapper, .name_buttons').fadeOut('fast') ).then(function() {
-            console.log('stuff faded out');
-            $('.execution_stand').fadeIn('slow');
+            console.log('upper zone faded out');
         });
 
-        set_player_name();
+
     });
 }
 
@@ -128,6 +129,8 @@ function set_player_name() {
 
     onerope.game_controller.set_player_name(player_name, function() {
         console.log('player name set');
+
+        //detect player type here
         detect_player_type();
     });
 }
@@ -136,11 +139,21 @@ function detect_player_type() {
     console.log('\n FUNCTION: detect player type');
 
     if ( onerope.game.round.player_turn === onerope.tables.player_slot ) {
-        console.log('setting a word');
+        setting_a_word();
     }
     else {
-        console.log('guessing a word');
+        guessing_a_word();
     }
+}
+
+function setting_a_word() {
+    console.log('setting a word');
+    $('.set_word_cta').fadeIn('slow');
+}
+
+function guessing_a_word() {
+    console.log('guessing a word');
+    $('.execution_stand').fadeIn('slow');
 }
 
 hangman.init = function() {

@@ -53,6 +53,16 @@ body {
     left: 10px;
 }
 
+/* ==== SET WORD ==== */
+
+.set_word_cta {
+    color: #fff;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    font-size: 20px;
+}
+
 /* ==== EXECUTION STAND ==== */
 .execution_stand {
     position: absolute;
