@@ -68,10 +68,10 @@ onerope.game_controller = {
         $('body').append('<iframe class="game_room" src="game/"></iframe>');
     },
 
-    set_player_name : function(player_name) {
+    set_player_name : function(player_name, callback) {
         console.log('\n FUNCTION: onerope.game_controller.set_player_name');
 
-        onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).update( {name: player_name} );
+        onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).update( {name: player_name}, callback );
     },
 
     set_player_status : function(status) {

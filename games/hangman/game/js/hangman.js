@@ -103,7 +103,6 @@ function player_name_listeners_on() {
         });
 
         set_player_name();
-
     });
 }
 
@@ -127,7 +126,21 @@ function set_player_name() {
         player_name = player_name.substring(0, 20);
     }
 
-    onerope.game_controller.set_player_name(player_name);
+    onerope.game_controller.set_player_name(player_name, function() {
+        console.log('player name set');
+        detect_player_type();
+    });
+}
+
+function detect_player_type() {
+    console.log('\n FUNCTION: detect player type');
+
+    if ( onerope.game.round.player_turn === onerope.tables.player_slot ) {
+        console.log('setting a word');
+    }
+    else {
+        console.log('guessing a word');
+    }
 }
 
 hangman.init = function() {
