@@ -65,7 +65,6 @@ function player_name_listeners_on() {
         }
 
         var letter = $(this).text();
-
         console.log('letter: ', letter);
 
         $('.hangman_inner_wrapper .name_wrapper').append(
@@ -91,11 +90,8 @@ function player_name_listeners_on() {
 
     $('.name_buttons .submit').on('click', function() {
 
-        //remove clear click listeners
-        $('.name_buttons .clear').off('click');
-
-        //remove submit listener
-        $('.name_buttons .submit').off('click');
+        //turn off the listeners from name selection
+        player_name_listeners_off();
 
         set_player_name();
 
@@ -104,6 +100,36 @@ function player_name_listeners_on() {
         });
 
 
+    });
+}
+
+function player_name_listeners_off() {
+    console.log('\n FUNCTION: player_name_listeners_off');
+
+    //remove clear click listeners
+    $('.name_buttons .clear').off('click');
+
+    //remove submit listener
+    $('.name_buttons .submit').off('click');
+
+    letters.off('click');
+    letters.off('touchstart');
+    letters.off('touchend');
+}
+
+function set_word_listeners_on() {
+    console.log('\n FUNCTION: set_word_listeners_on');
+
+    letters.on('click', function () {
+
+        var letter = $(this).text();
+        console.log('letter: ', letter);
+
+        $('.hangman_inner_wrapper .set_word_wrapper').append(
+            '<div class="letter_underline">' +
+                '<div class="letter">' + letter + '</div>' +
+            '</div>'
+        );
     });
 }
 
@@ -148,7 +174,10 @@ function detect_player_type() {
 
 function setting_a_word() {
     console.log('setting a word');
-    $('.set_word_cta').fadeIn('slow');
+
+    set_word_listeners_on();
+
+    $('.set_word_cta, .name_buttons').fadeIn('slow');
 }
 
 function guessing_a_word() {
