@@ -131,6 +131,66 @@ function set_word_listeners_on() {
             '</div>'
         );
     });
+
+    letters.on('touchstart', function() {
+        letters.removeClass('active_letter');
+        $(this).addClass('active_letter');
+    });
+
+    letters.on('touchend', function() {
+        letters.removeClass('active_letter');
+    });
+
+    $('.clear').on('click', function() {
+        $('.hangman_inner_wrapper .set_word_wrapper').empty();
+    });
+
+    $('.submit').on('click', function() {
+
+        //turn off the listeners from name selection
+        set_word_listeners_off();
+
+        set_secret_word();
+
+        $.when( $('.name_cta, .name_wrapper, .name_buttons').fadeOut('fast') ).then(function() {
+            console.log('upper zone faded out');
+        });
+
+
+    });
+}
+
+function set_word_listeners_off() {
+    console.log('\n FUNCTION: set_word_listeners_off');
+
+    $('.clear').off('click');
+    $('.submit').off('click');
+
+    letters.off('click');
+    letters.off('touchstart');
+    letters.off('touchend');
+}
+
+function set_secret_word() {
+    console.log('\n FUNCTION: set_secret_word');
+
+    var secret_word_array = [];
+
+    $('.secret_word_wrapper .letter').each(function( index ) {
+        var letter = $(this).text();
+        secret_word_array.push(letter);
+    });
+
+    console.log('secret_word_array:', secret_word_array);
+
+    var secret_word = secret_word_array.join('');
+    console.log('secret word: ', secret_word);
+
+    onerope.game.set_secret_word(secret_word, function() {
+        console.log('secret word set');
+
+        //ready to start the game
+    });
 }
 
 function set_player_name() {
