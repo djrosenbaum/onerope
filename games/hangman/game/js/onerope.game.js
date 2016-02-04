@@ -131,6 +131,14 @@ onerope.game = {
         }
     },
 
+    set_secret_word : function(secret_word, callback) {
+        console.log('\n FUNCTION: onerope.game.set_secret_word');
+
+        onerope.game_controller.game_ref.child('round').update({secret_word: secret_word}, function() {
+            callback();
+        });
+    },
+
     update : function(snapshot) {
         console.log('\n FUNCTION: onerope.game.update');
 

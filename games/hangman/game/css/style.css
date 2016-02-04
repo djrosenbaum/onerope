@@ -154,7 +154,7 @@ body {
 }
 
 /* ==== Name Buttons ==== */
-.name_buttons {
+.word_controls {
     clear: both;
     color: #fff;
     padding-top: 40px;
@@ -162,7 +162,7 @@ body {
     font-family: 'Short Stack', cursive;
 }
 
-.name_buttons div {
+.word_controls div {
     cursor: pointer;
     display: inline-block;
     border: 1px dotted #444;

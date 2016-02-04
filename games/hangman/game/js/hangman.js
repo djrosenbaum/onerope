@@ -83,19 +83,19 @@ function player_name_listeners_on() {
         letters.removeClass('active_letter');
     });
 
-    $('.name_buttons .clear').on('click', function() {
+    $('.clear').on('click', function() {
         first_letter = true;
         $('.hangman_inner_wrapper .name_wrapper').empty();
     });
 
-    $('.name_buttons .submit').on('click', function() {
+    $('.submit').on('click', function() {
 
         //turn off the listeners from name selection
         player_name_listeners_off();
 
         set_player_name();
 
-        $.when( $('.name_cta, .name_wrapper, .name_buttons').fadeOut('fast') ).then(function() {
+        $.when( $('.name_cta, .name_wrapper, .word_controls').fadeOut('fast') ).then(function() {
             console.log('upper zone faded out');
         });
 
@@ -107,10 +107,10 @@ function player_name_listeners_off() {
     console.log('\n FUNCTION: player_name_listeners_off');
 
     //remove clear click listeners
-    $('.name_buttons .clear').off('click');
+    $('.clear').off('click');
 
     //remove submit listener
-    $('.name_buttons .submit').off('click');
+    $('.submit').off('click');
 
     letters.off('click');
     letters.off('touchstart');
@@ -152,7 +152,7 @@ function set_word_listeners_on() {
 
         set_secret_word();
 
-        $.when( $('.name_cta, .name_wrapper, .name_buttons').fadeOut('fast') ).then(function() {
+        $.when( $('.name_cta, .name_wrapper, .word_controls').fadeOut('fast') ).then(function() {
             console.log('upper zone faded out');
         });
 
@@ -176,7 +176,7 @@ function set_secret_word() {
 
     var secret_word_array = [];
 
-    $('.secret_word_wrapper .letter').each(function( index ) {
+    $('.set_word_wrapper .letter').each(function( index ) {
         var letter = $(this).text();
         secret_word_array.push(letter);
     });
@@ -194,6 +194,8 @@ function set_secret_word() {
 }
 
 function set_player_name() {
+    console.log('\n FUNCTION: set_player_name');
+
     var player_name_array = [];
 
     $('.name_wrapper .letter').each(function( index ) {
@@ -237,7 +239,7 @@ function setting_a_word() {
 
     set_word_listeners_on();
 
-    $('.set_word_cta, .name_buttons').fadeIn('slow');
+    $('.set_word_cta, .word_controls').fadeIn('slow');
 }
 
 function guessing_a_word() {
