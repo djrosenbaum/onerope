@@ -210,16 +210,22 @@ function set_secret_word() {
         console.log('secret word set');
 
         //ready to start the game
+        onerope.game.start_round(secret_word, start_round);
     });
+}
+
+function start_round(secret_word) {
+    console.log('start the round');
 }
 
 // ==== GUESSING THE WORD SCREEN ==== //
 
 function guess_word_listeners_on() {
-    letters.on('click', function () {
-        var letter = $(this).text();
-        console.log('letter: ', letter);
+
+    $('word_to_guess').on('word_ready', function() {
+        console.log('word is ready to guess');
     });
+
 }
 
 
