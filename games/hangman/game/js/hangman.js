@@ -2,11 +2,13 @@ var onerope = window.parent.onerope;
 
 var hangman = {
     players : {},
-    listeners_on : false
+    listeners_on : false,
+    name_set : false
 };
 
 onerope.game.hangman = hangman;
 
+// ==== PLAYER MANAGEMENT ==== //
 hangman.update_player = function( player_slot, player ) {
     console.log('\n FUNCTION: hangman.update_player');
 
@@ -46,15 +48,43 @@ hangman.player_disconnected = function( player_slot, player ) {
     delete hangman.players[player_slot];
 };
 
-//ANIMATED SCROLLING FOR AFTER USER GUESSES A LETTER
-// $('#scrollable').animate({
-//     scrollLeft: 300},
-// 500);
+function set_player_name() {
+    console.log('\n FUNCTION: set_player_name');
 
-//ENTERING USER NAME
-var first_letter = false;
-var letters = $('.alphabet .letter');
+    var player_name_array = [];
 
+    $('.name_wrapper .letter').each(function( index ) {
+        var letter = $(this).text();
+        player_name_array.push(letter);
+    });
+
+    console.log('player_name_array:', player_name_array);
+
+    var player_name = player_name_array.join('');
+    console.log('player name: ', player_name);
+
+    if ( player_name.length === 0 ) {
+        player_name = 'guest';
+    }
+    else if ( player_name.length > 20 ) {
+        player_name = player_name.substring(0, 20);
+    }
+
+    onerope.game_controller.set_player_name(player_name, function() {
+        console.log('player name set');
+        hangman.name_set = true;
+
+        //detect player type here
+        detect_player_type();
+    });
+}
+
+// ==== SETTING THE PLAYER NAME SCREEN ==== //
+
+var first_letter = false; //user name initially set to guest, allows for first letter pressed to reset user name
+var letters = $('.alphabet .letter'); //selects all letters
+
+//turn on the player name listeners
 function player_name_listeners_on() {
     hangman.listeners_on = true;
 
@@ -113,10 +143,11 @@ function player_name_listeners_off() {
     $('.submit').off('click');
 
     letters.off('click');
-    letters.off('touchstart');
-    letters.off('touchend');
 }
 
+
+
+// ==== SETTING THE WORD FOR THE ROUND ==== //
 function set_word_listeners_on() {
     console.log('\n FUNCTION: set_word_listeners_on');
 
@@ -130,15 +161,6 @@ function set_word_listeners_on() {
                 '<div class="letter">' + letter + '</div>' +
             '</div>'
         );
-    });
-
-    letters.on('touchstart', function() {
-        letters.removeClass('active_letter');
-        $(this).addClass('active_letter');
-    });
-
-    letters.on('touchend', function() {
-        letters.removeClass('active_letter');
     });
 
     $('.clear').on('click', function() {
@@ -167,8 +189,6 @@ function set_word_listeners_off() {
     $('.submit').off('click');
 
     letters.off('click');
-    letters.off('touchstart');
-    letters.off('touchend');
 }
 
 function set_secret_word() {
@@ -193,35 +213,18 @@ function set_secret_word() {
     });
 }
 
-function set_player_name() {
-    console.log('\n FUNCTION: set_player_name');
+// ==== GUESSING THE WORD SCREEN ==== //
 
-    var player_name_array = [];
-
-    $('.name_wrapper .letter').each(function( index ) {
+function guess_word_listeners_on() {
+    letters.on('click', function () {
         var letter = $(this).text();
-        player_name_array.push(letter);
-    });
-
-    console.log('player_name_array:', player_name_array);
-
-    var player_name = player_name_array.join('');
-    console.log('player name: ', player_name);
-
-    if ( player_name.length === 0 ) {
-        player_name = 'guest';
-    }
-    else if ( player_name.length > 20 ) {
-        player_name = player_name.substring(0, 20);
-    }
-
-    onerope.game_controller.set_player_name(player_name, function() {
-        console.log('player name set');
-
-        //detect player type here
-        detect_player_type();
+        console.log('letter: ', letter);
     });
 }
+
+
+
+// ==== PLAYER ROLE ==== //
 
 function detect_player_type() {
     console.log('\n FUNCTION: detect player type');
@@ -244,22 +247,26 @@ function setting_a_word() {
 
 function guessing_a_word() {
     console.log('guessing a word');
+
+    guess_word_listeners_on();
+
     $('.execution_stand').fadeIn('slow');
 }
 
+
+// ==== INIT ==== //
 hangman.init = function() {
     console.log('\n FUNCTION: hangman.init');
 
-    onerope.game.get_round(check_listeners);
+    onerope.game.get_round(function() {
+        if ( !hangman.name_set ) {
+            player_name_listeners_on();
+        }
+        else {
+            //start another round
+        }
+    });
 };
-
-function check_listeners() {
-    console.log('\n FUNCTION: check_listeners');
-
-    if ( !hangman.listeners_on ) {
-        player_name_listeners_on();
-    }
-}
 
 $(document).ready(function() {
 
@@ -270,3 +277,9 @@ $(document).ready(function() {
     hangman.init();
 
 });
+
+
+//ANIMATED SCROLLING FOR AFTER USER GUESSES A LETTER
+// $('#scrollable').animate({
+//     scrollLeft: 300},
+// 500);
