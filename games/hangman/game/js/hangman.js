@@ -48,41 +48,24 @@ hangman.player_disconnected = function( player_slot, player ) {
     delete hangman.players[player_slot];
 };
 
-function set_player_name() {
-    console.log('\n FUNCTION: set_player_name');
-
-    var player_name_array = [];
-
-    $('.name_wrapper .letter').each(function( index ) {
-        var letter = $(this).text();
-        player_name_array.push(letter);
-    });
-
-    console.log('player_name_array:', player_name_array);
-
-    var player_name = player_name_array.join('');
-    console.log('player name: ', player_name);
-
-    if ( player_name.length === 0 ) {
-        player_name = 'guest';
-    }
-    else if ( player_name.length > 20 ) {
-        player_name = player_name.substring(0, 20);
-    }
-
-    onerope.game_controller.set_player_name(player_name, function() {
-        console.log('player name set');
-        hangman.name_set = true;
-
-        //detect player type here
-        detect_player_type();
-    });
-}
+// ==== GLOBAL VARS ==== //
+var letters = $('.alphabet .letter'); //selects all letters
+var game_message = $('.game_message div');
+var first_letter = false; //user name initially set to guest, allows for first letter pressed to reset user name
 
 // ==== SETTING THE PLAYER NAME SCREEN ==== //
 
-var first_letter = false; //user name initially set to guest, allows for first letter pressed to reset user name
-var letters = $('.alphabet .letter'); //selects all letters
+function enter_screen_player_name() {
+    //turn listeners on
+    player_name_listeners_on();
+
+    game_message.text('Enter Your Player Name');
+}
+
+function exit_screen_player_name() {
+    //turn listeners off
+    player_name_listeners_off();
+}
 
 //turn on the player name listeners
 function player_name_listeners_on() {
@@ -120,12 +103,13 @@ function player_name_listeners_on() {
 
     $('.submit').on('click', function() {
 
-        //turn off the listeners from name selection
-        player_name_listeners_off();
+        exit_screen_player_name();
 
         set_player_name();
 
-        $.when( $('.name_cta, .name_wrapper, .word_controls').fadeOut('fast') ).then(function() {
+        //SET GAME MESSAGE HERE
+
+        $.when( $('.name_wrapper, .word_controls').fadeOut('fast') ).then(function() {
             console.log('upper zone faded out');
         });
 
@@ -145,9 +129,47 @@ function player_name_listeners_off() {
     letters.off('click');
 }
 
+function set_player_name() {
+    console.log('\n FUNCTION: set_player_name');
+
+    var player_name_array = [];
+
+    $('.name_wrapper .letter').each(function( index ) {
+        var letter = $(this).text();
+        player_name_array.push(letter);
+    });
+
+    console.log('player_name_array:', player_name_array);
+
+    var player_name = player_name_array.join('');
+    console.log('player name: ', player_name);
+
+    if ( player_name.length === 0 ) {
+        player_name = 'guest';
+    }
+    else if ( player_name.length > 20 ) {
+        player_name = player_name.substring(0, 20);
+    }
+
+    onerope.game_controller.set_player_name(player_name, function() {
+        console.log('player name set');
+        hangman.name_set = true;
+
+        //detect player type here
+        detect_player_type();
+    });
+}
+
 
 
 // ==== SETTING THE WORD FOR THE ROUND ==== //
+function enter_screen_setting_a_word() {
+    //turn listeners on
+    set_word_listeners_on();
+
+    game_message.text('Your Turn To Enter A Word');
+}
+
 function set_word_listeners_on() {
     console.log('\n FUNCTION: set_word_listeners_on');
 
@@ -174,7 +196,9 @@ function set_word_listeners_on() {
 
         set_secret_word();
 
-        $.when( $('.name_cta, .name_wrapper, .word_controls').fadeOut('fast') ).then(function() {
+        //SET GAME MESSAGE HERE
+
+        $.when( $('.name_wrapper, .word_controls').fadeOut('fast') ).then(function() {
             console.log('upper zone faded out');
         });
 
@@ -219,6 +243,9 @@ function start_round(secret_word) {
 }
 
 // ==== GUESSING THE WORD SCREEN ==== //
+function enter_screen_guessing_a_word() {
+
+}
 
 function guess_word_listeners_on() {
 
@@ -236,10 +263,10 @@ function detect_player_type() {
     console.log('\n FUNCTION: detect player type');
 
     if ( onerope.game.round.player_turn === onerope.tables.player_slot ) {
-        setting_a_word();
+        enter_screen_setting_a_word();
     }
     else {
-        guessing_a_word();
+        enter_screen_guessing_a_word();
     }
 }
 
@@ -248,7 +275,7 @@ function setting_a_word() {
 
     set_word_listeners_on();
 
-    $('.set_word_cta, .word_controls').fadeIn('slow');
+    $('.word_controls').fadeIn('slow');
 }
 
 function guessing_a_word() {
@@ -266,7 +293,7 @@ hangman.init = function() {
 
     onerope.game.get_round(function() {
         if ( !hangman.name_set ) {
-            player_name_listeners_on();
+            enter_screen_player_name();
         }
         else {
             //start another round

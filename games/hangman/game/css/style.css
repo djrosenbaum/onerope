@@ -37,15 +37,16 @@ body {
     height: 200px;
 }
 
-/* ==== NAME PROMPT ==== */
-
-.name_cta {
+/* ==== GAME MESSAGE ==== */
+.game_message {
     color: #fff;
     position: absolute;
     top: 20px;
     left: 10px;
     font-size: 20px;
 }
+
+/* ==== NAME PROMPT ==== */
 
 .name_wrapper {
     position: absolute;
@@ -54,14 +55,6 @@ body {
 }
 
 /* ==== SET WORD ==== */
-
-.set_word_cta {
-    color: #fff;
-    position: absolute;
-    top: 20px;
-    left: 10px;
-    font-size: 20px;
-}
 
 .set_word_wrapper {
     position: absolute;
