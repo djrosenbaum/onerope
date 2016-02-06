@@ -56,14 +56,12 @@ var first_letter = false; //user name initially set to guest, allows for first l
 // ==== SETTING THE PLAYER NAME SCREEN ==== //
 
 function enter_screen_player_name() {
-    //turn listeners on
     player_name_listeners_on();
 
     game_message.text('Enter Your Player Name');
 }
 
 function exit_screen_player_name() {
-    //turn listeners off
     player_name_listeners_off();
 }
 
@@ -164,10 +162,11 @@ function set_player_name() {
 
 // ==== SETTING THE WORD FOR THE ROUND ==== //
 function enter_screen_setting_a_word() {
-    //turn listeners on
     set_word_listeners_on();
 
     game_message.text('Your Turn To Enter A Word');
+
+    $('.word_controls').fadeIn('slow');
 }
 
 function set_word_listeners_on() {
@@ -255,6 +254,20 @@ function guess_word_listeners_on() {
 
 }
 
+// ==== MESSAGE HANDLER ==== //
+hangman.update = function(snapshot) {
+    console.log('update the game');
+
+    console.log( snapshot.key() );
+    console.log( snapshot.val() );
+
+    var update = snapshot.val();
+
+    if ( update.secret_word ) {
+        //SECRET WORD SET
+        console.log('secret word was set');
+    }
+};
 
 
 // ==== PLAYER ROLE ==== //
@@ -268,14 +281,6 @@ function detect_player_type() {
     else {
         enter_screen_guessing_a_word();
     }
-}
-
-function setting_a_word() {
-    console.log('setting a word');
-
-    set_word_listeners_on();
-
-    $('.word_controls').fadeIn('slow');
 }
 
 function guessing_a_word() {
