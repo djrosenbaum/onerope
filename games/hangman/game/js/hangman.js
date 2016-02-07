@@ -63,10 +63,20 @@ function enter_screen_player_name() {
     player_name_listeners_on();
 
     game_message.text('Enter Your Player Name');
+    set_game_status('Player Name');
 }
 
 function exit_screen_player_name() {
     player_name_listeners_off();
+
+    set_player_name();
+
+    //SET GAME MESSAGE HERE
+
+    $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
+        console.log('upper zone faded out');
+        empty_hangman_text();
+    });
 }
 
 //turn on the player name listeners
@@ -104,19 +114,7 @@ function player_name_listeners_on() {
     });
 
     $('.submit').on('click', function() {
-
         exit_screen_player_name();
-
-        set_player_name();
-
-        //SET GAME MESSAGE HERE
-
-        $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
-            console.log('upper zone faded out');
-            empty_hangman_text();
-        });
-
-
     });
 }
 
@@ -173,12 +171,24 @@ function enter_screen_setting_word() {
     set_word_listeners_on();
 
     game_message.text('Your Turn To Enter A Word');
+    set_game_status('Set Secret Word');
 
     $('.word_controls').fadeIn('slow');
 }
 
 function exit_screen_setting_word() {
     console.log('\n FUNCTION: exit_screen_setting_word');
+
+    set_word_listeners_off();
+
+    set_secret_word();
+
+    //SET GAME MESSAGE HERE
+
+    $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
+        console.log('upper zone faded out');
+        empty_hangman_text();
+    });
 }
 
 function set_word_listeners_on() {
@@ -201,20 +211,7 @@ function set_word_listeners_on() {
     });
 
     $('.submit').on('click', function() {
-
-        //turn off the listeners from name selection
-        set_word_listeners_off();
-
-        set_secret_word();
-
-        //SET GAME MESSAGE HERE
-
-        $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
-            console.log('upper zone faded out');
-            empty_hangman_text();
-        });
-
-
+        exit_screen_setting_word();
     });
 }
 
@@ -250,12 +247,6 @@ function set_secret_word() {
     });
 }
 
-function layout_letters() {
-
-
-
-}
-
 // ==== GUESSING THE WORD SCREEN ==== //
 function enter_screen_guessing_a_word() {
     console.log('\n FUNCTION: enter_screen_guessing_a_word');
@@ -263,6 +254,9 @@ function enter_screen_guessing_a_word() {
     hangman.player_role = 'guesser';
 
     $('.execution_stand').fadeIn('slow');
+
+    game_message.text('');
+    set_game_status('Waiting For Word...');
 }
 
 function guess_word_listeners_on() {
@@ -272,6 +266,29 @@ function guess_word_listeners_on() {
         console.log('word is ready to guess');
     });
 
+}
+
+function layout_letters() {
+    var word = hangman.secret_word;
+
+    for ( var i=0; i<word.length; i++ ) {
+
+        if ( word[i] === ' ' ) {
+            hangman_text.append(
+                '<div class="letter_space"></div>'
+            );
+        }
+        else {
+            hangman_text.append(
+                '<div class="letter_underline">' +
+                    '<div class="letter">' + word[i] + '</div>' +
+                '</div>'
+            );
+        }
+
+    }
+
+    set_game_status('Guess a Letter');
 }
 
 // ==== MESSAGE HANDLER ==== //
@@ -291,7 +308,7 @@ hangman.update = function(snapshot) {
 
 // ==== GENERAL GAME FUNCTIONS ==== //
 
-function start_round(secret_word) {
+function start_round() {
     console.log('\n FUNCTION: start_round');
 
     //SECRET WORD SET
@@ -318,6 +335,10 @@ function empty_hangman_text() {
     hangman_text.empty();
 
     hangman_text.show();
+}
+
+function set_game_status(status_message) {
+    $('.game_status').text(status_message);
 }
 
 
