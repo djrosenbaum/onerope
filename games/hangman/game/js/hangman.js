@@ -3,7 +3,8 @@ var onerope = window.parent.onerope;
 var hangman = {
     players : {},
     listeners_on : false,
-    name_set : false
+    name_set : false,
+    secret_word : null
 };
 
 onerope.game.hangman = hangman;
@@ -51,11 +52,14 @@ hangman.player_disconnected = function( player_slot, player ) {
 // ==== GLOBAL VARS ==== //
 var letters = $('.alphabet .letter'); //selects all letters
 var game_message = $('.game_message div');
+var hangman_text = $('.hangman_text');
 var first_letter = false; //user name initially set to guest, allows for first letter pressed to reset user name
 
 // ==== SETTING THE PLAYER NAME SCREEN ==== //
 
 function enter_screen_player_name() {
+    generate_hangman_text('guest');
+
     player_name_listeners_on();
 
     game_message.text('Enter Your Player Name');
@@ -72,13 +76,13 @@ function player_name_listeners_on() {
     letters.on('click', function () {
         if ( !first_letter ) {
             first_letter = true;
-            $('.hangman_inner_wrapper .name_wrapper').empty();
+            empty_hangman_text();
         }
 
         var letter = $(this).text();
         console.log('letter: ', letter);
 
-        $('.hangman_inner_wrapper .name_wrapper').append(
+        hangman_text.append(
             '<div class="letter_underline">' +
                 '<div class="letter">' + letter + '</div>' +
             '</div>'
@@ -96,7 +100,7 @@ function player_name_listeners_on() {
 
     $('.clear').on('click', function() {
         first_letter = true;
-        $('.hangman_inner_wrapper .name_wrapper').empty();
+        empty_hangman_text();
     });
 
     $('.submit').on('click', function() {
@@ -107,8 +111,9 @@ function player_name_listeners_on() {
 
         //SET GAME MESSAGE HERE
 
-        $.when( $('.name_wrapper, .word_controls').fadeOut('fast') ).then(function() {
+        $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
             console.log('upper zone faded out');
+            empty_hangman_text();
         });
 
 
@@ -132,7 +137,7 @@ function set_player_name() {
 
     var player_name_array = [];
 
-    $('.name_wrapper .letter').each(function( index ) {
+    $('.hangman_text .letter').each(function( index ) {
         var letter = $(this).text();
         player_name_array.push(letter);
     });
@@ -153,20 +158,27 @@ function set_player_name() {
         console.log('player name set');
         hangman.name_set = true;
 
-        //detect player type here
-        detect_player_type();
+        detect_player_role();
     });
 }
 
 
 
 // ==== SETTING THE WORD FOR THE ROUND ==== //
-function enter_screen_setting_a_word() {
+function enter_screen_setting_word() {
+    console.log('\n FUNCTION: enter_screen_setting_word');
+
+    hangman.player_role = 'setter';
+
     set_word_listeners_on();
 
     game_message.text('Your Turn To Enter A Word');
 
     $('.word_controls').fadeIn('slow');
+}
+
+function exit_screen_setting_word() {
+    console.log('\n FUNCTION: exit_screen_setting_word');
 }
 
 function set_word_listeners_on() {
@@ -177,7 +189,7 @@ function set_word_listeners_on() {
         var letter = $(this).text();
         console.log('letter: ', letter);
 
-        $('.hangman_inner_wrapper .set_word_wrapper').append(
+        $('.hangman_inner_wrapper .hangman_text').append(
             '<div class="letter_underline">' +
                 '<div class="letter">' + letter + '</div>' +
             '</div>'
@@ -185,7 +197,7 @@ function set_word_listeners_on() {
     });
 
     $('.clear').on('click', function() {
-        $('.hangman_inner_wrapper .set_word_wrapper').empty();
+        empty_hangman_text();
     });
 
     $('.submit').on('click', function() {
@@ -197,8 +209,9 @@ function set_word_listeners_on() {
 
         //SET GAME MESSAGE HERE
 
-        $.when( $('.name_wrapper, .word_controls').fadeOut('fast') ).then(function() {
+        $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
             console.log('upper zone faded out');
+            empty_hangman_text();
         });
 
 
@@ -219,7 +232,7 @@ function set_secret_word() {
 
     var secret_word_array = [];
 
-    $('.set_word_wrapper .letter').each(function( index ) {
+    $('.hangman_text .letter').each(function( index ) {
         var letter = $(this).text();
         secret_word_array.push(letter);
     });
@@ -237,16 +250,23 @@ function set_secret_word() {
     });
 }
 
-function start_round(secret_word) {
-    console.log('start the round');
+function layout_letters() {
+
+
+
 }
 
 // ==== GUESSING THE WORD SCREEN ==== //
 function enter_screen_guessing_a_word() {
+    console.log('\n FUNCTION: enter_screen_guessing_a_word');
 
+    hangman.player_role = 'guesser';
+
+    $('.execution_stand').fadeIn('slow');
 }
 
 function guess_word_listeners_on() {
+    console.log('\n FUNCTION: guess_word_listeners_on');
 
     $('word_to_guess').on('word_ready', function() {
         console.log('word is ready to guess');
@@ -256,7 +276,7 @@ function guess_word_listeners_on() {
 
 // ==== MESSAGE HANDLER ==== //
 hangman.update = function(snapshot) {
-    console.log('update the game');
+    console.log('\n FUNCTION: hangman.update');
 
     console.log( snapshot.key() );
     console.log( snapshot.val() );
@@ -264,33 +284,55 @@ hangman.update = function(snapshot) {
     var update = snapshot.val();
 
     if ( update.secret_word ) {
-        //SECRET WORD SET
-        console.log('secret word was set');
+        hangman.secret_word = update.secret_word;
+        start_round();
     }
 };
+
+// ==== GENERAL GAME FUNCTIONS ==== //
+
+function start_round(secret_word) {
+    console.log('\n FUNCTION: start_round');
+
+    //SECRET WORD SET
+    if ( hangman.player_role === 'guesser' ) {
+        layout_letters();
+    }
+}
+
+function generate_hangman_text(word) {
+    console.log('\n FUNCTION: generate_hangman_text');
+
+    empty_hangman_text();
+
+    for ( var i=0; i<word.length; i++ ) {
+        hangman_text.append(
+            '<div class="letter_underline">' +
+                '<div class="letter">' + word[i] + '</div>' +
+            '</div>'
+        );
+    }
+}
+
+function empty_hangman_text() {
+    hangman_text.empty();
+
+    hangman_text.show();
+}
 
 
 // ==== PLAYER ROLE ==== //
 
-function detect_player_type() {
-    console.log('\n FUNCTION: detect player type');
+function detect_player_role() {
+    console.log('\n FUNCTION: detect_player_role');
 
     if ( onerope.game.round.player_turn === onerope.tables.player_slot ) {
-        enter_screen_setting_a_word();
+        enter_screen_setting_word();
     }
     else {
         enter_screen_guessing_a_word();
     }
 }
-
-function guessing_a_word() {
-    console.log('guessing a word');
-
-    guess_word_listeners_on();
-
-    $('.execution_stand').fadeIn('slow');
-}
-
 
 // ==== INIT ==== //
 hangman.init = function() {

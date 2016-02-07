@@ -46,21 +46,18 @@ body {
     font-size: 20px;
 }
 
-/* ==== NAME PROMPT ==== */
-
-.name_wrapper {
+/* ==== HANGMAN TEXT ==== */
+.hangman_text {
     position: absolute;
     bottom: 10px;
     left: 10px;
 }
 
-/* ==== SET WORD ==== */
-
-.set_word_wrapper {
+/*.word_to_guess {
     position: absolute;
-    left: 10px;
-    bottom: 10px;
-}
+    bottom: 50px;
+    left: 250px;
+}*/
 
 /* ==== EXECUTION STAND ==== */
 .execution_stand {
@@ -81,12 +78,6 @@ body {
 }
 
 /* ==== LETTERS TO GUESS ==== */
-
-.word_to_guess {
-    position: absolute;
-    bottom: 50px;
-    left: 250px;
-}
 
 .letter_underline {
     background-image: url(../images/letter_underline.png);
@@ -183,6 +174,15 @@ body {
 
 .leaderboard .player .stat {
     float: right;
+}
+
+/* ==== MISC ==== */
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;           /* non-prefixed version */
 }
 
 /* MOBILE */
