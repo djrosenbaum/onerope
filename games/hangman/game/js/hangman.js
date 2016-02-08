@@ -204,6 +204,8 @@ function set_word_listeners_on() {
                 '<div class="letter">' + letter + '</div>' +
             '</div>'
         );
+
+        resize_word_layout();
     });
 
     $('.clear').on('click', function() {
@@ -281,13 +283,14 @@ function layout_letters() {
         else {
             hangman_text.append(
                 '<div class="letter_underline">' +
-                    '<div class="letter">' + word[i] + '</div>' +
+                    '<div class="letter" style="visibility:hidden;">' + word[i] + '</div>' +
                 '</div>'
             );
         }
 
     }
 
+    resize_word_layout();
     set_game_status('Guess a Letter');
 }
 
@@ -334,11 +337,28 @@ function generate_hangman_text(word) {
 function empty_hangman_text() {
     hangman_text.empty();
 
+    reset_word_layout();
+
     hangman_text.show();
 }
 
 function set_game_status(status_message) {
     $('.game_status').text(status_message);
+}
+
+function resize_word_layout() {
+    var left_position = parseInt( $('.hangman_text').css('left'), 10 );
+    var total_letters = $('.hangman_text > div').length;
+    var letter_width = 45;
+    var right_padding = 50;
+    var total_width = left_position + (total_letters * letter_width) + right_padding;
+    hangman_text.css('width', (total_letters * letter_width) + 'px');
+    $('.horizontal_spacer').css('width', total_width + 'px');
+}
+
+function reset_word_layout() {
+    hangman_text.css('width', '');
+    $('.horizontal_spacer').css('width', '');
 }
 
 
