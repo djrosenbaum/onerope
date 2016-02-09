@@ -192,6 +192,10 @@ body {
   user-select: none;           /* non-prefixed version */
 }
 
+.invisible {
+    visibility: hidden;
+}
+
 /* MOBILE */
 @media only screen and (max-width: 480px) {
 

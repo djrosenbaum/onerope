@@ -199,7 +199,7 @@ function set_word_listeners_on() {
         var letter = $(this).text();
         console.log('letter: ', letter);
 
-        $('.hangman_inner_wrapper .hangman_text').append(
+        hangman_text.append(
             '<div class="letter_underline">' +
                 '<div class="letter">' + letter + '</div>' +
             '</div>'
@@ -261,14 +261,56 @@ function enter_screen_guessing_a_word() {
     set_game_status('Waiting For Word...');
 }
 
+function exit_screen_guessing_a_word() {
+
+}
+
 function guess_word_listeners_on() {
     console.log('\n FUNCTION: guess_word_listeners_on');
 
-    $('word_to_guess').on('word_ready', function() {
-        console.log('word is ready to guess');
+    letters.on('click', function () {
+
+        var letter = $(this).text();
+        console.log('letter: ', letter);
+
+        check_letter(letter);
+        // resize_word_layout();
     });
 
 }
+
+function guess_word_listeners_off() {
+    console.log('\n FUNCTION: guess_word_listeners_off');
+}
+
+function check_letter(letter) {
+    console.log('\n FUNCTION: check_letter');
+
+    if ( $('.letter_underline .letter[data-letter="' + letter + '"]').length ) {
+        $('.letter_underline .letter[data-letter="' + letter + '"]').removeClass('invisible');
+        check_for_winner();
+    }
+    else {
+        show_body_part();
+    }
+
+}
+
+function check_for_winner() {
+
+}
+
+function show_body_part() {
+    if ( $('.execution_stand .body_part.invisible').length ) {
+        $('.execution_stand .body_part.invisible').first().removeClass('invisible');
+    }
+    else {
+        //GAME OVER
+        console.log('game over');
+    }
+}
+
+
 
 function layout_letters() {
     var word = hangman.secret_word;
@@ -283,7 +325,7 @@ function layout_letters() {
         else {
             hangman_text.append(
                 '<div class="letter_underline">' +
-                    '<div class="letter" style="visibility:hidden;">' + word[i] + '</div>' +
+                    '<div class="letter invisible" data-letter="' + word[i] + '">' + word[i] + '</div>' +
                 '</div>'
             );
         }
@@ -291,6 +333,7 @@ function layout_letters() {
     }
 
     resize_word_layout();
+    guess_word_listeners_on();
     set_game_status('Guess a Letter');
 }
 
