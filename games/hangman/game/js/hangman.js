@@ -273,8 +273,10 @@ function guess_word_listeners_on() {
         var letter = $(this).text();
         console.log('letter: ', letter);
 
-        check_letter(letter);
-        // resize_word_layout();
+        if ( !$(this).hasClass('selected') ) {
+            $(this).addClass('selected');
+            check_letter(letter);
+        }
     });
 
 }

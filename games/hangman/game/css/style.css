@@ -1,6 +1,5 @@
 body {
     font-family: arial;
-    text-shadow: 0 1px 0 #f3f3f3;
     background-color: #333;
 }
 
@@ -136,9 +135,9 @@ body {
     font-size: 30px;
 }
 
-/*.alphabet .letter:hover {
-    background-color: #777;
-}*/
+.alphabet .letter.selected {
+    color:#555;
+}
 
 .alphabet .active_letter {
     background-color: #777;
