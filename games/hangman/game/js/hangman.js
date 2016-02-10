@@ -297,7 +297,14 @@ function check_letter(letter) {
 }
 
 function check_for_winner() {
+    console.log('\n FUNCTION: check_for_winner');
 
+    if ( $('.letter_underline .letter.invisible').length ) {
+        console.log('not a winner');
+    }
+    else {
+        console.log('we have a winner');
+    }
 }
 
 function show_body_part() {
