@@ -137,6 +137,12 @@ onerope.game = {
         onerope.game_controller.game_ref.child('round').update({secret_word: secret_word}, callback);
     },
 
+    set_player_score : function(player_score, callback) {
+        console.log('\n FUNCTION: onerope.game.set_player_score');
+
+        onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).update( {score: player_score}, callback );
+    },
+
     start_round : function(secret_word, callback) {
         console.log('\n FUNCTION: onerope.game.start_round');
 

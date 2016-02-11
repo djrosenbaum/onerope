@@ -4,7 +4,8 @@ var hangman = {
     players : {},
     listeners_on : false,
     name_set : false,
-    secret_word : null
+    secret_word : null,
+    stats: 0
 };
 
 onerope.game.hangman = hangman;
@@ -310,8 +311,18 @@ function check_for_winner() {
 }
 
 function show_body_part() {
+    //if there are still hangman body parts to show
     if ( $('.execution_stand .body_part.invisible').length ) {
+        //show the next body part
         $('.execution_stand .body_part.invisible').first().removeClass('invisible');
+        //increase the mistakes
+        hangman.stats += 1;
+        //update the leaderboard
+        onerope.game.set_player_score(hangman.stats, function() {
+            //freeze selecting another letter
+            //allow next letter to get selected
+            console.log('update player score');
+        });
     }
     else {
         //GAME OVER
