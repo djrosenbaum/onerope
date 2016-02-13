@@ -307,7 +307,12 @@ function check_for_winner() {
     }
     else {
         console.log('we have a winner');
+        announce_winner();
     }
+}
+
+function announce_winner() {
+    console.log('\n FUNCTION: announce_winner');
 }
 
 function show_body_part() {
