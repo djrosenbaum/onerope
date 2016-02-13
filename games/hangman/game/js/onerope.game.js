@@ -5,7 +5,7 @@ onerope.game = {};
 
 onerope.game = {
 
-    init : function() {
+    init : function(callback) {
         console.log('\n FUNCTION: onerope.game.init');
 
         onerope.game.players = {};
@@ -20,7 +20,7 @@ onerope.game = {
         onerope.game_controller.listeners_off();
 
         //turn on game listeners
-        onerope.game_controller.listeners_on();
+        onerope.game_controller.listeners_on(callback);
     },
 
     get_round : function(callback) {
@@ -31,13 +31,17 @@ onerope.game = {
 
         onerope.game_controller.game_ref.child('round').once('value', function(snapshot) {
             if ( !snapshot.exists() ) {
+                console.log('snapshot does not exit yet');
                 //if snapshot does not exist, new game, round 1
                 round = 1;
                 player_turn = onerope.tables.player_slot;
                 onerope.game.set_round( round, player_turn, callback );
             }
             else {
+                console.log('snapshot exists');
+                console.log(snapshot.val());
                 round = snapshot.round;
+                console.log('round: ', round);
                 player_turn = snapshot.player_turn;
                 onerope.game.round.interval = round;
                 onerope.game.round.player_turn = player_turn;
@@ -62,7 +66,7 @@ onerope.game = {
         });
     },
 
-    initial_player_status : function(snapshot) {
+    initial_player_status : function(snapshot, callback) {
         console.log('\n FUNCTION: onerope.game.initial_player_status');
 
         //console.log('checking player status');

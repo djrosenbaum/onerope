@@ -470,6 +470,8 @@ hangman.init = function() {
     console.log('\n FUNCTION: hangman.init');
 
     onerope.game.get_round(function() {
+
+
         if ( !hangman.name_set ) {
             enter_screen_player_name();
         }
@@ -483,9 +485,9 @@ $(document).ready(function() {
 
     console.log('hangman loaded');
 
-    onerope.game.init();
-
-    hangman.init();
+    onerope.game.init(function() {
+        hangman.init();
+    });
 
 });
 
