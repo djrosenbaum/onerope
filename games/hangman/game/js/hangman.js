@@ -59,6 +59,10 @@ var first_letter = false; //user name initially set to guest, allows for first l
 // ==== SETTING THE PLAYER NAME SCREEN ==== //
 
 function enter_screen_player_name() {
+    console.log('\n FUNCTION: enter_screen_player_name');
+
+    set_screen('player_name');
+
     generate_hangman_text('guest');
 
     player_name_listeners_on();
@@ -68,6 +72,8 @@ function enter_screen_player_name() {
 }
 
 function exit_screen_player_name() {
+    console.log('\n FUNCTION: exit_screen_player_name');
+
     player_name_listeners_off();
 
     set_player_name();
@@ -82,6 +88,8 @@ function exit_screen_player_name() {
 
 //turn on the player name listeners
 function player_name_listeners_on() {
+    console.log('\n FUNCTION: player_name_listeners_on');
+
     hangman.listeners_on = true;
 
     letters.on('click', function () {
@@ -166,6 +174,8 @@ function set_player_name() {
 // ==== SETTING THE WORD FOR THE ROUND ==== //
 function enter_screen_setting_word() {
     console.log('\n FUNCTION: enter_screen_setting_word');
+
+    set_screen('setting_word');
 
     hangman.player_role = 'setter';
 
@@ -254,7 +264,11 @@ function set_secret_word() {
 function enter_screen_guessing_a_word() {
     console.log('\n FUNCTION: enter_screen_guessing_a_word');
 
+    set_screen('guessing_word');
+
     hangman.player_role = 'guesser';
+
+    $('.game_wrapper').data('screen','guessing');
 
     $('.execution_stand').fadeIn('slow');
 
@@ -313,6 +327,7 @@ function check_for_winner() {
 
 function announce_winner() {
     console.log('\n FUNCTION: announce_winner');
+
 }
 
 function show_body_part() {
@@ -400,6 +415,8 @@ function generate_hangman_text(word) {
             '</div>'
         );
     }
+
+    resize_word_layout();
 }
 
 function empty_hangman_text() {
@@ -441,6 +458,11 @@ function detect_player_role() {
     else {
         enter_screen_guessing_a_word();
     }
+}
+
+// ==== SET SCREEN ==== //
+function set_screen(screen_name) {
+    $('.game_wrapper').attr('data-screen', screen_name);
 }
 
 // ==== INIT ==== //

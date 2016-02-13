@@ -49,6 +49,17 @@ body {
 .hangman_text {
     position: absolute;
     bottom: 10px;
+}
+
+.game_wrapper[data-screen="player_name"] .hangman_text {
+    left: 10px;
+}
+
+.game_wrapper[data-screen="setting_word"] .hangman_text {
+    left: 10px;
+}
+
+.game_wrapper[data-screen="guessing_word"] .hangman_text {
     left: 120px;
 }
 
