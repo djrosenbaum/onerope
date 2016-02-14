@@ -141,26 +141,29 @@ onerope.tables = {
 
         var player_ref = onerope.tables.ref.child(table_name).child('players');
 
-        var player_slot = onerope.tables.get_player_slot(player_ref);
-        console.log('join table player slot: ', player_slot);
+        onerope.tables.get_player_slot(player_ref, function() {
 
-        var player_data = {};
-        player_data[player_slot] = true;
+            onerope.tables.start_join_table_animation();
 
-        onerope.tables.table = table_name;
-        onerope.tables.player_slot = player_slot;
+            var player_data = {};
+            player_data[onerope.tables.player_slot] = true;
 
-        //Add Player to Table
-        player_ref.update(player_data);
+            onerope.tables.table = table_name;
 
-        // Remove Player from members when player disconnects
-        player_ref.child(player_slot).onDisconnect().set(false);
+            //Add Player to Table
+            player_ref.update(player_data, function() {
+                // Remove Player from members when player disconnects
+                player_ref.child(onerope.tables.player_slot).onDisconnect().set(false, function() {
+                    //Initialize Game Controller
+                    onerope.game_controller.init();
+                });
+            });
 
-        //Initialize Game Controller
-        onerope.game_controller.init();
+        });
+
     },
 
-    get_player_slot : function(player_ref) {
+    get_player_slot : function(player_ref, callback) {
         console.log('\n FUNCTION: onerope.tables.get_player_slot');
 
         var player_slot;
@@ -176,17 +179,16 @@ onerope.tables = {
                     return true;
                 }
             });
+
+            //if no player slot available, show an alert if the room is full
+            if ( !player_slot ) {
+                alert('room full');
+            }
+            else {
+                onerope.tables.player_slot = player_slot;
+                callback();
+            }
         });
-
-        console.log('player slot: ', player_slot);
-
-        //show an alert if the room is full
-        if ( !player_slot ) {
-            alert('room full');
-            return false;
-        }
-        return player_slot;
-
     },
 
     start_join_table_animation: function() {
@@ -265,14 +267,8 @@ onerope.tables = {
             var table_name = $(this).attr('data-table-name');
             //console.log('table id: ', table_name);
 
-            onerope.tables.start_join_table_animation();
-
             onerope.tables.join_table(table_name);
         });
     }
 
 };
-
-$( document ).ready(function() {
-    onerope.tables.get_table_info();
-});
