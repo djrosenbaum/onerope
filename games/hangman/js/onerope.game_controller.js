@@ -5,9 +5,10 @@ onerope.game_controller = {
 
         //create a reference to the table
         onerope.game_controller.table_ref = onerope.ref.child('games').child(onerope.tables.table);
-        console.log('you are sitting at table: ', onerope.tables.table);
 
-        //console.log('you are player slot: ', onerope.tables.player_slot);
+        console.log('you are sitting at table: ', onerope.tables.table);
+        console.log('you are player slot: ', onerope.tables.player_slot);
+
         //TODO: check if only player at table, and no game in progress
         if ( onerope.tables.player_slot === 'player1') {
             onerope.game_controller.set_new_game();
@@ -24,13 +25,13 @@ onerope.game_controller = {
         onerope.game_controller.game_ref = onerope.game_controller.table_ref.child('game').push();
 
         //set the game id
-        onerope.game_controller.table_ref.update({game_id: onerope.game_controller.game_ref.key()});
-
-        //set player info
-        onerope.game_controller.set_player_name(onerope.player.player_name);
-
-        //join the game
-        onerope.game_controller.load_game();
+        onerope.game_controller.table_ref.update({game_id: onerope.game_controller.game_ref.key()}, function() {
+            //set player info
+            onerope.game_controller.set_player_name(onerope.player.player_name, function() {
+                //join the game
+                onerope.game_controller.load_game();
+            });
+        });
     },
 
     get_new_game : function() {
@@ -71,7 +72,10 @@ onerope.game_controller = {
     set_player_name : function(player_name, callback) {
         console.log('\n FUNCTION: onerope.game_controller.set_player_name');
 
-        onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).update( {name: player_name}, callback );
+        onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).update( {name: player_name}, function() {
+            console.log('callback - onerope.game_controller.set_player_name');
+            callback();
+        });
     },
 
     set_player_status : function(status, callback) {
@@ -79,7 +83,7 @@ onerope.game_controller = {
 
         onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).update( {status: status}, function() {
             onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).onDisconnect().update({status: 'disconnected'}, function() {
-                console.log('player status set on firebase');
+                console.log('callback - onerope.game_controller.set_player_status');
                 callback();
             });
         });
@@ -125,8 +129,9 @@ onerope.game_controller = {
 
     disconnect : function() {
         onerope.game_controller.listeners_off();
-        onerope.tables.ref.child(onerope.tables.table).child('players').child(onerope.tables.player_slot).set(false);
-        onerope.tables.joining = false;
+        onerope.tables.ref.child(onerope.tables.table).child('players').child(onerope.tables.player_slot).set(false, function() {
+            onerope.tables.joining = false;
+        });
     },
 
     return_to_tables : function() {

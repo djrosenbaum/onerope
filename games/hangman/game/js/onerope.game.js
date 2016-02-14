@@ -84,7 +84,10 @@ onerope.game = {
             onerope.game[onerope.game_name].update_player(player_slot, player);
         });
 
-        onerope.game_controller.set_player_status('ready');
+        onerope.game_controller.set_player_status('ready', function() {
+            console.log('callback from onerope.game.initial_player_status');
+            callback();
+        });
     },
 
     changed_player_status : function(snapshot) {
