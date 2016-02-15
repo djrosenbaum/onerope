@@ -40,11 +40,10 @@ onerope.game = {
             else {
                 console.log('snapshot exists');
                 console.log(snapshot.val());
-                round = snapshot.round;
+                round = snapshot.val();
                 console.log('round: ', round);
-                player_turn = snapshot.player_turn;
-                onerope.game.round.interval = round;
-                onerope.game.round.player_turn = player_turn;
+                onerope.game.round.interval = round.round;
+                onerope.game.round.player_turn = round.player_turn;
                 callback();
             }
         });
@@ -105,36 +104,6 @@ onerope.game = {
         if ( player.status === 'disconnected' ) {
             onerope.game[onerope.game_name].player_disconnected(player_slot, player);
             return;
-        }
-
-        if ( !onerope.game.started && onerope.game.max_players_ready() ) {
-            //room is ready to play
-
-            //remove game id
-            onerope.game_controller.table_ref.update({game_id: ''});
-
-            //start the countdown to start the game
-            onerope.game[onerope.game_name].start_the_countdown();
-        }
-    },
-
-    max_players_ready : function() {
-        console.log('\n FUNCTION: onerope.game.max_players_ready');
-
-        var total_players_ready = 0;
-
-        //loop through each player at the table and check their readiness status
-        _.each(onerope.game.players, function(value, key, list) {
-            var player_slot = key;
-            var player_status = value;
-
-            if ( player_status === 'ready' ) {
-                total_players_ready++;
-            }
-        });
-
-        if ( total_players_ready === onerope.game.max_players ) {
-            return true;
         }
     },
 

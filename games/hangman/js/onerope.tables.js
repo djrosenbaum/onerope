@@ -15,17 +15,24 @@ onerope.tables = {
 
         //loop through each table in the room
         onerope.tables.ref.once('value', function(snapshot) {
+            console.log('onerope.tables.ref.once');
+
             onerope.tables.check_tables(snapshot);
 
             //after finished checking tables, add listeners
             onerope.tables.add_listeners();
+
+            on_table_change();
         });
 
-        onerope.tables.ref.on('child_changed', function(snapshot) {
-            var value = snapshot.val();
-            var key = snapshot.key();
-            onerope.tables.check_table( value, key );
-        });
+        function on_table_change() {
+            onerope.tables.ref.on('child_changed', function(snapshot) {
+                console.log('onerope.tables.ref.on child_changed');
+                var value = snapshot.val();
+                var key = snapshot.key();
+                onerope.tables.check_table(value, key);
+            });
+        }
     },
 
     check_tables : function(snapshot) {

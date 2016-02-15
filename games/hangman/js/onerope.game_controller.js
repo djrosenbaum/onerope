@@ -54,10 +54,11 @@ onerope.game_controller = {
             }
 
             //set player info
-            onerope.game_controller.set_player_name('guest');
+            onerope.game_controller.set_player_name('guest', function() {
+                //join the game
+                onerope.game_controller.load_game();
+            });
 
-            //join the game
-            onerope.game_controller.load_game();
         });
 
     },
@@ -96,30 +97,37 @@ onerope.game_controller = {
 
         // ==== INITIAL PLAYERS ==== //
         function initial_players_on() {
+            console.log('initial_players_on');
             onerope.game_controller.game_ref.child('players').once('value', function(snapshot) {
                 console.log('ON INITIAL PLAYERS');
                 onerope.game.initial_player_status(snapshot, function() {
                     console.log('initial player status set');
+                    player_change_on();
                 });
             });
         }
 
         // ==== ON PLAYER CHANGE ==== //
         function player_change_on() {
+            console.log('player_change_on');
             onerope.game_controller.game_ref.child('players').on('child_changed', function(snapshot) {
                 console.log('ON PLAYER CHANGE');
                 onerope.game.changed_player_status(snapshot);
             });
+            game_message_on();
         }
 
         // ==== GAME MESSAGE ==== //
         function game_message_on() {
+            console.log('game_message_on');
             onerope.game_controller.game_ref.child('game').on('child_added', function(snapshot) {
                 console.log('ON GAME MESSAGE');
                 onerope.game.update(snapshot);
             });
+            callback();
         }
 
+        initial_players_on();
 
     },
 
