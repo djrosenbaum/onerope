@@ -39,7 +39,6 @@ onerope.game = {
             }
             else {
                 console.log('snapshot exists');
-                console.log(snapshot.val());
                 round = snapshot.val();
                 console.log('round: ', round);
                 onerope.game.round.interval = round.round;

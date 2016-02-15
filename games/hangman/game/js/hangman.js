@@ -196,9 +196,12 @@ function exit_screen_setting_word() {
 
     //SET GAME MESSAGE HERE
 
-    $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
-        console.log('upper zone faded out');
+    $.when( $('.hangman_text, .alphabet, .word_controls').fadeOut('fast') ).then(function() {
+        console.log('set word stuff faded out');
         empty_hangman_text();
+        game_message.text('');
+        set_game_status('');
+        $('.game_wrapper').slideUp('slow');
     });
 }
 
