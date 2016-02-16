@@ -186,6 +186,10 @@ body {
     border-bottom: 1px dotted #444;
 }
 
+.leaderboard .player.game_over {
+    color: #c33;
+}
+
 .leaderboard .player > div {
     display: inline;
 }

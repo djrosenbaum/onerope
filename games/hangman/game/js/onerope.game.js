@@ -115,7 +115,12 @@ onerope.game = {
     set_player_score : function(player_score, callback) {
         console.log('\n FUNCTION: onerope.game.set_player_score');
 
-        onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).update( {score: player_score}, callback );
+        onerope.game_controller.game_ref.child('game').push({
+            score: {
+                player_slot : onerope.tables.player_slot,
+                player_score : player_score
+            }
+        }, callback );
     },
 
     start_round : function(secret_word, callback) {

@@ -292,6 +292,7 @@ function guess_word_listeners_on() {
         console.log('letter: ', letter);
 
         if ( !$(this).hasClass('selected') ) {
+            guess_word_listeners_off();
             $(this).addClass('selected');
             check_letter(letter);
         }
@@ -301,6 +302,8 @@ function guess_word_listeners_on() {
 
 function guess_word_listeners_off() {
     console.log('\n FUNCTION: guess_word_listeners_off');
+
+    letters.off('click');
 }
 
 function check_letter(letter) {
@@ -321,6 +324,7 @@ function check_for_winner() {
 
     if ( $('.letter_underline .letter.invisible').length ) {
         console.log('not a winner');
+        guess_word_listeners_on();
     }
     else {
         console.log('we have a winner');
@@ -330,7 +334,6 @@ function check_for_winner() {
 
 function announce_winner() {
     console.log('\n FUNCTION: announce_winner');
-
 }
 
 function show_body_part() {
@@ -342,9 +345,9 @@ function show_body_part() {
         hangman.stats += 1;
         //update the leaderboard
         onerope.game.set_player_score(hangman.stats, function() {
-            //freeze selecting another letter
             //allow next letter to get selected
             console.log('update player score');
+            guess_word_listeners_on();
         });
     }
     else {
@@ -393,7 +396,26 @@ hangman.update = function(snapshot) {
         hangman.secret_word = update.secret_word;
         start_round();
     }
+    else if ( update.score ) {
+        var player_slot = update.score.player_slot;
+        var player_score = update.score.player_score;
+
+        console.log('player slot: ', player_slot);
+        console.log('player score: ', player_score);
+
+        update_score(player_slot, player_score);
+    }
 };
+
+function update_score(player_slot, player_score) {
+    console.log('\n FUNCTION: udpate_score');
+
+    $('.leaderboard .players .player[data-player-slot="' + player_slot + '"] .stat').text(player_score + '/6');
+
+    if ( player_score.toString() === '6' ) {
+        $('.leaderboard .players .player[data-player-slot="' + player_slot + '"]').addClass('game_over');
+    }
+}
 
 // ==== GENERAL GAME FUNCTIONS ==== //
 
