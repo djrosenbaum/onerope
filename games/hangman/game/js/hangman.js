@@ -347,7 +347,14 @@ function show_body_part() {
         onerope.game.set_player_score(hangman.stats, function() {
             //allow next letter to get selected
             console.log('update player score');
-            guess_word_listeners_on();
+
+            if ( hangman.stats === 6 ) {
+                console.log('game over');
+            }
+            else {
+                guess_word_listeners_on();
+            }
+
         });
     }
     else {
