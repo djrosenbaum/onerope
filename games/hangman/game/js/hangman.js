@@ -5,7 +5,8 @@ var hangman = {
     listeners_on : false,
     name_set : false,
     secret_word : null,
-    stats: 0
+    stats : 0,
+    round_started : false
 };
 
 onerope.game.hangman = hangman;
@@ -76,13 +77,12 @@ function exit_screen_player_name() {
 
     player_name_listeners_off();
 
-    set_player_name();
-
-    //SET GAME MESSAGE HERE
-
-    $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
-        console.log('upper zone faded out');
-        empty_hangman_text();
+    set_player_name(function() {
+        $.when( $('.hangman_text, .word_controls').fadeOut('fast') ).then(function() {
+            console.log('upper zone faded out');
+            empty_hangman_text();
+            detect_player_role();
+        });
     });
 }
 
@@ -139,7 +139,7 @@ function player_name_listeners_off() {
     letters.off('click');
 }
 
-function set_player_name() {
+function set_player_name(callback) {
     console.log('\n FUNCTION: set_player_name');
 
     var player_name_array = [];
@@ -165,7 +165,7 @@ function set_player_name() {
         console.log('player name set');
         hangman.name_set = true;
 
-        detect_player_role();
+        callback();
     });
 }
 
@@ -279,6 +279,10 @@ function enter_screen_guessing_a_word() {
     set_game_status('Waiting For Word...');
 
     game_over_listener_on();
+
+    if ( !hangman.round_started ) {
+        start_round();
+    }
 }
 
 function exit_screen_guessing_a_word() {
@@ -390,6 +394,8 @@ function game_over() {
 
 
 function layout_letters() {
+    console.log('\n FUNCTION: layout_letters');
+
     var word = hangman.secret_word;
 
     for ( var i=0; i<word.length; i++ ) {
@@ -425,7 +431,9 @@ hangman.update = function(snapshot) {
 
     if ( update.secret_word ) {
         hangman.secret_word = update.secret_word;
-        start_round();
+        if ( $('.game_wrapper').attr('data-screen') === "guessing_word" ) {
+            start_round();
+        }
     }
     else if ( update.score ) {
         var player_slot = update.score.player_slot;
@@ -452,6 +460,8 @@ function update_score(player_slot, player_score) {
 
 function start_round() {
     console.log('\n FUNCTION: start_round');
+
+    hangman.round_started = true;
 
     //SECRET WORD SET
     if ( hangman.player_role === 'guesser' ) {
