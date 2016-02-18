@@ -277,6 +277,8 @@ function enter_screen_guessing_a_word() {
 
     game_message.text('');
     set_game_status('Waiting For Word...');
+
+    game_over_listener_on();
 }
 
 function exit_screen_guessing_a_word() {
@@ -297,13 +299,20 @@ function guess_word_listeners_on() {
             check_letter(letter);
         }
     });
-
 }
 
 function guess_word_listeners_off() {
     console.log('\n FUNCTION: guess_word_listeners_off');
 
     letters.off('click');
+}
+
+function game_over_listener_on() {
+    $('.game_wrapper').on('game_over', game_over);
+}
+
+function game_over_listener_off() {
+    $('.game_wrapper').off('game_over');
 }
 
 function check_letter(letter) {
@@ -334,6 +343,14 @@ function check_for_winner() {
 
 function announce_winner() {
     console.log('\n FUNCTION: announce_winner');
+
+    //this function should broadcast that a player successfully guessed the word. Good Job!
+}
+
+function reveal_word_to_guess() {
+    console.log('\n FUNCTION: reveal_word_to_guess');
+
+    $('.letter.invisible').removeClass('invisible').addClass('missed');
 }
 
 function show_body_part() {
@@ -349,7 +366,9 @@ function show_body_part() {
             console.log('update player score');
 
             if ( hangman.stats === 6 ) {
+                //GAME OVER
                 console.log('game over');
+                $('.game_wrapper').trigger('game_over');
             }
             else {
                 guess_word_listeners_on();
@@ -360,7 +379,12 @@ function show_body_part() {
     else {
         //GAME OVER
         console.log('game over');
+        $('.game_wrapper').trigger('game_over');
     }
+}
+
+function game_over() {
+    reveal_word_to_guess();
 }
 
 
