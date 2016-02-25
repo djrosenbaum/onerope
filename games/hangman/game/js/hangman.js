@@ -64,6 +64,8 @@ function enter_screen_player_name() {
 
     set_screen('player_name');
 
+    $('.alphabet .backspace').show();
+
     generate_hangman_text('guest');
 
     player_name_listeners_on();
@@ -74,6 +76,8 @@ function enter_screen_player_name() {
 
 function exit_screen_player_name() {
     console.log('\n FUNCTION: exit_screen_player_name');
+
+    $('.alphabet .backspace').hide();
 
     player_name_listeners_off();
 
@@ -101,11 +105,13 @@ function player_name_listeners_on() {
 
         if ( $(this).hasClass('space') ) {
             hangman_text.append(
-                '<div class="letter_space"></div>'
+                '<div class="letter_space">' +
+                    '<div class="letter"> </div>' +
+                '</div>'
             );
         }
         else if ( $(this).hasClass('backspace') ) {
-            hangman_text.find('.letter_underline').last().remove();
+            hangman_text.find('> div').last().remove();
         }
         else {
             var letter = $(this).text();
@@ -190,6 +196,9 @@ function enter_screen_setting_word() {
 
     hangman.player_role = 'setter';
 
+    $('.alphabet .backspace').show();
+    $('.alphabet .space').show();
+
     set_word_listeners_on();
 
     game_message.text('Your Turn To Enter A Word');
@@ -202,6 +211,9 @@ function exit_screen_setting_word() {
     console.log('\n FUNCTION: exit_screen_setting_word');
 
     set_word_listeners_off();
+
+    $('.alphabet .backspace').hide();
+    $('.alphabet .space').hide();
 
     set_secret_word();
 
@@ -221,14 +233,26 @@ function set_word_listeners_on() {
 
     letters.on('click', function () {
 
-        var letter = $(this).text();
-        console.log('letter: ', letter);
+        if ( $(this).hasClass('space') ) {
+            hangman_text.append(
+                '<div class="letter_space">' +
+                    '<div class="letter"> </div>' +
+                '</div>'
+            );
+        }
+        else if ( $(this).hasClass('backspace') ) {
+            hangman_text.find('> div').last().remove();
+        }
+        else {
+            var letter = $(this).text();
+            console.log('letter: ', letter);
 
-        hangman_text.append(
-            '<div class="letter_underline">' +
-                '<div class="letter">' + letter + '</div>' +
-            '</div>'
-        );
+            hangman_text.append(
+                '<div class="letter_underline">' +
+                    '<div class="letter">' + letter + '</div>' +
+                '</div>'
+            );
+        }
 
         resize_word_layout();
     });
