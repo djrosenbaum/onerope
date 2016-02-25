@@ -93,19 +93,30 @@ function player_name_listeners_on() {
     hangman.listeners_on = true;
 
     letters.on('click', function () {
+
         if ( !first_letter ) {
             first_letter = true;
             empty_hangman_text();
         }
 
-        var letter = $(this).text();
-        console.log('letter: ', letter);
+        if ( $(this).hasClass('space') ) {
+            hangman_text.append(
+                '<div class="letter_space"></div>'
+            );
+        }
+        else if ( $(this).hasClass('backspace') ) {
+            hangman_text.find('.letter_underline').last().remove();
+        }
+        else {
+            var letter = $(this).text();
+            console.log('letter: ', letter);
 
-        hangman_text.append(
-            '<div class="letter_underline">' +
-                '<div class="letter">' + letter + '</div>' +
-            '</div>'
-        );
+            hangman_text.append(
+                '<div class="letter_underline">' +
+                    '<div class="letter">' + letter + '</div>' +
+                '</div>'
+            );
+        }
     });
 
     letters.on('touchstart', function() {
