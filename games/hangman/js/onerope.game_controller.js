@@ -1,21 +1,27 @@
 onerope.game_controller = {
 
     init : function() {
-        console.log('\n FUNCTION: onerope.game_controller.init');
+        console.groupCollapsed('onerope.game_controller.init');
 
-        //create a reference to the table
+        console.log('creating reference to table');
         onerope.game_controller.table_ref = onerope.ref.child('games').child(onerope.tables.table);
 
         console.log('you are sitting at table: ', onerope.tables.table);
         console.log('you are player slot: ', onerope.tables.player_slot);
 
         //TODO: check if only player at table, and no game in progress
-        if ( onerope.tables.player_slot === 'player1') {
+        console.log('TODO: check if only player at table');
+
+        if ( onerope.tables.player_slot === 'player1' ) {
+            console.log('setup new game');
             onerope.game_controller.set_new_game();
         }
         else {
+            console.log('get new game');
             onerope.game_controller.get_new_game();
         }
+
+        console.groupEnd();
     },
 
     set_new_game : function() {
