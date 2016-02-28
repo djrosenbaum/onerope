@@ -1,35 +1,41 @@
 // ==== ONEROPE.TABLES ==== //
 onerope.tables = {
-    ref : onerope.ref.child('tables'), //tables firebase ref
-    table_name : null, // string 'table_01'
-    player_slot : null, // string 'player1'
-    max_players : 10,
-    loading_animation : null, // setting timeout or clearing timeout
-    joining : false, // flag to prevent clicking multiple times on a table
+    ref: onerope.ref.child('tables'), //tables firebase ref
+    table_name: null, // string 'table_01'
+    player_slot: null, // string 'player1'
+    max_players: 10,
+    loading_animation: null, // setting timeout or clearing timeout
+    joining: false, // flag to prevent clicking multiple times on a table
 
     //temp variables for each table
-    total_players : 0,
+    total_players: 0,
 
     get_table_info : function() {
-        console.log('\n FUNCTION: onerope.tables.get_table_info');
+        console.groupCollapsed('onerope.tables.get_table_info');
 
-        //loop through each table in the room
+        console.log('looping through each table');
         onerope.tables.ref.once('value', function(snapshot) {
-            console.log('onerope.tables.ref.once');
+            console.groupCollapsed('onerope.tables.ref.once');
 
             onerope.tables.check_tables(snapshot);
+
+            console.groupEnd('onerope.tables.ref.once');
 
             //after finished checking tables, add listeners
             onerope.tables.add_listeners();
 
             on_table_change();
+
+            console.groupEnd('onerope.tables.get_table_info');
         });
 
         function on_table_change() {
             onerope.tables.ref.on('child_changed', function(snapshot) {
                 console.log('onerope.tables.ref.on child_changed');
+
                 var value = snapshot.val();
                 var key = snapshot.key();
+
                 onerope.tables.check_table(value, key);
             });
         }
