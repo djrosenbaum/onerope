@@ -13,41 +13,24 @@ onerope.tables = {
     get_table_info : function() {
         console.groupCollapsed('onerope.tables.get_table_info');
 
-        console.log('looping through each table');
+        console.log('fetching table data from firebase');
         onerope.tables.ref.once('value', function(snapshot) {
-            console.groupCollapsed('onerope.tables.ref.once');
 
             onerope.tables.check_tables(snapshot);
 
-            console.groupEnd('onerope.tables.ref.once');
+            console.groupEnd('onerope.tables.get_table_info');
 
             //after finished checking tables, add listeners
             onerope.tables.add_listeners();
-
-            on_table_change();
-
-            console.groupEnd('onerope.tables.get_table_info');
         });
-
-        function on_table_change() {
-            onerope.tables.ref.on('child_changed', function(snapshot) {
-                console.log('onerope.tables.ref.on child_changed');
-
-                var value = snapshot.val();
-                var key = snapshot.key();
-
-                onerope.tables.check_table(value, key);
-            });
-        }
     },
 
     check_tables : function(snapshot) {
-        console.log('\n FUNCTION: onerope.tables.check_tables');
+        //console.log('\n FUNCTION: onerope.tables.check_tables');
 
         //store the tables object
         var tables = snapshot.val();
         console.log('tables: ', tables);
-        console.log('');
 
         //loop through each table
         _.each(tables, function(value, key, list) {
@@ -59,13 +42,11 @@ onerope.tables = {
         });
     },
 
-    check_table : function(value, key) {
-        console.log('\n FUNCTION: onerope.tables.check_table');
+    check_table : function(table, table_name) {
+        // console.log('\n FUNCTION: onerope.tables.check_table');
 
-        var table = value;
-        var table_name = key;
-
-        console.log('checking table: ', table_name);
+        console.log('\n');
+        console.groupCollapsed('checking table: ', table_name);
 
         var players = table.players;
         console.log('players: ', players);
@@ -80,15 +61,16 @@ onerope.tables = {
             // console.log('value: ', value);
             onerope.tables.check_player(value, key);
         });
+        console.groupEnd('checking table: ', table_name);
 
         onerope.tables.set_table_info(table_name);
     },
 
     check_player : function(value, key) {
-        console.log('\n FUNCTION: onerope.tables.check_player');
+        //console.log('\n FUNCTION: onerope.tables.check_player');
 
         var player_slot = key;
-        console.log('player slot: ', player_slot);
+        console.log('\nplayer slot: ', player_slot);
 
         var player_status = value;
         console.log('player status: ', player_status);
@@ -102,20 +84,22 @@ onerope.tables = {
     },
 
     set_table_info : function(table_name) {
-        console.log('\n FUNCTION: onerope.tables.set_table_info');
+        //console.log('\n FUNCTION: onerope.tables.set_table_info');
 
-        console.log('table name: ', table_name);
+        console.groupCollapsed('set table: ', table_name);
         var $table = $('.table[data-table-name=' + table_name + ']');
 
         onerope.tables.set_table_availability($table);
 
         onerope.tables.set_total_players($table);
+        console.groupEnd('set table: ', table_name);
     },
 
     set_table_availability : function($table) {
         console.log('\n FUNCTION: onerope.tables.set_table_availability');
 
         var total_players = onerope.tables.total_players;
+        console.log('total players: ', total_players);
 
         //conditional to determine the availability of the table
         if ( total_players === onerope.tables.max_players ) {
@@ -141,7 +125,7 @@ onerope.tables = {
         var total_players = onerope.tables.total_players;
         console.log(total_players + '/' + onerope.tables.max_players);
 
-        console.log('$table: ', $table);
+        //console.log('$table: ', $table);
 
         $table.find('.table_player_status').html( total_players + '/' + onerope.tables.max_players);
         console.log(' ');
@@ -261,27 +245,41 @@ onerope.tables = {
     // },
 
     add_listeners: function() {
-        console.log('\n FUNCTION: onerope.tables.add_listeners');
+        console.groupCollapsed('onerope.tables.add_listeners');
+        //console.log('\n FUNCTION: onerope.tables.add_listeners');
 
         // ==== JOIN TABLE ==== //
+        console.log('adding table click listener');
         $('.tables').on('click', '.table', function() {
+
+            var table_name = $(this).attr('data-table-name');
+            console.log('clicked table: ', table_name);
+
             if (onerope.tables.joining) {
                 return;
             }
 
             if ( $(this).data('availability') === 'full' ) {
-                //console.log('room is full');
+                console.log('room is full');
                 onerope.tables.joining = false;
                 return;
             }
 
             onerope.tables.joining = true;
 
-            var table_name = $(this).attr('data-table-name');
-            //console.log('table id: ', table_name);
-
             onerope.tables.join_table(table_name);
         });
+
+        console.log('adding listener when players at table changes');
+        onerope.tables.ref.on('child_changed', function(snapshot) {
+            console.log('onerope.tables.ref.on child_changed');
+
+            var table = snapshot.val();
+            var table_name = snapshot.key();
+
+            onerope.tables.check_table(table, table_name);
+        });
+        console.groupEnd('onerope.tables.add_listeners');
     }
 
 };
