@@ -43,7 +43,7 @@ onerope.tables = {
     },
 
     check_table : function(table, table_name) {
-        // console.log('\n FUNCTION: onerope.tables.check_table');
+        // console.log('\nFUNCTION: onerope.tables.check_table');
 
         console.log('\n');
         console.groupCollapsed('checking table: ', table_name);
@@ -132,9 +132,10 @@ onerope.tables = {
     },
 
     join_table : function(table_name) {
-        console.log('\n FUNCTION: onerope.tables.join_table');
+        // console.log('\nFUNCTION: onerope.tables.join_table');
+        console.groupCollapsed('onerope.tables.join_table');
 
-        console.log('table name: ', table_name);
+        console.log('joining table: ', table_name);
 
         var player_ref = onerope.tables.ref.child(table_name).child('players');
 
@@ -145,23 +146,18 @@ onerope.tables = {
             var player_data = {};
             player_data[onerope.tables.player_slot] = true;
 
+            //SHOULD THIS GET SET AT THE PLAYER LEVEL?
             onerope.tables.table = table_name;
 
-            //Add Player to Table
-            player_ref.update(player_data, function() {
-                // Remove Player from members when player disconnects
-                player_ref.child(onerope.tables.player_slot).onDisconnect().set(false, function() {
-                    //Initialize Game Controller
-                    onerope.game_controller.init();
-                });
-            });
-
+            onerope.tables.seat_player(player_ref, player_data);
         });
+
+        console.groupEnd('onerope.tables.join_table');
 
     },
 
     get_player_slot : function(player_ref, callback) {
-        console.log('\n FUNCTION: onerope.tables.get_player_slot');
+        console.log('\nFUNCTION: onerope.tables.get_player_slot');
 
         var player_slot;
 
@@ -171,25 +167,40 @@ onerope.tables = {
             console.log('players at table: ', players);
 
             _.some(players, function(value, key, list) {
+                //if the player slot is empty, set player slot as the available player slot
                 if ( !value ) {
                     player_slot = key;
                     return true;
                 }
             });
 
-            //if no player slot available, show an alert if the room is full
+            //if no player slot available, show an alert that the room is full
             if ( !player_slot ) {
                 alert('room full');
             }
             else {
+                console.log('player slot: ', player_slot);
                 onerope.tables.player_slot = player_slot;
                 callback();
             }
         });
     },
 
+    seat_player : function( player_ref, player_data ) {
+        //Add Player to Table
+        console.log('seating player at table: ', onerope.tables.table);
+        player_ref.update(player_data, function() {
+            // Remove Player from members when player disconnects
+            player_ref.child(onerope.tables.player_slot).onDisconnect().set(false, function() {
+                //Initialize Game Controller
+                console.log('initialize the game controller');
+                onerope.game_controller.init();
+            });
+        });
+    },
+
     start_join_table_animation: function() {
-        console.log('\n FUNCTION: onerope.tables.start_join_table_animation');
+        console.log('\nFUNCTION: onerope.tables.start_join_table_animation');
 
         //hide tables container to prevent clicking multiple rooms
         $('.page_wrapper').fadeOut('fast');
@@ -248,7 +259,7 @@ onerope.tables = {
         console.groupCollapsed('onerope.tables.add_listeners');
         //console.log('\n FUNCTION: onerope.tables.add_listeners');
 
-        // ==== JOIN TABLE ==== //
+        // ==== TABLE CLICK LISTENER ==== //
         console.log('adding table click listener');
         $('.tables').on('click', '.table', function() {
 
@@ -256,6 +267,7 @@ onerope.tables = {
             console.log('clicked table: ', table_name);
 
             if (onerope.tables.joining) {
+                console.log('already in the process of joining a table');
                 return;
             }
 
@@ -270,6 +282,7 @@ onerope.tables = {
             onerope.tables.join_table(table_name);
         });
 
+        // ==== TABLE CHANGE LISTENER ==== //
         console.log('adding listener when players at table changes');
         onerope.tables.ref.on('child_changed', function(snapshot) {
             console.log('onerope.tables.ref.on child_changed');
