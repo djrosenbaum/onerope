@@ -3,38 +3,47 @@ onerope.game_controller = {
     init : function() {
         console.groupCollapsed('onerope.game_controller.init');
 
-        console.log('creating reference to table');
+        console.log('store reference to ', onerope.tables.table);
         onerope.game_controller.table_ref = onerope.ref.child('games').child(onerope.tables.table);
 
-        console.log('you are sitting at table: ', onerope.tables.table);
         console.log('you are player slot: ', onerope.tables.player_slot);
 
         //TODO: check if only player at table, and no game in progress
         console.log('TODO: check if only player at table');
 
+        console.groupEnd();
+
         if ( onerope.tables.player_slot === 'player1' ) {
-            console.log('setup new game');
+            console.log('player1 and no other players at table');
+            console.log('set new game');
             onerope.game_controller.set_new_game();
         }
         else {
+            console.log('other players at table');
             console.log('get new game');
             onerope.game_controller.get_new_game();
         }
-
-        console.groupEnd();
     },
 
     set_new_game : function() {
-        console.log('\n FUNCTION: onerope.game_controller.set_new_game');
+        console.groupCollapsed('onerope.game_controller.set_new_game');
+        // console.log('\n FUNCTION: onerope.game_controller.set_new_game');
 
         //push unique id to games, add unique id to games table
+        console.log('store reference to the game');
         onerope.game_controller.game_ref = onerope.game_controller.table_ref.child('game').push();
 
         //set the game id
+        console.log('store unique game id');
         onerope.game_controller.table_ref.update({game_id: onerope.game_controller.game_ref.key()}, function() {
             //set player info
+            //TODO why set a player name here?
+            console.log('set player name');
             onerope.game_controller.set_player_name(onerope.player.player_name, function() {
-                //join the game
+                //load the game                
+                console.log('load game');
+                console.groupEnd('onerope.game_controller.set_new_game');
+
                 onerope.game_controller.load_game();
             });
         });
