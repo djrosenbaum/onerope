@@ -11,7 +11,7 @@ onerope.game_controller = {
         //TODO: check if only player at table, and no game in progress
         console.log('TODO: check if only player at table');
 
-        console.groupEnd();
+        console.groupEnd('onerope.game_controller.init');
 
         if ( onerope.tables.player_slot === 'player1' ) {
             console.log('player1 and no other players at table');
@@ -34,7 +34,7 @@ onerope.game_controller = {
         onerope.game_controller.game_ref = onerope.game_controller.table_ref.child('game').push();
 
         //set the game id
-        console.log('store unique game id');
+        console.log('store unique game id on firebase');
         onerope.game_controller.table_ref.update({game_id: onerope.game_controller.game_ref.key()}, function() {
             //set player info
             //TODO why set a player name here?
@@ -42,15 +42,15 @@ onerope.game_controller = {
             onerope.game_controller.set_player_name(onerope.player.player_name, function() {
                 //load the game                
                 console.log('load game');
-                console.groupEnd('onerope.game_controller.set_new_game');
-
                 onerope.game_controller.load_game();
+                console.groupEnd('onerope.game_controller.set_new_game');
             });
         });
     },
 
     get_new_game : function() {
-        console.log('\n FUNCTION: onerope.game_controller.get_new_game');
+        console.groupCollapsed('onerope.game_controller.get_new_game');
+        //console.log('\n FUNCTION: onerope.game_controller.get_new_game');
 
         onerope.game_controller.table_ref.child('game_id').once('value', function(data) {
             var game_id = data.val();
@@ -74,6 +74,8 @@ onerope.game_controller = {
                 onerope.game_controller.load_game();
             });
 
+            console.groupEnd('onerope.game_controller.get_new_game');
+
         });
 
     },
@@ -89,7 +91,7 @@ onerope.game_controller = {
         console.log('\n FUNCTION: onerope.game_controller.set_player_name');
 
         onerope.game_controller.game_ref.child('players').child( onerope.tables.player_slot ).update( {name: player_name}, function() {
-            console.log('callback - onerope.game_controller.set_player_name');
+            console.log('callback - player name set');
             callback();
         });
     },
