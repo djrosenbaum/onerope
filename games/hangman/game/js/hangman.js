@@ -134,11 +134,6 @@ function player_name_listeners_on() {
         letters.removeClass('active_letter');
     });
 
-    $('.clear').on('click', function() {
-        first_letter = true;
-        empty_hangman_text();
-    });
-
     $('.submit').on('click', function() {
         exit_screen_player_name();
     });
@@ -146,9 +141,6 @@ function player_name_listeners_on() {
 
 function player_name_listeners_off() {
     console.log('\n FUNCTION: player_name_listeners_off');
-
-    //remove clear click listeners
-    $('.clear').off('click');
 
     //remove submit listener
     $('.submit').off('click');
@@ -257,10 +249,6 @@ function set_word_listeners_on() {
         resize_word_layout();
     });
 
-    $('.clear').on('click', function() {
-        empty_hangman_text();
-    });
-
     $('.submit').on('click', function() {
         exit_screen_setting_word();
     });
@@ -269,7 +257,6 @@ function set_word_listeners_on() {
 function set_word_listeners_off() {
     console.log('\n FUNCTION: set_word_listeners_off');
 
-    $('.clear').off('click');
     $('.submit').off('click');
 
     letters.off('click');
