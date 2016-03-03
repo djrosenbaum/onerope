@@ -108,7 +108,7 @@ onerope.game_controller = {
     },
 
     listeners_on : function(callback) {
-        console.log('\n FUNCTION: onerope.game_controller.listeners_on');
+        console.groupCollapsed('onerope.game_controller.listeners_on');
 
         //PREVENT STARTING GAME UNTIL ALL LISTENERS ARE ON
 
@@ -141,6 +141,7 @@ onerope.game_controller = {
                 console.log('ON GAME MESSAGE');
                 onerope.game.update(snapshot);
             });
+            console.groupEnd('onerope.game_controller.listeners_on');
             callback();
         }
 

@@ -6,12 +6,11 @@ onerope.game = {};
 onerope.game = {
 
     init : function(callback) {
-        console.log('\n FUNCTION: onerope.game.init');
+        console.groupCollapsed('FUNCTION: onerope.game.init');
 
         onerope.game.players = {};
         onerope.game.round = {};
         onerope.game.started = false;
-        //onerope.game.max_players = 2;
 
         //stop the joining table animation
         onerope.tables.stop_join_table_animation();
@@ -20,7 +19,10 @@ onerope.game = {
         onerope.game_controller.listeners_off();
 
         //turn on game listeners
-        onerope.game_controller.listeners_on(callback);
+        onerope.game_controller.listeners_on(function() {
+            callback();
+            console.groupEnd('\n FUNCTION: onerope.game.init');
+        });
     },
 
     get_round : function(callback) {
