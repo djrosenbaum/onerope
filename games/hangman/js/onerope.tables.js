@@ -242,7 +242,7 @@ onerope.tables = {
     },
 
     stop_join_table_animation: function() {
-        console.log('\n FUNCTION: onerope.tables.stop_join_table_animation');
+        console.log('FUNCTION: onerope.tables.stop_join_table_animation');
 
         clearTimeout(onerope.tables.loading_animation);
         $('.loading').hide();

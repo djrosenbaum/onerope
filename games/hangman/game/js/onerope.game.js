@@ -20,8 +20,8 @@ onerope.game = {
 
         //turn on game listeners
         onerope.game_controller.listeners_on(function() {
-            callback();
             console.groupEnd('\n FUNCTION: onerope.game.init');
+            callback();
         });
     },
 
@@ -33,7 +33,7 @@ onerope.game = {
 
         onerope.game_controller.game_ref.child('round').once('value', function(snapshot) {
             if ( !snapshot.exists() ) {
-                console.log('snapshot does not exit yet');
+                console.log('snapshot does not exist yet');
                 //if snapshot does not exist, new game, round 1
                 round = 1;
                 player_turn = onerope.tables.player_slot;

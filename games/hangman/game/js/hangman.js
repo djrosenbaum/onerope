@@ -60,10 +60,11 @@ var first_letter = false; //user name initially set to guest, allows for first l
 // ==== SETTING THE PLAYER NAME SCREEN ==== //
 
 function enter_screen_player_name() {
-    console.log('\n FUNCTION: enter_screen_player_name');
+    console.groupCollapsed('FUNCTION: enter_screen_player_name');
 
     set_screen('player_name');
 
+    console.log('show the backspace button');
     $('.alphabet .backspace').show();
 
     generate_hangman_text('guest');
@@ -72,6 +73,8 @@ function enter_screen_player_name() {
 
     game_message.text('Enter Your Player Name');
     set_game_status('Player Name');
+
+    console.groupEnd('FUNCTION: enter_screen_player_name');
 }
 
 function exit_screen_player_name() {
@@ -508,6 +511,8 @@ function generate_hangman_text(word) {
 }
 
 function empty_hangman_text() {
+    console.log('empty hangman text');
+
     hangman_text.empty();
 
     reset_word_layout();
@@ -516,6 +521,8 @@ function empty_hangman_text() {
 }
 
 function set_game_status(status_message) {
+    console.log('set_game_status: ', status_message);
+
     $('.game_status').text(status_message);
 }
 
@@ -550,15 +557,15 @@ function detect_player_role() {
 
 // ==== SET SCREEN ==== //
 function set_screen(screen_name) {
+    console.log('FUNCTION: set_screen ', screen_name);
     $('.game_wrapper').attr('data-screen', screen_name);
 }
 
 // ==== INIT ==== //
 hangman.init = function() {
-    console.log('\n FUNCTION: hangman.init');
+    console.groupCollapsed('FUNCTION: hangman.init');
 
     onerope.game.get_round(function() {
-
 
         if ( !hangman.name_set ) {
             enter_screen_player_name();
@@ -567,6 +574,8 @@ hangman.init = function() {
             //start another round
         }
     });
+
+    console.groupEnd('FUNCTION: hangman.init');
 };
 
 $(document).ready(function() {
