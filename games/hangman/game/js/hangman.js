@@ -95,10 +95,11 @@ function exit_screen_player_name() {
 
 //turn on the player name listeners
 function player_name_listeners_on() {
-    console.log('\n FUNCTION: player_name_listeners_on');
+    console.groupCollapsed('FUNCTION: player_name_listeners_on');
 
     hangman.listeners_on = true;
 
+    console.log('On click letters listener');
     letters.on('click', function () {
 
         if ( !first_letter ) {
@@ -128,18 +129,23 @@ function player_name_listeners_on() {
         }
     });
 
+    console.log('On touchstart letters listener');
     letters.on('touchstart', function() {
         letters.removeClass('active_letter');
         $(this).addClass('active_letter');
     });
 
+    console.log('On touchend letters listener');
     letters.on('touchend', function() {
         letters.removeClass('active_letter');
     });
 
+    console.log('On click submit player name');
     $('.submit').on('click', function() {
         exit_screen_player_name();
     });
+
+    console.groupEnd('\n FUNCTION: player_name_listeners_on');
 }
 
 function player_name_listeners_off() {
@@ -495,7 +501,7 @@ function start_round() {
 }
 
 function generate_hangman_text(word) {
-    console.log('\n FUNCTION: generate_hangman_text');
+    console.log('\n FUNCTION: generate_hangman_text ', word);
 
     empty_hangman_text();
 
@@ -527,6 +533,7 @@ function set_game_status(status_message) {
 }
 
 function resize_word_layout() {
+    console.log('resize_word_layout');
     var left_position = parseInt( $('.hangman_text').css('left'), 10 );
     var total_letters = $('.hangman_text > div').length;
     var letter_width = 45;
