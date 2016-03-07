@@ -8,18 +8,15 @@ onerope.game_controller = {
 
         console.log('you are player slot: ', onerope.tables.player_slot);
 
-        //TODO: check if only player at table, and no game in progress
-        console.log('TODO: check if only player at table');
-
         console.groupEnd('onerope.game_controller.init');
 
-        if ( onerope.tables.player_slot === 'player1' ) {
-            console.log('player1 and no other players at table');
+        if ( onerope.tables.player_slot === 'player1' && onerope.tables.total_players === 1 ) {
+            console.log('table slot: ', onerope.tables.player_slot, ' and no other players at table');
             console.log('set new game');
             onerope.game_controller.set_new_game();
         }
         else {
-            console.log('other players at table');
+            console.log('table slot: ', onerope.tables.player_slot, ' and other players at table');
             console.log('get new game');
             onerope.game_controller.get_new_game();
         }

@@ -290,6 +290,8 @@ onerope.tables = {
             var table = snapshot.val();
             var table_name = snapshot.key();
 
+            console.log(table_name, ': updated');
+
             onerope.tables.check_table(table, table_name);
         });
         console.groupEnd('onerope.tables.add_listeners');
