@@ -78,8 +78,9 @@ function enter_screen_player_name() {
 }
 
 function exit_screen_player_name() {
-    console.log('\n FUNCTION: exit_screen_player_name');
+    console.groupCollapsed('FUNCTION: exit_screen_player_name');
 
+    console.log('hiding backspace button');
     $('.alphabet .backspace').hide();
 
     player_name_listeners_off();
@@ -91,6 +92,8 @@ function exit_screen_player_name() {
             detect_player_role();
         });
     });
+
+    console.groupEnd('FUNCTION: exit_screen_player_name');
 }
 
 //turn on the player name listeners
@@ -152,8 +155,10 @@ function player_name_listeners_off() {
     console.log('\n FUNCTION: player_name_listeners_off');
 
     //remove submit listener
+    console.log('submit button listener off');
     $('.submit').off('click');
 
+    console.log('letters listener off');
     letters.off('click');
 }
 
@@ -311,7 +316,7 @@ function enter_screen_guessing_a_word() {
 
     game_over_listener_on();
 
-    if ( !hangman.round_started ) {
+    if ( !hangman.round_started && hangman.secret_word ) {
         start_round();
     }
 }
