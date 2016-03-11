@@ -208,6 +208,10 @@ body {
     color: #c33;
 }
 
+.leaderboard .player.winner {
+    color: #3c6;
+}
+
 .leaderboard .player > div {
     display: inline;
 }

@@ -385,6 +385,11 @@ function announce_winner() {
     console.log('\n FUNCTION: announce_winner');
 
     //this function should broadcast that a player successfully guessed the word. Good Job!
+
+    onerope.game.set_player_score('winner', function() {
+        console.log('winner announced');
+    });
+
 }
 
 function reveal_word_to_guess() {
@@ -484,6 +489,11 @@ hangman.update = function(snapshot) {
 
 function update_score(player_slot, player_score) {
     console.log('\n FUNCTION: udpate_score');
+
+    if ( player_score === 'winner' ) {
+        $('.leaderboard .players .player[data-player-slot="' + player_slot + '"]').addClass('winner');
+        return;
+    }
 
     $('.leaderboard .players .player[data-player-slot="' + player_slot + '"] .stat').text(player_score + '/6');
 
