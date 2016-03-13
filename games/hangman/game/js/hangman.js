@@ -400,8 +400,9 @@ function announce_winner() {
 }
 
 function reveal_word_to_guess() {
-    console.log('\n FUNCTION: reveal_word_to_guess');
+    console.log('FUNCTION: reveal_word_to_guess');
 
+    console.log('show all missed letters');
     $('.letter.invisible').removeClass('invisible').addClass('missed');
 }
 
@@ -436,7 +437,14 @@ function show_body_part() {
 }
 
 function game_over() {
-    reveal_word_to_guess();
+    console.log('FUNCTION: game over');
+
+    if ( get_screen() === 'guessing_word' ) {
+
+        reveal_word_to_guess();
+
+        exit_screen_guessing_a_word();
+    }
 }
 
 function enter_screen_game_over() {
@@ -603,6 +611,10 @@ function detect_player_role() {
 function set_screen(screen_name) {
     console.log('FUNCTION: set_screen ', screen_name);
     $('.game_wrapper').attr('data-screen', screen_name);
+}
+
+function get_screen() {
+    return $('.game_wrapper').attr('data-screen');
 }
 
 // ==== INIT ==== //
