@@ -322,7 +322,13 @@ function enter_screen_guessing_a_word() {
 }
 
 function exit_screen_guessing_a_word() {
+    console.groupCollapsed('exit_screen_guessing_a_word');
 
+    guess_word_listeners_off();
+
+    enter_screen_game_over();
+
+    console.groupEnd('exit_screen_guessing_a_word');
 }
 
 function guess_word_listeners_on() {
@@ -342,8 +348,9 @@ function guess_word_listeners_on() {
 }
 
 function guess_word_listeners_off() {
-    console.log('\n FUNCTION: guess_word_listeners_off');
+    console.log('FUNCTION: guess_word_listeners_off');
 
+    console.log('removing letter click listener');
     letters.off('click');
 }
 
@@ -432,8 +439,23 @@ function game_over() {
     reveal_word_to_guess();
 }
 
+function enter_screen_game_over() {
+    console.groupCollapsed('enter_screen_guessing_a_word');
+
+    set_screen('game_over');
+
+    hangman.player_role = '';
+
+    $('.game_wrapper').data('screen','game over');
+
+    game_message.text('');
+    set_game_status('Game Over');
+
+    console.groupEnd('enter_screen_guessing_a_word');
+}
 
 
+// ==== HELPER FUNCTIONS ==== //
 function layout_letters() {
     console.log('\n FUNCTION: layout_letters');
 
