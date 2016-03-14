@@ -397,6 +397,7 @@ function announce_winner() {
         console.log('winner announced');
     });
 
+    $('.game_wrapper').trigger('game_over');
 }
 
 function reveal_word_to_guess() {
