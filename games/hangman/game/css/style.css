@@ -63,6 +63,10 @@ body {
     left: 120px;
 }
 
+.game_wrapper[data-screen="game_over"] .hangman_text {
+    left: 120px;
+}
+
 /*.word_to_guess {
     position: absolute;
     bottom: 50px;
@@ -85,6 +89,17 @@ body {
     top: 25px;
     left: 90px;
     width: 60px;
+}
+
+/* ==== PLAY AGAIN CTA ==== */
+.play_again {
+    background-color: #444;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #fff;
+    color: #fff;
+    font-family: 'Short Stack', cursive;
+    margin: 30px 0;
 }
 
 /* ==== LETTERS TO GUESS ==== */
@@ -151,6 +166,11 @@ body {
     font-family: 'Short Stack', cursive;
 }
 
+.game_wrapper[data-screen="game_over"] .alphabet {
+    padding-top: 0;
+}
+
+
 .alphabet .letter {
     cursor: pointer;
     color: #fff;
@@ -179,6 +199,7 @@ body {
     padding-top: 40px;
     padding-bottom: 40px;
     font-family: 'Short Stack', cursive;
+    text-align: center;
 }
 
 .word_controls div {
@@ -195,6 +216,7 @@ body {
     font-size: 14px;
     color: #fff;
     padding-top: 10px;
+    text-align: center;
 }
 
 .leaderboard .player {

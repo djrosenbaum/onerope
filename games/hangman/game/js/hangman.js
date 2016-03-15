@@ -6,7 +6,8 @@ var hangman = {
     name_set : false,
     secret_word : null,
     stats : 0,
-    round_started : false
+    round_started : false,
+    winner : false
 };
 
 onerope.game.hangman = hangman;
@@ -162,6 +163,7 @@ function player_name_listeners_off() {
     letters.off('click');
 }
 
+//set player name
 function set_player_name(callback) {
     console.log('\n FUNCTION: set_player_name');
 
@@ -230,7 +232,7 @@ function exit_screen_setting_word() {
         empty_hangman_text();
         game_message.text('');
         set_game_status('');
-        $('.game_wrapper').slideUp('slow');
+        //$('.game_wrapper').slideUp('slow');
     });
 }
 
@@ -384,20 +386,15 @@ function check_for_winner() {
     }
     else {
         console.log('we have a winner');
-        announce_winner();
+
+        hangman.winner = true;
+
+        onerope.game.set_player_score('winner', function() {
+            console.log('winner announced');
+        });
+
+        $('.game_wrapper').trigger('game_over');
     }
-}
-
-function announce_winner() {
-    console.log('\n FUNCTION: announce_winner');
-
-    //this function should broadcast that a player successfully guessed the word. Good Job!
-
-    onerope.game.set_player_score('winner', function() {
-        console.log('winner announced');
-    });
-
-    $('.game_wrapper').trigger('game_over');
 }
 
 function reveal_word_to_guess() {
@@ -440,7 +437,13 @@ function show_body_part() {
 function game_over() {
     console.log('FUNCTION: game over');
 
-    if ( get_screen() === 'guessing_word' ) {
+    if ( hangman.player_role === 'guesser' && hangman.winner ) {
+
+        exit_screen_guessing_a_word();
+
+    }
+
+    else if ( hangman.player_role === 'guesser' && !hangman.winner ) {
 
         reveal_word_to_guess();
 
@@ -448,8 +451,9 @@ function game_over() {
     }
 }
 
+// ==== GAME OVER SCREEN ==== //
 function enter_screen_game_over() {
-    console.groupCollapsed('enter_screen_guessing_a_word');
+    console.groupCollapsed('enter_screen_game_over');
 
     set_screen('game_over');
 
@@ -458,9 +462,17 @@ function enter_screen_game_over() {
     $('.game_wrapper').data('screen','game over');
 
     game_message.text('');
-    set_game_status('Game Over');
 
-    console.groupEnd('enter_screen_guessing_a_word');
+    if ( hangman.winner ) {
+        set_game_status('You Won!');
+    }
+    else {
+        set_game_status('Game Over');
+    }
+
+    $('.play_again').show();
+    
+    console.groupEnd('enter_screen_game_over');
 }
 
 

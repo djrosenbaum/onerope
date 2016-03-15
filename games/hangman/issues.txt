@@ -15,3 +15,5 @@ handling players who join game after game started
 viewing the letters that other players guessed when you are the player who selected a word
 
 when player reopens their browser window, detect if player is still connected to game room
+
+setup a grunt build
