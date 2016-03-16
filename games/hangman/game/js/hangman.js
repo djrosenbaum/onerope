@@ -471,6 +471,10 @@ function enter_screen_game_over() {
     }
 
     $('.play_again').show();
+
+    $('.game_wrapper').on('click', '.play_again', function() {
+        console.log('play again');
+    });
     
     console.groupEnd('enter_screen_game_over');
 }
