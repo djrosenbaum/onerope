@@ -4,8 +4,6 @@ players don't know about scrolling right and left when word is longer than scree
 
 player win / lose / game over screen
 
-option to play again
-
 rotating players who select word in the game
 
 clean up user interface
