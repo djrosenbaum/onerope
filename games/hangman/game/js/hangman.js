@@ -481,6 +481,10 @@ function enter_screen_game_over() {
 
 function play_again() {
     console.log('play again');
+
+    //RESET THE GAME
+
+    //FIRST PLAYER TO SELECT PLAY AGAIN WILL GET TO SET WORD NEXT GAME
 }
 
 
