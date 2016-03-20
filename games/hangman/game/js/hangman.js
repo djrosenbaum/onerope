@@ -12,6 +12,13 @@ var hangman = {
 
 onerope.game.hangman = hangman;
 
+hangman.reset = function() {
+    console.log('hangman.reset');
+    hangman.secret_word = null;
+    round_started = false;
+    winner = false;
+};
+
 // ==== PLAYER MANAGEMENT ==== //
 hangman.update_player = function( player_slot, player ) {
     console.log('\n FUNCTION: hangman.update_player');
@@ -483,6 +490,7 @@ function play_again() {
     console.log('play again');
 
     //RESET THE GAME
+    hangman.reset();
 
     //FIRST PLAYER TO SELECT PLAY AGAIN WILL GET TO SET WORD NEXT GAME
 }
