@@ -8,7 +8,8 @@ var hangman = {
     secret_word : null,
     stats : 0,
     round_started : false,
-    winner : false
+    winner : false,
+    current_round : null
 };
 
 onerope.game.hangman = hangman;
@@ -483,6 +484,7 @@ function enter_screen_game_over() {
     $('.play_again').show();
 
     $('.game_wrapper').on('click', '.play_again', function() {
+        console.log('clicked play again');
         play_again();
     });
     
@@ -495,19 +497,8 @@ function play_again() {
     //RESET THE GAME
     hangman.reset();
 
-    //GET THE ROUND
-    onerope.game.get_round(function() {
-
-        if ( onerope.game.round.interval === current_round ) {
-            //you are the first player to hit play again
-        }
-        else {
-            //you are not the first player to hit play again
-        }
-
-    });
-
-    //FIRST PLAYER TO SELECT PLAY AGAIN WILL GET TO SET WORD NEXT GAME
+    //INIT HANGMAN
+    hangman.init();
 }
 
 
@@ -672,11 +663,31 @@ hangman.init = function() {
 
     onerope.game.get_round(function() {
 
+        //[TODO] MIGHT NEED MORE LOGIC HERE IF NEW PLAYER JOINS
         if ( !hangman.name_set ) {
+            console.log('storing hangman.current_round');
+            hangman.current_round = onerope.game.round.interval;
+
             enter_screen_player_name();
         }
         else {
             //start another round
+            var round = hangman.current_round++;
+
+            if ( onerope.game.round.interval === hangman.current_round ) {
+                //you are the first player to hit play again
+                var player_turn = onerope.tables.player_slot;
+
+                onerope.game.set_round( round, player_turn, function() {
+                    console.log('round set');
+                    enter_screen_setting_word();
+                });
+            }
+            else {
+                //you are not the first player to hit play again
+                enter_screen_guessing_a_word();
+            }
+
         }
     });
 

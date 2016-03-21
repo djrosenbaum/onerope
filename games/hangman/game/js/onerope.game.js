@@ -57,7 +57,8 @@ onerope.game = {
 
         var round_data = {
             round: round,
-            player_turn: player_turn
+            player_turn: player_turn,
+            secret_word: null
         };
 
         onerope.game_controller.game_ref.child('round').update(round_data, function() {
