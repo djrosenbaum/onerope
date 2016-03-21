@@ -10,7 +10,6 @@ onerope.game = {
 
         onerope.game.players = {};
         onerope.game.round = {};
-        onerope.game.started = false;
 
         //stop the joining table animation
         onerope.tables.stop_join_table_animation();

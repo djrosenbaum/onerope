@@ -4,6 +4,7 @@ var hangman = {
     players : {},
     listeners_on : false,
     name_set : false,
+    player_role : null,
     secret_word : null,
     stats : 0,
     round_started : false,
@@ -15,8 +16,10 @@ onerope.game.hangman = hangman;
 hangman.reset = function() {
     console.log('hangman.reset');
     hangman.secret_word = null;
-    round_started = false;
-    winner = false;
+    hangman.round_started = false;
+    hangman.winner = false;
+    hangman.stats = 0;
+    hangman.player_role = null;
 };
 
 // ==== PLAYER MANAGEMENT ==== //
@@ -492,6 +495,18 @@ function play_again() {
     //RESET THE GAME
     hangman.reset();
 
+    //GET THE ROUND
+    onerope.game.get_round(function() {
+
+        if ( onerope.game.round.interval === current_round ) {
+            //you are the first player to hit play again
+        }
+        else {
+            //you are not the first player to hit play again
+        }
+
+    });
+
     //FIRST PLAYER TO SELECT PLAY AGAIN WILL GET TO SET WORD NEXT GAME
 }
 
@@ -632,6 +647,7 @@ function reset_word_layout() {
 function detect_player_role() {
     console.log('\n FUNCTION: detect_player_role');
 
+    //TODO THIS LOGIC NEEDS SOME WORK
     if ( onerope.game.round.player_turn === onerope.tables.player_slot ) {
         enter_screen_setting_word();
     }
