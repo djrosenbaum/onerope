@@ -650,11 +650,20 @@ function detect_player_role() {
 // ==== SET SCREEN ==== //
 function set_screen(screen_name) {
     console.log('FUNCTION: set_screen ', screen_name);
+
+    reset_screen();
+
     $('.game_wrapper').attr('data-screen', screen_name);
 }
 
 function get_screen() {
     return $('.game_wrapper').attr('data-screen');
+}
+
+function reset_screen() {
+    console.log('FUNCTION: reset_screen');
+
+    $('.game_wrapper').empty();
 }
 
 // ==== INIT ==== //
