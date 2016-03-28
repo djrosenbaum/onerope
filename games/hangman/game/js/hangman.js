@@ -65,7 +65,7 @@ hangman.player_disconnected = function( player_slot, player ) {
 
 // ==== GLOBAL VARS ==== //
 var letters = $('.alphabet .letter'); //selects all letters
-var game_message = $('.game_message div');
+var $game_message = $('.game_message div');
 var hangman_text = $('.hangman_text');
 var first_letter = false; //user name initially set to guest, allows for first letter pressed to reset user name
 
@@ -83,7 +83,7 @@ function enter_screen_player_name() {
 
     player_name_listeners_on();
 
-    game_message.text('Enter Your Player Name');
+    $game_message.text('Enter Your Player Name');
     set_game_status('Player Name');
 
     console.groupEnd('FUNCTION: enter_screen_player_name');
@@ -220,7 +220,7 @@ function enter_screen_setting_word() {
 
     set_word_listeners_on();
 
-    game_message.text('Your Turn To Enter A Word');
+    $game_message.text('Your Turn To Enter A Word');
     set_game_status('Set Secret Word');
 
     $('.word_controls').fadeIn('slow');
@@ -241,7 +241,7 @@ function exit_screen_setting_word() {
     $.when( $('.hangman_text, .alphabet, .word_controls').fadeOut('fast') ).then(function() {
         console.log('set word stuff faded out');
         empty_hangman_text();
-        game_message.text('');
+        $game_message.text('');
         set_game_status('');
         //$('.game_wrapper').slideUp('slow');
     });
@@ -324,7 +324,7 @@ function enter_screen_guessing_a_word() {
 
     $('.execution_stand').fadeIn('slow');
 
-    game_message.text('');
+    $game_message.text('');
     set_game_status('Waiting For Word...');
 
     game_over_listener_on();
@@ -472,7 +472,7 @@ function enter_screen_game_over() {
 
     $('.game_wrapper').data('screen','game over');
 
-    game_message.text('');
+    $game_message.text('');
 
     if ( hangman.winner ) {
         set_game_status('You Won!');
@@ -661,9 +661,15 @@ function get_screen() {
 }
 
 function reset_screen() {
-    console.log('FUNCTION: reset_screen');
+    console.groupCollapsed('FUNCTION: reset_screen');
 
-    $('.game_wrapper').empty();
+    console.log('remove game wrapper listeners');
+    $('.game_wrapper').off();
+
+    // console.log('emptying game wrapper');
+    // $('.game_wrapper').empty();
+
+    console.groupEnd('FUNCTION: reset_screen');
 }
 
 // ==== INIT ==== //
